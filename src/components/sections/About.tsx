@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Code2, MonitorPlay, Layers, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import React, { useRef } from "react";
 
 const skills = [
   {
@@ -31,80 +32,152 @@ const skills = [
   },
 ];
 
+// Interactive 3D Tilt Card Component
+function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Mouse tracking values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Smooth springs for tilt
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+
+  // Map mouse positions to rotation (-10deg to 10deg)
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  // Calculate Glare position
+  const mouseXPos = useSpring(useMotionValue(0), { stiffness: 100, damping: 25 });
+  const mouseYPos = useSpring(useMotionValue(0), { stiffness: 100, damping: 25 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    // Normalize mouse position between -0.5 and 0.5
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+    mouseXPos.set(mouseX);
+    mouseYPos.set(mouseY);
+  };
+
+  const handleMouseLeave = () => {
+    // Reset to flat state
+    x.set(0);
+    y.set(0);
+  };
+
+  const glareBackground = useMotionTemplate`radial-gradient(
+    300px circle at ${mouseXPos}px ${mouseYPos}px,
+    rgba(255, 255, 255, 0.1),
+    transparent 80%
+  )`;
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, delay: skill.delay, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className={cn(
+        "glass-card p-6 flex flex-col gap-4 relative group transition-all duration-300",
+        index % 2 === 1 ? "sm:mt-12" : "" // Staggered layout for desktop
+      )}
+    >
+      {/* Glare/Highlight effect tracking the mouse */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-plus-lighter"
+        style={{ background: glareBackground }}
+      />
+
+      {/* Subtly Floating Internal Content */}
+      <div
+        className="transform-gpu space-y-6 flex flex-col h-full pointer-events-none"
+        style={{ transform: "translateZ(30px)" }} // Pop out effect
+      >
+        <div className="p-3 bg-zinc-900/50 rounded-xl w-fit border border-white/5 shadow-inner backdrop-blur-md">
+          {skill.icon}
+        </div>
+
+        <div className="space-y-3 relative z-10 mt-auto">
+          <h4 className="text-xl font-semibold text-zinc-100 font-[family-name:var(--font-space-grotesk)] tracking-tight">
+            {skill.title}
+          </h4>
+          <p className="text-sm text-zinc-400 leading-relaxed max-w-[90%] font-light">
+            {skill.description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function AboutSection() {
   return (
     <section className="relative min-h-screen py-32 flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-[#020202]">
       {/* Decorative Glow Elements */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+      <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
       <div className="w-full max-w-7xl z-10 flex flex-col gap-16 lg:flex-row items-center justify-between">
 
         {/* Left Side: Text and Intro */}
         <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -40, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 space-y-8 lg:pr-12"
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex-1 space-y-10 lg:pr-12"
         >
-          <div className="space-y-4">
-            <h2 className="text-sm font-medium tracking-widest text-zinc-400 uppercase">
+          <div className="space-y-6">
+            <h2 className="text-sm font-medium tracking-widest text-zinc-500 uppercase">
               {"" /* Core Expertise */}
             </h2>
-            <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)]">
-              Bridging the gap between <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600">design</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600">logic.</span>
+            <h3 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.1]">
+              Bridging the gap between <br className="hidden md:block"/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 font-light italic">design</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 font-light italic">logic.</span>
             </h3>
           </div>
 
-          <p className="text-lg text-zinc-400 leading-relaxed font-[family-name:var(--font-inter)] max-w-xl">
+          <p className="text-lg text-zinc-400 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-xl">
             I specialize in crafting premium web interfaces that are not just visually stunning but technically excellent. By combining modern frameworks like Next.js with advanced animation libraries like Framer Motion, I build experiences that feel alive.
           </p>
 
-          <div className="pt-4 flex gap-4">
-            <div className="flex flex-col gap-1">
-              <span className="text-3xl font-bold text-zinc-100">5+</span>
-              <span className="text-sm text-zinc-500 uppercase tracking-wider">Years Exp</span>
+          <div className="pt-6 flex gap-8">
+            <div className="flex flex-col gap-2">
+              <span className="text-4xl font-bold text-zinc-100 font-[family-name:var(--font-space-grotesk)]">5+</span>
+              <span className="text-xs text-zinc-500 uppercase tracking-[0.2em]">Years Exp</span>
             </div>
-            <div className="w-px h-16 bg-zinc-800" />
-            <div className="flex flex-col gap-1">
-              <span className="text-3xl font-bold text-zinc-100">40+</span>
-              <span className="text-sm text-zinc-500 uppercase tracking-wider">Projects</span>
+            <div className="w-px h-16 bg-white/10" />
+            <div className="flex flex-col gap-2">
+              <span className="text-4xl font-bold text-zinc-100 font-[family-name:var(--font-space-grotesk)]">40+</span>
+              <span className="text-xs text-zinc-500 uppercase tracking-[0.2em]">Projects</span>
             </div>
           </div>
         </motion.div>
 
-        {/* Right Side: Overlapping Glass Cards */}
-        <div className="flex-1 w-full max-w-2xl relative grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Right Side: 3D Overlapping Glass Cards */}
+        <div className="flex-1 w-full max-w-2xl relative grid grid-cols-1 sm:grid-cols-2 gap-6" style={{ perspective: "1000px" }}>
           {skills.map((skill, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: skill.delay, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className={cn(
-                "glass-card p-6 flex flex-col gap-4 relative group overflow-hidden transition-all duration-500",
-                index % 2 === 1 ? "sm:mt-12" : "" // Staggered layout for desktop
-              )}
-            >
-              {/* Subtle hover gradient inside card */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-              <div className="p-3 bg-zinc-900/50 rounded-xl w-fit border border-white/5 shadow-inner">
-                {skill.icon}
-              </div>
-
-              <div className="space-y-2 relative z-10">
-                <h4 className="text-xl font-semibold text-zinc-100 font-[family-name:var(--font-space-grotesk)]">
-                  {skill.title}
-                </h4>
-                <p className="text-sm text-zinc-400 leading-relaxed">
-                  {skill.description}
-                </p>
-              </div>
-            </motion.div>
+            <TiltCard key={index} skill={skill} index={index} />
           ))}
         </div>
       </div>
