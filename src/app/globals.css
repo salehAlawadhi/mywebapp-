@@ -1,28 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #030303;
+  --color-background: #010101; /* Even darker, pure obsidian */
   --color-foreground: #ededed;
 
   --color-primary: #ffffff;
   --color-primary-foreground: #000000;
 
-  --color-muted: #1a1a1a;
-  --color-muted-foreground: #a3a3a3;
+  --color-muted: #111111;
+  --color-muted-foreground: #888888;
 
   --color-accent: #262626;
   --color-accent-foreground: #ffffff;
 
-  --color-glass-bg: rgba(20, 20, 20, 0.4);
-  --color-glass-border: rgba(255, 255, 255, 0.08);
+  /* Extremely subtle cyan for the lens/interaction highlights */
+  --color-cyan-glow: rgba(0, 200, 255, 0.15);
 
-  --color-border: #262626;
-  --color-input: #1a1a1a;
+  --color-glass-bg: rgba(10, 10, 10, 0.3);
+  --color-glass-border: rgba(255, 255, 255, 0.04);
+
+  --color-border: #1a1a1a;
+  --color-input: #111111;
   --color-ring: #ffffff;
-
-  --radius-lg: 1.5rem;
-  --radius-md: 1rem;
-  --radius-sm: 0.5rem;
 
   --font-sans: var(--font-inter);
 }
@@ -32,47 +31,75 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased overflow-x-hidden selection:bg-white/20 selection:text-white;
+    @apply bg-background text-foreground antialiased overflow-x-hidden selection:bg-white/10 selection:text-white;
     font-feature-settings: "rlig" 1, "calt" 1;
+    /* Prevent default scrolling behaviors that fight Lenis */
+    overscroll-behavior-y: none;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-[var(--color-glass-bg)] backdrop-blur-xl border border-[var(--color-glass-border)] shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+    @apply bg-[var(--color-glass-bg)] backdrop-blur-2xl border border-[var(--color-glass-border)] shadow-[0_4px_30px_rgba(0,0,0,0.2)];
   }
 
   .glass-card {
-    @apply bg-white/[0.02] border border-white/[0.05] backdrop-blur-md rounded-2xl;
+    @apply bg-white/[0.015] border border-white/[0.03] backdrop-blur-xl rounded-2xl;
   }
 
   .glass-button {
-    @apply bg-white/10 hover:bg-white/15 border border-white/10 backdrop-blur-md transition-all duration-300;
+    @apply bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] backdrop-blur-md transition-all duration-[800ms] ease-out;
   }
+}
 
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-b from-white to-white/50;
-  }
+/*
+  DNA SYSTEM VARIABLES (Scoped to mutate elements inside the chamber)
+  Default mode is "Precision" (the master brand identity)
+*/
+.dna-chamber {
+  --dna-radius: 1rem;
+  --dna-bg: rgba(255, 255, 255, 0.015);
+  --dna-border: rgba(255, 255, 255, 0.05);
+  --dna-glow: rgba(255, 255, 255, 0);
+  --dna-transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --dna-spacing: 1.5rem;
+}
 
-  .text-gradient-accent {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400;
-  }
+.dna-mode-precision {
+  --dna-radius: 0px;
+  --dna-bg: #000000;
+  --dna-border: rgba(255, 255, 255, 0.1);
+  --dna-glow: rgba(0, 200, 255, 0.05); /* very subtle cyan */
+  --dna-spacing: 2rem;
+}
+
+.dna-mode-luxe {
+  --dna-radius: 2rem;
+  --dna-bg: rgba(255, 255, 255, 0.03);
+  --dna-border: rgba(255, 255, 255, 0.02);
+  --dna-glow: rgba(255, 200, 100, 0.03); /* warm ambient */
+  --dna-spacing: 1rem;
+}
+
+.dna-mode-velocity {
+  --dna-radius: 0.5rem;
+  --dna-bg: rgba(0, 0, 0, 0.8);
+  --dna-border: rgba(0, 200, 255, 0.1);
+  --dna-glow: rgba(0, 200, 255, 0.05); /* Reduced glow intensity */
+  --dna-spacing: 0.5rem;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: var(--color-background);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: #222;
+  border-radius: 0;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #444;
 }

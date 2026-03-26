@@ -4,53 +4,54 @@ import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { Paintbrush, LayoutTemplate, Zap, Database, Laptop, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React, { useRef } from "react";
+import PhysicalReveal from "@/components/ui/PhysicalReveal";
 
 const services = [
   {
-    title: "UI/UX Design Integration",
-    description: "Translating pixel-perfect Figma designs into responsive, accessible code without compromising the creative vision.",
-    icon: <Paintbrush className="w-5 h-5 text-indigo-400" />,
-    className: "md:col-span-2 md:row-span-2 bg-gradient-to-br from-indigo-500/5 to-transparent",
+    title: "Interface Assembly",
+    description: "Translating pixel-perfect designs into physical UI code.",
+    icon: <Paintbrush className="w-4 h-4 text-indigo-400" />,
+    className: "md:col-span-2 md:row-span-2 bg-gradient-to-br from-indigo-500/[0.02] to-transparent",
     delay: 0.1,
   },
   {
-    title: "Web Applications",
-    description: "Building robust SPA and MPA using React and Next.js.",
-    icon: <Laptop className="w-5 h-5 text-blue-400" />,
+    title: "Web Nodes",
+    description: "Building SPA and MPA environments.",
+    icon: <Laptop className="w-4 h-4 text-blue-400" />,
     className: "md:col-span-1 md:row-span-1",
     delay: 0.2,
   },
   {
-    title: "Performance Audits",
-    description: "Optimizing Core Web Vitals and load times for scale.",
-    icon: <Zap className="w-5 h-5 text-yellow-400" />,
+    title: "Core Vitals",
+    description: "Optimizing frame rates for 60fps architectures.",
+    icon: <Zap className="w-4 h-4 text-yellow-400" />,
     className: "md:col-span-1 md:row-span-1",
     delay: 0.3,
   },
   {
-    title: "Full-Stack Capabilities",
-    description: "Connecting flawless frontends with headless CMS or custom APIs.",
-    icon: <Database className="w-5 h-5 text-emerald-400" />,
-    className: "md:col-span-1 md:row-span-2 bg-gradient-to-b from-emerald-500/5 to-transparent",
+    title: "Stack Connect",
+    description: "Linking frontends with complex APIs smoothly.",
+    icon: <Database className="w-4 h-4 text-emerald-400" />,
+    className: "md:col-span-1 md:row-span-2 bg-gradient-to-b from-emerald-500/[0.02] to-transparent",
     delay: 0.4,
   },
   {
-    title: "Mobile First",
-    description: "Ensuring perfect rendering across all devices.",
-    icon: <Smartphone className="w-5 h-5 text-rose-400" />,
+    title: "Responsive Logic",
+    description: "Ensuring deep logic scaling across all devices.",
+    icon: <Smartphone className="w-4 h-4 text-rose-400" />,
     className: "md:col-span-1 md:row-span-1",
     delay: 0.5,
   },
   {
-    title: "Custom Design Systems",
-    description: "Creating scalable, reusable component libraries tailored to your brand identity.",
-    icon: <LayoutTemplate className="w-5 h-5 text-purple-400" />,
+    title: "System Design",
+    description: "Creating physical, reusable component libraries tailored to deep brand logic.",
+    icon: <LayoutTemplate className="w-4 h-4 text-purple-400" />,
     className: "md:col-span-2 md:row-span-1",
     delay: 0.6,
   },
 ];
 
-// Interactive Bento Box Card
+// Asymmetrical Hardware Module Card
 function ServiceCard({ service }: { service: typeof services[0] }) {
   const ref = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -64,87 +65,92 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
   };
 
   const gradientBorder = useMotionTemplate`radial-gradient(
-    500px circle at ${mouseX}px ${mouseY}px,
-    rgba(255, 255, 255, 0.2),
+    800px circle at ${mouseX}px ${mouseY}px,
+    rgba(255, 255, 255, 0.08),
+    transparent 80%
+  )`;
+
+  const innerGlow = useMotionTemplate`radial-gradient(
+    400px circle at ${mouseX}px ${mouseY}px,
+    rgba(255, 255, 255, 0.02),
     transparent 80%
   )`;
 
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      initial={{ opacity: 0, scale: 0.95, y: 20, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 1, delay: service.delay, ease: [0.16, 1, 0.3, 1] }}
+    <PhysicalReveal
+      delay={service.delay}
+      direction="up"
+      amount={40}
       className={cn(
-        "group relative overflow-hidden rounded-3xl p-[1px] flex flex-col gap-4 backdrop-blur-sm transition-all duration-500",
+        "group relative overflow-hidden rounded-[2rem] p-[1px] flex flex-col gap-4 backdrop-blur-2xl transition-all duration-[1000ms] ease-out h-full",
         service.className
       )}
     >
-      {/* Dynamic Hover Border (Mouse Gradient) */}
+      <div ref={ref} onMouseMove={handleMouseMove} className="w-full h-full flex flex-col">
+      {/* Light Scan Edge Effect (Outer Border) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms] ease-out"
         style={{ background: gradientBorder }}
       />
 
-      {/* Static Base Border */}
-      <div className="absolute inset-0 rounded-3xl border border-white/5 pointer-events-none group-hover:border-white/10 transition-colors duration-500" />
+      {/* Static Subdued Border */}
+      <div className="absolute inset-0 rounded-[2rem] border border-white/[0.02] pointer-events-none group-hover:border-white/[0.05] transition-colors duration-[1000ms] ease-out" />
 
-      {/* Card Internal Content Wrapper */}
-      <div className="relative w-full h-full bg-[#050505] rounded-[23px] p-8 flex flex-col gap-6 z-10 overflow-hidden">
+      {/* Internal Hardware Module Wrapper */}
+      <div className="relative w-full h-full bg-[#010101] rounded-[calc(2rem-1px)] p-10 md:p-12 flex flex-col gap-8 z-10 overflow-hidden shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
 
-        {/* Internal subtle glow on hover */}
-        <div className="absolute inset-0 bg-white/[0.015] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none mix-blend-screen" />
+        {/* Deep Internal Light Glow Tracking Mouse */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms] mix-blend-screen"
+          style={{ background: innerGlow }}
+        />
 
-        <div className="p-4 bg-zinc-900/50 rounded-2xl w-fit border border-white/5 shadow-inner backdrop-blur-md">
+        {/* Very subtle noise texture internally */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
+
+        <div className="p-5 bg-white/[0.015] rounded-2xl w-fit border border-white/[0.02] shadow-[0_0_30px_rgba(255,255,255,0.01)] backdrop-blur-3xl transition-transform duration-[1000ms] group-hover:scale-105">
           {service.icon}
         </div>
 
-        <div className="mt-auto space-y-3 relative z-20">
-          <h4 className="text-xl md:text-2xl font-semibold text-zinc-100 font-[family-name:var(--font-space-grotesk)] tracking-tight">
+        <div className="mt-auto space-y-4 relative z-20">
+          <h4 className="text-2xl md:text-3xl font-bold text-zinc-100 font-[family-name:var(--font-space-grotesk)] tracking-tight">
             {service.title}
           </h4>
-          <p className="text-sm text-zinc-400 leading-relaxed font-light font-[family-name:var(--font-inter)] max-w-[90%]">
+          <p className="text-sm md:text-base text-zinc-500 leading-relaxed font-light font-[family-name:var(--font-inter)] max-w-[95%] tracking-wide">
             {service.description}
           </p>
         </div>
       </div>
-    </motion.div>
+      </div>
+    </PhysicalReveal>
   );
 }
 
 export default function ServicesSection() {
   return (
-    <section className="relative min-h-screen py-32 flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-[#030303]">
+    <section className="relative min-h-screen py-40 flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-transparent border-t border-white/[0.02]">
 
-      {/* Subtle Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none opacity-50" />
+      {/* Deep Obsidian Grid Background */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none opacity-20 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
-      <div className="w-full max-w-7xl z-10 flex flex-col gap-24">
+      <div className="w-full max-w-[85rem] z-10 flex flex-col gap-32">
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center space-y-8 max-w-3xl mx-auto"
-        >
-          <h2 className="text-xs font-medium tracking-[0.2em] text-zinc-500 uppercase">
-            {"" /* Core Services */}
+        {/* Majestic Header */}
+        <PhysicalReveal className="text-center space-y-10 max-w-4xl mx-auto" direction="up" amount={50}>
+          <h2 className="text-[10px] font-bold tracking-[0.4em] text-zinc-600 uppercase">
+            {"" /* Engine Modules */}
           </h2>
-          <h3 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.1]">
-            Engineering digital <br />
-            <span className="italic text-zinc-500 font-light">excellence.</span>
+          <h3 className="text-6xl md:text-7xl lg:text-[6rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
+            Hardware <br />
+            <span className="italic text-zinc-500 font-light">Ecosystem.</span>
           </h3>
-          <p className="text-lg text-zinc-400 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-2xl mx-auto">
-            A comprehensive suite of frontend development services designed to elevate your brand&apos;s digital presence. Built for performance and aesthetics.
+          <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-2xl mx-auto tracking-wide">
+            A comprehensive suite of system modules designed to elevate your brand&apos;s digital infrastructure. Engineered for scale, speed, and absolute calm.
           </p>
-        </motion.div>
+        </PhysicalReveal>
 
-        {/* Bento Box Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[minmax(220px,auto)] gap-6 lg:gap-8">
+        {/* Engine Modules (Bento Box Grid) */}
+        <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[minmax(300px,auto)] gap-8 lg:gap-10">
           {services.map((service, index) => (
             <ServiceCard key={index} service={service} />
           ))}

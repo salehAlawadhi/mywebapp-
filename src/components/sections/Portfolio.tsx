@@ -4,116 +4,133 @@ import { motion, useMotionTemplate, useMotionValue, useScroll, useSpring, useTra
 import { useRef, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import PhysicalReveal from "@/components/ui/PhysicalReveal";
 
 const projects = [
   {
     title: "Lumina Engine",
-    category: "Web Application",
+    category: "System Architecture",
     image: "bg-gradient-to-tr from-zinc-800 to-zinc-950",
-    color: "from-blue-500/20 to-transparent",
+    color: "from-cyan-500/30 to-transparent",
+    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"
   },
   {
     title: "Aura OS Interface",
-    category: "UI/UX Design",
-    image: "bg-gradient-to-br from-zinc-900 to-black",
-    color: "from-purple-500/20 to-transparent",
+    category: "Visual Identity",
+    image: "bg-gradient-to-br from-zinc-900 to-[#010101]",
+    color: "from-blue-500/30 to-transparent",
+    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"
   },
   {
-    title: "Quantum Dashboard",
-    category: "Data Visualization",
+    title: "Quantum Nodes",
+    category: "Data Topology",
     image: "bg-gradient-to-bl from-zinc-800 to-zinc-900",
-    color: "from-emerald-500/20 to-transparent",
+    color: "from-indigo-500/30 to-transparent",
+    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:30px_30px]"
   },
 ];
 
 function PortfolioCard({ project, index, yTransform }: { project: typeof projects[0], index: number, yTransform: any }) {
   const ref = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+
+  // High-lag tracking for the premium "Lens Physics"
+  const rawMouseX = useMotionValue(0);
+  const rawMouseY = useMotionValue(0);
+  const mouseX = useSpring(rawMouseX, { stiffness: 100, damping: 30, mass: 1 });
+  const mouseY = useSpring(rawMouseY, { stiffness: 100, damping: 30, mass: 1 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const { left, top } = ref.current.getBoundingClientRect();
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
+    rawMouseX.set(e.clientX - left);
+    rawMouseY.set(e.clientY - top);
   };
 
+  // The actual "Reveal Lens" mask - made softer and slightly wider for a more organic, exploratory feel
   const maskImage = useMotionTemplate`radial-gradient(
-    300px circle at ${mouseX}px ${mouseY}px,
-    black 20%,
-    transparent 100%
+    400px circle at ${mouseX}px ${mouseY}px,
+    black 25%,
+    transparent 90%
   )`;
 
-  const borderMaskImage = useMotionTemplate`radial-gradient(
-    400px circle at ${mouseX}px ${mouseY}px,
-    black 10%,
-    transparent 100%
+  // The subtle edge glow around the lens - reduced intensity further
+  const edgeGlow = useMotionTemplate`radial-gradient(
+    450px circle at ${mouseX}px ${mouseY}px,
+    rgba(0, 200, 255, 0.08) 30%,
+    transparent 90%
   )`;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1.2, delay: index * 0.2, ease: [0.16, 1, 0.3, 1] }}
+    <PhysicalReveal
+      direction="none"
+      delay={index * 0.25}
       className="group flex flex-col gap-8 w-[85vw] md:w-[60vw] lg:w-[45vw]"
     >
-      {/* Visual Container with Lens Effect */}
+      {/* Visual Container with Reveal System */}
       <div
         ref={ref}
         onMouseMove={handleMouseMove}
         className={cn(
-          "relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-black",
-          project.image
+          "relative w-full aspect-[4/3] rounded-[2rem] overflow-hidden bg-[#020202] border border-white/[0.05] cursor-none",
         )}
       >
-        {/* Dynamic Glow Border (Lens Effect) */}
+        {/* Base Layer: Desaturated Wireframe / Ghost State */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center bg-black">
+          <div className={cn("absolute inset-0 opacity-40 mix-blend-screen", project.wireframe)} />
+          <div className="absolute w-32 h-32 border border-white/10 rounded-full flex items-center justify-center">
+             <div className="w-16 h-16 border border-white/5 rounded-full" />
+          </div>
+          <span className="absolute bottom-6 left-6 text-[10px] uppercase tracking-[0.4em] text-zinc-700 font-bold">
+            Unrevealed Topology
+          </span>
+        </div>
+
+        {/* Dynamic Lens Edge Glow */}
         <motion.div
-          className="absolute inset-0 z-20 pointer-events-none rounded-3xl border border-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-plus-lighter"
-          style={{ maskImage: borderMaskImage, WebkitMaskImage: borderMaskImage }}
+          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms] mix-blend-screen"
+          style={{ background: edgeGlow }}
         />
 
-        {/* Revealed Detailed Texture underneath (The Lens) */}
+        {/* Revealed Detailed Full-Color Layer underneath (The Lens) */}
         <motion.div
-          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms]"
           style={{ maskImage, WebkitMaskImage: maskImage }}
         >
-          {/* Subtle Grid / Texture that gets revealed */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent mix-blend-overlay" />
+          {/* The full vibrant image/gradient */}
+          <div className={cn("absolute inset-0", project.image)} />
+          <div className={cn("absolute inset-0 bg-gradient-to-br opacity-80 mix-blend-overlay", project.color)} />
+
+          {/* Parallax Inner Details inside the revealed lens */}
+          <motion.div
+            style={{ y: yTransform }}
+            className="absolute inset-[-15%] w-[130%] h-[130%] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-50"
+          />
+
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+             <div className="bg-white/10 backdrop-blur-2xl rounded-full px-8 py-5 border border-white/20 text-white flex items-center gap-4 shadow-[0_0_50px_rgba(255,255,255,0.1)]">
+                <span className="font-bold tracking-[0.2em] text-xs uppercase">Scan Object</span>
+                <ArrowUpRight className="w-4 h-4" />
+             </div>
+          </div>
         </motion.div>
-
-        {/* Parallax Inner Pattern */}
-        <motion.div
-          style={{ y: yTransform }}
-          className="absolute inset-[-15%] w-[130%] h-[130%] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-50"
-        />
-
-        {/* Floating Explore Button */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 ease-[0.16,1,0.3,1] z-30">
-           <div className="bg-black/60 backdrop-blur-xl rounded-full px-6 py-4 border border-white/20 text-white flex items-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-              <span className="font-semibold tracking-wide text-sm uppercase">Explore</span>
-              <ArrowUpRight className="w-4 h-4" />
-           </div>
-        </div>
       </div>
 
       {/* Project Meta Info */}
-      <div className="flex flex-col gap-4 px-2">
+      <div className="flex flex-col gap-5 px-2">
         <div className="flex items-center justify-between">
-          <h4 className="text-3xl md:text-4xl font-bold text-zinc-100 font-[family-name:var(--font-space-grotesk)] group-hover:text-white transition-colors tracking-tight">
+          <h4 className="text-3xl md:text-5xl font-bold text-zinc-100 font-[family-name:var(--font-space-grotesk)] group-hover:text-white transition-colors duration-1000 tracking-tight">
             {project.title}
           </h4>
-          <span className="text-sm text-zinc-600 font-medium tracking-[0.2em]">0{index + 1}</span>
+          <span className="text-xs text-zinc-600 font-bold tracking-[0.3em] uppercase">0{index + 1}</span>
         </div>
-        <p className="text-zinc-500 tracking-[0.2em] text-xs uppercase font-medium">
+        <p className="text-zinc-500 tracking-[0.3em] text-[10px] uppercase font-bold">
           {project.category}
         </p>
       </div>
 
       {/* Luxury Divider */}
-      <div className="w-full h-[1px] bg-gradient-to-r from-white/10 via-white/5 to-transparent" />
-    </motion.div>
+      <div className="w-full h-[1px] bg-gradient-to-r from-white/[0.08] via-white/[0.02] to-transparent" />
+    </PhysicalReveal>
   );
 }
 
@@ -124,48 +141,43 @@ export default function PortfolioSection() {
     offset: ["start end", "end start"],
   });
 
-  // Smoother Parallax using Springs
-  const smoothProgress = useSpring(scrollYProgress, { damping: 25, stiffness: 100 });
+  // Physical Parallax using heavy Springs
+  const smoothProgress = useSpring(scrollYProgress, { damping: 40, stiffness: 80, mass: 1.5 });
 
-  // Extend horizontal scroll distance significantly
-  const xTransform = useTransform(smoothProgress, [0, 1], ["5%", "-60%"]);
-  const yTransform = useTransform(smoothProgress, [0, 1], ["15%", "-15%"]);
+  // Deep horizontal scroll distance
+  const xTransform = useTransform(smoothProgress, [0, 1], ["5%", "-65%"]);
+  // Vertical Parallax for the lens interiors
+  const yTransform = useTransform(smoothProgress, [0, 1], ["20%", "-20%"]);
 
   return (
-    <section ref={containerRef} className="relative min-h-[250vh] py-32 flex flex-col justify-start items-center overflow-hidden bg-[#010101]">
+    <section ref={containerRef} className="relative min-h-[300vh] py-40 flex flex-col justify-start items-center overflow-hidden bg-transparent">
 
       {/* Sticky Container for Horizontal Scroll */}
       <div className="w-full max-w-[100vw] px-4 md:px-8 z-10 sticky top-[15vh]">
 
         {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8"
-        >
-          <div className="space-y-6">
-            <h2 className="text-sm font-medium tracking-widest text-zinc-600 uppercase">
-              {"" /* Selected Works */}
+        <PhysicalReveal direction="up" amount={50} className="max-w-[85rem] mx-auto flex flex-col md:flex-row md:items-end justify-between mb-32 gap-10">
+          <div className="space-y-8">
+            <h2 className="text-[10px] font-bold tracking-[0.4em] text-zinc-600 uppercase">
+              {"" /* Topology Archive */}
             </h2>
-            <h3 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.1]">
-              Pixels crafted with <br className="hidden md:block"/>
-              <span className="italic text-zinc-500 font-light">precision.</span>
+            <h3 className="text-6xl md:text-7xl lg:text-[6rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
+              Reveal <br className="hidden md:block"/>
+              <span className="italic text-zinc-500 font-light">Structure.</span>
             </h3>
           </div>
 
-          <button className="text-zinc-500 hover:text-white transition-colors flex items-center gap-3 group border-b border-white/10 pb-2">
-            <span className="text-xs uppercase tracking-[0.2em] font-medium">View Archive</span>
-            <ArrowUpRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          <button className="text-zinc-600 hover:text-white transition-colors duration-1000 flex items-center gap-4 group border-b border-white/5 pb-3">
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Access Database</span>
+            <ArrowUpRight className="w-4 h-4 transition-transform duration-1000 ease-[0.16,1,0.3,1] group-hover:translate-x-1 group-hover:-translate-y-1" />
           </button>
-        </motion.div>
+        </PhysicalReveal>
 
         {/* Horizontal Scrolling Wrapper */}
         <div className="w-full relative">
           <motion.div
             style={{ x: xTransform }}
-            className="flex gap-12 md:gap-24 w-max pl-4 md:pl-[calc(50vw-40vw)] lg:pl-[calc(50vw-35vw)]" // Offset starting position nicely
+            className="flex gap-16 md:gap-32 w-max pl-4 md:pl-[calc(50vw-40vw)] lg:pl-[calc(50vw-35vw)]"
           >
             {projects.map((project, index) => (
               <PortfolioCard key={index} project={project} index={index} yTransform={yTransform} />

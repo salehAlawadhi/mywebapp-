@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import NeuralBackground from "@/components/ui/NeuralBackground";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -15,12 +17,12 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "HELYRO OS | Creative Developer",
-  description: "Portfolio of a Creative Frontend Developer specializing in cinematic and futuristic web experiences.",
+  title: "HELYRO OS | Premium Digital System",
+  description: "Luxury frontend engineering, living system design, and physical motion architectures.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030303",
+  themeColor: "#010101",
 };
 
 export default function RootLayout({
@@ -31,9 +33,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" style={{ colorScheme: 'dark' }}>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[#030303] text-zinc-100 min-h-screen selection:bg-white/20`}
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[#010101] text-zinc-100 min-h-screen selection:bg-white/10`}
       >
-        <div className="fixed inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900/40 via-[#030303] to-[#030303] pointer-events-none" />
+        <NeuralBackground />
+        <CustomCursor />
         {children}
       </body>
     </html>
