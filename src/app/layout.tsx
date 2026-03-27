@@ -17,8 +17,12 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "HELYRO OS | Premium Digital System",
+  title: "HELYRO OS | Software Engineering Excellence",
   description: "Luxury frontend engineering, living system design, and physical motion architectures.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export const viewport: Viewport = {

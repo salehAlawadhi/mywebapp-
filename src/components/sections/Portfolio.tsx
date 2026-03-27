@@ -8,39 +8,45 @@ import PhysicalReveal from "@/components/ui/PhysicalReveal";
 
 const projects = [
   {
-    title: "AI Dashboard",
-    category: "DATA / SAAS",
-    image: "bg-gradient-to-tr from-zinc-800 to-zinc-950",
+    title: "Through History",
+    category: "WEB EXPERIENCE",
+    image: "bg-[url('/n8n.jpeg')] bg-cover bg-center", // Will use next/image ideally, or custom rendering if needed. Wait, we have physical cards, let's keep the styling compatible.
+    imgSrc: "/n8n.jpeg",
+    link: "https://throughhistory.org/en",
     color: "from-cyan-500/30 to-transparent",
     wireframe: "bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]",
-    code: "const chain = new LangChain({ llm: model, memory });\nawait chain.call({ input: 'Analyze dataset' });",
+    code: "Through History | Cinematic Storytelling",
     scanlineDelay: "delay-1000", // Standard delay for discovery
     hasScanline: true,
   },
   {
-    title: "B2B Platform",
-    category: "WEB APP",
-    image: "bg-gradient-to-br from-zinc-900 to-[#010101]",
+    title: "NewWays",
+    category: "B2B PLATFORM",
+    image: "bg-[url('/app-android.png')] bg-cover bg-center",
+    imgSrc: "/app-android.png",
+    link: "https://newways.sa/ar",
     color: "from-blue-500/30 to-transparent",
     wireframe: "bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]",
-    code: "export async function GET(req: Request) {\n  const session = await auth();\n  return Response.json(data);\n}",
+    code: "NewWays SA | Enterprise Solutions",
     scanlineDelay: "delay-0",
     hasScanline: false, // Variance: No scanline, just clean reveal
   },
   {
-    title: "Data Pipeline",
-    category: "AUTOMATION",
-    image: "bg-gradient-to-bl from-zinc-800 to-zinc-900",
+    title: "Mobile Architecture",
+    category: "ANDROID / IOS",
+    image: "bg-[url('/android-app-ui.png')] bg-cover bg-center",
+    imgSrc: "/android-app-ui.png",
+    link: "#",
     color: "from-indigo-500/30 to-transparent",
     wireframe: "bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:30px_30px]",
-    code: "with DAG('enterprise_etl', schedule='@daily') as dag:\n  extract = PythonOperator(task_id='extract')",
+    code: "Native Performance | Fluid UI",
     scanlineDelay: "delay-[2000ms]", // Variance: Extremely slow discovery
     hasScanline: true,
   },
 ];
 
 function PortfolioCard({ project, index, yTransform }: { project: typeof projects[0], index: number, yTransform: any }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
 
   // High-lag tracking for the premium "Lens Physics"
   const rawMouseX = useMotionValue(0);
@@ -48,7 +54,7 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
   const mouseX = useSpring(rawMouseX, { stiffness: 100, damping: 30, mass: 1 });
   const mouseY = useSpring(rawMouseY, { stiffness: 100, damping: 30, mass: 1 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!ref.current) return;
     const { left, top } = ref.current.getBoundingClientRect();
     rawMouseX.set(e.clientX - left);
@@ -76,11 +82,14 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
       className="group flex flex-col gap-8 w-[85vw] md:w-[60vw] lg:w-[45vw]"
     >
       {/* Visual Container with Reveal System */}
-      <div
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
         ref={ref}
         onMouseMove={handleMouseMove}
         className={cn(
-          "relative w-full aspect-[4/3] rounded-[2rem] overflow-hidden bg-[#020202] border border-white/[0.05] cursor-none",
+          "relative block w-full aspect-[4/3] rounded-[2rem] overflow-hidden bg-[#020202] border border-white/[0.05] cursor-none",
         )}
       >
         {/* Base Layer: Desaturated Wireframe / Ghost State */}
@@ -133,12 +142,12 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
 
           <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
              <div className="bg-white/10 backdrop-blur-2xl rounded-full px-8 py-5 border border-white/20 text-white flex items-center gap-4 shadow-[0_0_50px_rgba(255,255,255,0.1)]">
-                <span className="label-text">Scan Object</span>
+                <span className="label-text">View Application</span>
                 <ArrowUpRight className="w-4 h-4" />
              </div>
           </div>
         </motion.div>
-      </div>
+      </a>
 
       {/* Project Meta Info */}
       <div className="flex flex-col gap-5 px-2">

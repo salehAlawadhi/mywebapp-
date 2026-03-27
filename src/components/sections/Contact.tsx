@@ -156,9 +156,8 @@ export default function ContactSection() {
       <div className="w-full max-w-[85rem] mt-48 pt-12 border-t border-color-glass-border flex flex-col md:flex-row items-center justify-between gap-8 text-color-text-sub label-text z-10">
         <p className="tracking-widest">© {new Date().getFullYear()} HELYRO OS. ALL RIGHTS RESERVED.</p>
         <div className="flex gap-12">
-          <a href="#" className="hover:text-color-text-main transition-colors duration-[1000ms]">Twitter / X</a>
-          <a href="#" className="hover:text-color-text-main transition-colors duration-[1000ms]">LinkedIn</a>
-          <a href="#" className="hover:text-color-text-main transition-colors duration-[1000ms]">GitHub</a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-color-text-main transition-colors duration-[1000ms]">GitHub</a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-color-text-main transition-colors duration-[1000ms]">LinkedIn</a>
         </div>
       </div>
     </section>

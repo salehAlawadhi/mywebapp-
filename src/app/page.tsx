@@ -10,6 +10,7 @@ import ServicesSection from "@/components/sections/Services";
 import DnaChamber from "@/components/sections/DnaChamber";
 import Portfolio from "@/components/sections/Portfolio";
 import Contact from "@/components/sections/Contact";
+import DynamicIslandDock from "@/components/ui/DynamicDock";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -57,6 +58,8 @@ export default function Home() {
       <DnaChamber />
       <Portfolio />
       <Contact />
+
+      <DynamicIslandDock />
 
     </div>
   );
