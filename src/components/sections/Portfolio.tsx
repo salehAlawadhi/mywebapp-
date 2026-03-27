@@ -8,25 +8,34 @@ import PhysicalReveal from "@/components/ui/PhysicalReveal";
 
 const projects = [
   {
-    title: "Lumina Engine",
-    category: "System Architecture",
+    title: "AI Dashboard",
+    category: "DATA / SAAS",
     image: "bg-gradient-to-tr from-zinc-800 to-zinc-950",
     color: "from-cyan-500/30 to-transparent",
-    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"
+    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]",
+    code: "const chain = new LangChain({ llm: model, memory });\nawait chain.call({ input: 'Analyze dataset' });",
+    scanlineDelay: "delay-1000", // Standard delay for discovery
+    hasScanline: true,
   },
   {
-    title: "Aura OS Interface",
-    category: "Visual Identity",
+    title: "B2B Platform",
+    category: "WEB APP",
     image: "bg-gradient-to-br from-zinc-900 to-[#010101]",
     color: "from-blue-500/30 to-transparent",
-    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"
+    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]",
+    code: "export async function GET(req: Request) {\n  const session = await auth();\n  return Response.json(data);\n}",
+    scanlineDelay: "delay-0",
+    hasScanline: false, // Variance: No scanline, just clean reveal
   },
   {
-    title: "Quantum Nodes",
-    category: "Data Topology",
+    title: "Data Pipeline",
+    category: "AUTOMATION",
     image: "bg-gradient-to-bl from-zinc-800 to-zinc-900",
     color: "from-indigo-500/30 to-transparent",
-    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:30px_30px]"
+    wireframe: "bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:30px_30px]",
+    code: "with DAG('enterprise_etl', schedule='@daily') as dag:\n  extract = PythonOperator(task_id='extract')",
+    scanlineDelay: "delay-[2000ms]", // Variance: Extremely slow discovery
+    hasScanline: true,
   },
 ];
 
@@ -96,9 +105,25 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
           className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms]"
           style={{ maskImage, WebkitMaskImage: maskImage }}
         >
+          {/* Scanline Effect (Hover Only) - Reduced Intensity & Added Variance */}
+          {project.hasScanline && (
+            <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
+               <div className={cn("w-full h-[1px] bg-color-cyan-razor opacity-40 shadow-[0_0_8px_rgba(0,229,255,0.2)] absolute top-[-10px] left-0 transform -translate-y-full group-hover:translate-y-[800px] transition-transform duration-[4s] ease-linear", project.scanlineDelay)} />
+            </div>
+          )}
+
           {/* The full vibrant image/gradient */}
           <div className={cn("absolute inset-0", project.image)} />
           <div className={cn("absolute inset-0 bg-gradient-to-br opacity-80 mix-blend-overlay", project.color)} />
+
+          {/* Secret Code that appears during scanline / hover - Very subtle discovery */}
+          {project.hasScanline && (
+            <div className={cn("absolute inset-0 z-10 p-10 flex flex-col justify-start opacity-0 group-hover:opacity-100 transition-opacity duration-[2s]", project.scanlineDelay)}>
+               <pre className="text-color-text-ghost font-mono text-[10px] leading-relaxed opacity-30 mix-blend-plus-lighter">
+                 {project.code}
+               </pre>
+            </div>
+          )}
 
           {/* Parallax Inner Details inside the revealed lens */}
           <motion.div
@@ -106,9 +131,9 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
             className="absolute inset-[-15%] w-[130%] h-[130%] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-50"
           />
 
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
              <div className="bg-white/10 backdrop-blur-2xl rounded-full px-8 py-5 border border-white/20 text-white flex items-center gap-4 shadow-[0_0_50px_rgba(255,255,255,0.1)]">
-                <span className="font-bold tracking-[0.2em] text-xs uppercase">Scan Object</span>
+                <span className="label-text">Scan Object</span>
                 <ArrowUpRight className="w-4 h-4" />
              </div>
           </div>

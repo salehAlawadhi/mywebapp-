@@ -1,88 +1,81 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import gsap from "gsap";
 
-export default function Preloader() {
-  const [isLoading, setIsLoading] = useState(true);
+// A lightweight pure CSS/GSAP alternative to SplitText since we don't have the paid club plugin
+function SplitTextChars({ text, className }: { text: string, className?: string }) {
+  return (
+    <span className={className}>
+      {text.split("").map((char, i) => (
+        <span key={i} className="inline-block char opacity-0 translate-y-4">
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+export default function Preloader({ onComplete }: { onComplete: () => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Lock scroll while preloading
-    document.body.style.overflow = "hidden";
+    if (!containerRef.current || !progressBarRef.current) return;
 
-    // Extended deep arrival duration (4.8s total)
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      // Restore scroll
-      document.body.style.overflow = "";
-    }, 4800);
+    // We use a GSAP timeline for precise cinematic timing
+    // Total duration ~ 2.4s
+    const tl = gsap.timeline({
+      onComplete: () => {
+        onComplete();
+      }
+    });
 
-    return () => {
-      clearTimeout(timer);
-      document.body.style.overflow = "";
-    };
-  }, []);
+    // 1. Text reveals char by char (power3.out for soft but definite arrival)
+    tl.to(containerRef.current.querySelectorAll(".char"), {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.05,
+      ease: "power3.out",
+    });
+
+    // 2. Progress bar fills up alongside text completion
+    tl.to(progressBarRef.current, {
+      scaleX: 1,
+      duration: 1.2,
+      ease: "expo.inOut",
+    }, "-=0.4"); // Overlap slightly with text reveal
+
+    // 3. Fade out everything gracefully
+    tl.to(containerRef.current, {
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.inOut",
+      delay: 0.2, // Hold at 100% for a tiny fraction of a second
+    });
+
+  }, [onComplete]);
 
   return (
-    <AnimatePresence>
-      {isLoading && (
-        <motion.div
-          key="preloader"
-          initial={{ opacity: 1 }}
-          exit={{
-            opacity: 0,
-            filter: "blur(20px)",
-            transition: { duration: 1.8, ease: [0.16, 1, 0.3, 1] }
-          }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#010101]"
-        >
-          <div className="relative flex flex-col items-center justify-center w-full h-full">
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[9999] bg-color-void flex flex-col items-center justify-center gap-6"
+    >
+      <div className="font-bold text-3xl md:text-5xl tracking-[0.4em] uppercase font-[family-name:var(--font-syne)] text-color-text-main flex items-center justify-center">
+        <SplitTextChars text="HEL" />
+        {/* Strict Rule: Y must always be Cyan */}
+        <SplitTextChars text="Y" className="text-color-cyan-razor ml-[0.1em]" />
+        <SplitTextChars text="RO" />
+      </div>
 
-            {/* Extremely Deep Majestic Background Aura */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.1 }}
-              animate={{ opacity: 0.3, scale: 1 }}
-              transition={{ duration: 4.5, ease: "easeOut" }}
-              className="absolute w-[600px] h-[600px] bg-indigo-500/5 rounded-[100%] blur-[150px] pointer-events-none mix-blend-screen"
-            />
-
-            {/* The Brand Name: Forming from the depth */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, filter: "blur(30px)", y: 15 }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)", y: 0 }}
-              transition={{
-                duration: 3.5,
-                delay: 0.5,
-                ease: [0.16, 1, 0.3, 1] // Extremely slow, confident entry
-              }}
-              exit={{
-                opacity: 0,
-                scale: 1.1,
-                filter: "blur(15px)",
-                transition: { duration: 1.2, ease: "easeInOut" }
-              }}
-              className="relative z-10 flex items-center gap-3 md:gap-5 select-none"
-            >
-              <span className="text-3xl md:text-5xl font-bold tracking-[0.4em] text-zinc-100 font-[family-name:var(--font-space-grotesk)] ml-[0.4em]">
-                HELYRO
-              </span>
-              <span className="text-3xl md:text-5xl font-light tracking-[0.1em] text-zinc-600 font-[family-name:var(--font-inter)]">
-                OS
-              </span>
-            </motion.div>
-
-            {/* Subtle Progress / System Boot Line */}
-            <motion.div
-              initial={{ opacity: 0, scaleY: 0 }}
-              animate={{ opacity: 1, scaleY: 1 }}
-              transition={{ delay: 2.5, duration: 2, ease: [0.16, 1, 0.3, 1] }}
-              exit={{ opacity: 0, transition: { duration: 0.8 } }}
-              style={{ transformOrigin: "top" }}
-              className="absolute top-[60%] w-[1px] h-[120px] bg-gradient-to-b from-white/20 via-white/5 to-transparent"
-            />
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      {/* Subtle Progress Bar */}
+      <div className="w-48 h-[1px] bg-white/5 relative overflow-hidden rounded-full">
+        <div
+          ref={progressBarRef}
+          className="absolute inset-y-0 left-0 bg-color-cyan-razor origin-left w-full scale-x-0 shadow-[0_0_10px_rgba(0,229,255,0.5)]"
+        />
+      </div>
+    </div>
   );
 }

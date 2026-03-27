@@ -1,30 +1,32 @@
 "use client";
 
-import HeroSection from "@/components/sections/Hero";
-import AboutSection from "@/components/sections/About";
-import ServicesSection from "@/components/sections/Services";
-import DnaChamberSection from "@/components/sections/DnaChamber";
-import PortfolioSection from "@/components/sections/Portfolio";
-import ContactSection from "@/components/sections/Contact";
-import Preloader from "@/components/ui/Preloader";
 import { useEffect, useState } from "react";
 import Lenis from "lenis";
 
+import Preloader from "@/components/ui/Preloader";
+import HeroSection from "@/components/sections/Hero";
+import AboutSection from "@/components/sections/About";
+import ServicesSection from "@/components/sections/Services";
+import DnaChamber from "@/components/sections/DnaChamber";
+import Portfolio from "@/components/sections/Portfolio";
+import Contact from "@/components/sections/Contact";
+
 export default function Home() {
-  const [isPreloaderFinished, setIsPreloaderFinished] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [preloaderComplete, setPreloaderComplete] = useState(false);
 
   useEffect(() => {
-    // Only initialize Lenis after deeper preloader finishes
-    const timer = setTimeout(() => {
-      setIsPreloaderFinished(true);
+    setMounted(true);
 
+    // Initialize Lenis for premium smooth scroll (disabled on reduced motion)
+    if (typeof window !== "undefined" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const lenis = new Lenis({
-        duration: 2.5, // Even slower, highly deliberate scroll physics
+        duration: 1.5,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: "vertical",
         gestureOrientation: "vertical",
         smoothWheel: true,
-        wheelMultiplier: 0.6, // Heavy wheel
+        wheelMultiplier: 0.8,
         touchMultiplier: 2,
       });
 
@@ -38,20 +40,24 @@ export default function Home() {
       return () => {
         lenis.destroy();
       };
-    }, 4800); // 4.8s animation
-
-    return () => clearTimeout(timer);
+    }
   }, []);
 
+  if (!mounted) return null;
+
   return (
-    <main className="w-full flex flex-col items-center">
-      <Preloader />
+    <div className="flex flex-col items-center justify-start min-h-screen w-full">
+      {!preloaderComplete && <Preloader onComplete={() => setPreloaderComplete(true)} />}
+
+      {/* The Hero Section is mounted immediately so its particles can form behind the preloader */}
       <HeroSection />
+
       <AboutSection />
       <ServicesSection />
-      <DnaChamberSection />
-      <PortfolioSection />
-      <ContactSection />
-    </main>
+      <DnaChamber />
+      <Portfolio />
+      <Contact />
+
+    </div>
   );
 }

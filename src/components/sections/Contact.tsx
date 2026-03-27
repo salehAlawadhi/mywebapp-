@@ -1,141 +1,164 @@
 "use client";
 
-import { ArrowRight, Mail, MapPin } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Mail, MapPin, CheckCircle2 } from "lucide-react";
 import PhysicalReveal from "@/components/ui/PhysicalReveal";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ContactSection() {
-  return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-transparent py-40">
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-      {/* Decorative Deep Space Blur Background Element (Reduced intensity for minimal finish) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/[0.03] rounded-[100%] blur-[250px] pointer-events-none mix-blend-screen" />
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simulate a short network delay before showing the quiet closure
+    setTimeout(() => {
+      setIsSubmitted(true);
+    }, 600);
+  };
+
+  return (
+    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-color-void py-40">
+
+      {/* Decorative Deep Space Blur Background Element (Extremely restrained) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-color-deep-navy rounded-[100%] blur-[250px] pointer-events-none mix-blend-screen opacity-50" />
 
       <div className="w-full max-w-[85rem] z-10 flex flex-col lg:flex-row gap-24 lg:gap-40">
 
         {/* Left Side: Header & Contact Info */}
         <PhysicalReveal direction="left" amount={60} className="flex-1 space-y-20">
           <div className="space-y-10">
-            <h2 className="text-[10px] font-bold tracking-[0.4em] text-zinc-600 uppercase">
-              {"" /* Initiate Connection */}
+            <h2 className="label-text text-color-text-sub">
+              Initiate Connection
             </h2>
-            <h3 className="text-6xl md:text-7xl lg:text-[6.5rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
+            <h3 className="display-xl text-color-text-main">
               Let&apos;s build the <br />
-              <span className="italic text-zinc-500 font-light">future</span> together.
+              <span className="italic text-color-text-sub font-light">future</span> together.
             </h3>
-            <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-lg tracking-wide">
+            <p className="body-lg text-color-text-sub max-w-lg">
               Whether you have a specific project in mind or just want to explore possibilities, I&apos;m currently available for remote collaborations worldwide.
             </p>
           </div>
 
           <div className="space-y-10">
-            <div className="flex items-center gap-8 text-zinc-500 group cursor-none w-fit">
-              <div className="w-16 h-16 rounded-full border border-white/[0.03] bg-white/[0.01] flex items-center justify-center transition-all duration-[1000ms] group-hover:bg-white/[0.05] group-hover:border-white/[0.1] group-hover:scale-110">
-                <Mail className="w-5 h-5 transition-transform duration-[1000ms] group-hover:scale-110" />
+            <div className="flex items-center gap-8 text-color-text-sub group cursor-none w-fit">
+              <div className="w-16 h-16 rounded-full border border-color-glass-border bg-color-obsidian flex items-center justify-center transition-colors duration-[1000ms] group-hover:bg-color-deep-navy group-hover:border-white/[0.1]">
+                <Mail className="w-5 h-5 transition-transform duration-[1000ms]" />
               </div>
-              <span className="text-2xl font-light group-hover:text-white transition-colors duration-[1000ms] tracking-widest">hello@helyro.os</span>
+              <span className="text-xl font-light group-hover:text-color-text-main transition-colors duration-[1000ms] tracking-widest">hello@helyro.os</span>
             </div>
 
-            <div className="flex items-center gap-8 text-zinc-500 group cursor-none w-fit">
-              <div className="w-16 h-16 rounded-full border border-white/[0.03] bg-white/[0.01] flex items-center justify-center transition-all duration-[1000ms] group-hover:bg-white/[0.05] group-hover:border-white/[0.1] group-hover:scale-110">
-                <MapPin className="w-5 h-5 transition-transform duration-[1000ms] group-hover:scale-110" />
+            <div className="flex items-center gap-8 text-color-text-sub group cursor-none w-fit">
+              <div className="w-16 h-16 rounded-full border border-color-glass-border bg-color-obsidian flex items-center justify-center transition-colors duration-[1000ms] group-hover:bg-color-deep-navy group-hover:border-white/[0.1]">
+                <MapPin className="w-5 h-5 transition-transform duration-[1000ms]" />
               </div>
-              <span className="text-2xl font-light group-hover:text-white transition-colors duration-[1000ms] tracking-widest">Remote / Worldwide</span>
+              <span className="text-xl font-light group-hover:text-color-text-main transition-colors duration-[1000ms] tracking-widest">Remote / Worldwide</span>
             </div>
           </div>
         </PhysicalReveal>
 
-        {/* Right Side: Ultra Elegant Form */}
-        <PhysicalReveal direction="right" amount={60} delay={0.3} className="flex-1 w-full max-w-xl flex flex-col justify-center">
-          <form className="bg-transparent border border-white/[0.02] rounded-[3rem] p-12 md:p-16 space-y-12 shadow-2xl shadow-black relative overflow-hidden group">
+        {/* Right Side: Ultra Elegant Form or Success State */}
+        <PhysicalReveal direction="right" amount={60} delay={0.3} className="flex-1 w-full max-w-xl flex flex-col justify-center min-h-[500px]">
+          <div className="bg-transparent border border-color-glass-border rounded-[2rem] p-12 md:p-16 relative overflow-hidden group shadow-2xl h-full flex flex-col justify-center">
 
-            {/* Extremely subtle background glow inside form */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
-
-            <div className="space-y-14 relative z-10">
-              <div className="relative group/input">
-                <input
-                  type="text"
-                  id="name"
-                  required
-                  className="w-full bg-transparent border-b border-white/[0.05] pb-5 text-zinc-100 focus:outline-none focus:border-white/50 transition-colors duration-[1000ms] peer font-light text-xl tracking-wider"
-                  placeholder=" "
-                />
-                <label
-                  htmlFor="name"
-                  className="absolute left-0 top-0 text-zinc-600 font-light transition-all duration-[1000ms] peer-focus:-top-8 peer-focus:text-[10px] peer-focus:text-cyan-500/50 peer-focus:tracking-[0.4em] peer-focus:uppercase peer-valid:-top-8 peer-valid:text-[10px] peer-valid:text-zinc-500 peer-valid:tracking-[0.4em] peer-valid:uppercase cursor-text pointer-events-none"
+            <AnimatePresence mode="wait">
+              {!isSubmitted ? (
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 0, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, filter: "blur(10px)" }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  onSubmit={handleSubmit}
+                  className="space-y-12"
                 >
-                  What&apos;s your name?
-                </label>
-              </div>
+                  <div className="space-y-14 relative z-10">
+                    <div className="relative group/input">
+                      <input
+                        type="text"
+                        id="name"
+                        required
+                        className="w-full bg-transparent border-b border-color-glass-border pb-5 text-color-text-main focus:outline-none focus:border-color-text-sub transition-colors duration-[1000ms] peer font-light text-lg tracking-wider"
+                        placeholder=" "
+                      />
+                      <label
+                        htmlFor="name"
+                        className="absolute left-0 top-0 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-6 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
+                      >
+                        What&apos;s your name?
+                      </label>
+                    </div>
 
-              <div className="relative group/input pt-6">
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  className="w-full bg-transparent border-b border-white/[0.05] pb-5 text-zinc-100 focus:outline-none focus:border-white/50 transition-colors duration-[1000ms] peer font-light text-xl tracking-wider"
-                  placeholder=" "
-                />
-                <label
-                  htmlFor="email"
-                  className="absolute left-0 top-6 text-zinc-600 font-light transition-all duration-[1000ms] peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-cyan-500/50 peer-focus:tracking-[0.4em] peer-focus:uppercase peer-valid:-top-4 peer-valid:text-[10px] peer-valid:text-zinc-500 peer-valid:tracking-[0.4em] peer-valid:uppercase cursor-text pointer-events-none"
+                    <div className="relative group/input pt-6">
+                      <input
+                        type="email"
+                        id="email"
+                        required
+                        className="w-full bg-transparent border-b border-color-glass-border pb-5 text-color-text-main focus:outline-none focus:border-color-text-sub transition-colors duration-[1000ms] peer font-light text-lg tracking-wider"
+                        placeholder=" "
+                      />
+                      <label
+                        htmlFor="email"
+                        className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
+                      >
+                        Your email address
+                      </label>
+                    </div>
+
+                    <div className="relative group/input pt-6">
+                      <textarea
+                        id="message"
+                        required
+                        rows={3}
+                        className="w-full bg-transparent border-b border-color-glass-border pb-5 text-color-text-main focus:outline-none focus:border-color-text-sub transition-colors duration-[1000ms] peer resize-none font-light text-lg tracking-wider"
+                        placeholder=" "
+                      />
+                      <label
+                        htmlFor="message"
+                        className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
+                      >
+                        Tell me about your project...
+                      </label>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="group/btn relative w-full overflow-hidden bg-color-text-main text-color-obsidian px-10 py-5 rounded-full font-bold tracking-[0.2em] uppercase text-xs mt-16 transition-all duration-[1000ms] hover:bg-white flex items-center justify-center gap-4 hover:scale-[1.01] active:scale-[0.99]"
+                  >
+                    <span>Transmit Signal</span>
+                    <ArrowRight className="w-4 h-4 transition-transform duration-[1000ms] group-hover/btn:translate-x-2" />
+                  </button>
+
+                </motion.form>
+              ) : (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                  transition={{ duration: 1, ease: [0.19, 1, 0.22, 1], delay: 0.2 }}
+                  className="flex flex-col items-center justify-center text-center space-y-6 w-full py-10"
                 >
-                  Your email address
-                </label>
-              </div>
-
-              <div className="relative group/input pt-6">
-                <input
-                  type="text"
-                  id="service"
-                  required
-                  className="w-full bg-transparent border-b border-white/[0.05] pb-5 text-zinc-100 focus:outline-none focus:border-white/50 transition-colors duration-[1000ms] peer font-light text-xl tracking-wider"
-                  placeholder=" "
-                />
-                <label
-                  htmlFor="service"
-                  className="absolute left-0 top-6 text-zinc-600 font-light transition-all duration-[1000ms] peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-cyan-500/50 peer-focus:tracking-[0.4em] peer-focus:uppercase peer-valid:-top-4 peer-valid:text-[10px] peer-valid:text-zinc-500 peer-valid:tracking-[0.4em] peer-valid:uppercase cursor-text pointer-events-none"
-                >
-                  What are you looking for?
-                </label>
-              </div>
-
-              <div className="relative group/input pt-6">
-                <textarea
-                  id="message"
-                  required
-                  rows={3}
-                  className="w-full bg-transparent border-b border-white/[0.05] pb-5 text-zinc-100 focus:outline-none focus:border-white/50 transition-colors duration-[1000ms] peer resize-none font-light text-xl tracking-wider"
-                  placeholder=" "
-                />
-                <label
-                  htmlFor="message"
-                  className="absolute left-0 top-6 text-zinc-600 font-light transition-all duration-[1000ms] peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-cyan-500/50 peer-focus:tracking-[0.4em] peer-focus:uppercase peer-valid:-top-4 peer-valid:text-[10px] peer-valid:text-zinc-500 peer-valid:tracking-[0.4em] peer-valid:uppercase cursor-text pointer-events-none"
-                >
-                  Tell me about your project...
-                </label>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="group/btn relative w-full overflow-hidden bg-white/[0.03] text-zinc-300 border border-white/[0.05] px-10 py-7 rounded-full font-bold tracking-[0.3em] uppercase text-[10px] mt-16 transition-all duration-[1000ms] hover:bg-white hover:text-black hover:border-white flex items-center justify-center gap-4 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <span>Transmit Signal</span>
-              <ArrowRight className="w-4 h-4 transition-transform duration-[1000ms] group-hover/btn:translate-x-2" />
-            </button>
-
-          </form>
+                  <div className="w-20 h-20 rounded-full border border-color-cyan-razor/20 bg-color-cyan-razor/5 flex items-center justify-center text-color-cyan-razor mb-4">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <h4 className="headline text-2xl text-color-text-main">Message received.</h4>
+                  <p className="body-md text-color-text-sub tracking-wider">
+                    Response within 24 hours.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </PhysicalReveal>
       </div>
 
       {/* Refined Footer Branding */}
-      <div className="w-full max-w-[85rem] mt-48 pt-12 border-t border-white/[0.02] flex flex-col md:flex-row items-center justify-between gap-8 text-zinc-600 text-[10px] tracking-[0.4em] uppercase font-bold z-10">
-        <p>© {new Date().getFullYear()} HELYRO OS. ALL RIGHTS RESERVED.</p>
+      <div className="w-full max-w-[85rem] mt-48 pt-12 border-t border-color-glass-border flex flex-col md:flex-row items-center justify-between gap-8 text-color-text-sub label-text z-10">
+        <p className="tracking-widest">© {new Date().getFullYear()} HELYRO OS. ALL RIGHTS RESERVED.</p>
         <div className="flex gap-12">
-          <a href="#" className="hover:text-zinc-300 transition-colors duration-[1000ms]">Twitter / X</a>
-          <a href="#" className="hover:text-zinc-300 transition-colors duration-[1000ms]">LinkedIn</a>
-          <a href="#" className="hover:text-zinc-300 transition-colors duration-[1000ms]">GitHub</a>
+          <a href="#" className="hover:text-color-text-main transition-colors duration-[1000ms]">Twitter / X</a>
+          <a href="#" className="hover:text-color-text-main transition-colors duration-[1000ms]">LinkedIn</a>
+          <a href="#" className="hover:text-color-text-main transition-colors duration-[1000ms]">GitHub</a>
         </div>
       </div>
     </section>

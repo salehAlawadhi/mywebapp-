@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Activity, Layers, Disc } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -13,11 +13,48 @@ const RefractiveCore = dynamic(() => import("@/components/ui/RefractiveCore"), {
 
 type Mode = "precision" | "luxe" | "velocity";
 
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Only register in browser environment
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 export default function DnaChamberSection() {
   const [uplink, setUplink] = useState("");
   const [activeMode, setActiveMode] = useState<Mode>("precision");
   const [isSimulating, setIsSimulating] = useState(false);
   const [simText, setSimText] = useState("");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const chamberRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!chamberRef.current || !containerRef.current) return;
+
+    // Cinematic transition into the chamber (slight scale up from 0.95 and darken/fade in)
+    // "darkening / depth shift / zoom feeling"
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        chamberRef.current,
+        { scale: 0.95, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 60%", // Start the effect slightly before the section fully enters
+            end: "top top",
+            scrub: 1, // Tie it to scroll so it feels like diving in organically
+          }
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   const handleUplinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUplink(e.target.value);
@@ -57,7 +94,7 @@ export default function DnaChamberSection() {
   const modeClass = `dna-mode-${activeMode}`;
 
   return (
-    <section className="relative min-h-[150vh] flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-transparent border-t border-white/[0.02]">
+    <section ref={containerRef} className="relative min-h-[150vh] flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-transparent border-t border-white/[0.02]">
 
       {/* Title Header - Outside Chamber Scope */}
       <div className="absolute top-40 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6">
@@ -80,8 +117,9 @@ export default function DnaChamberSection() {
         Borders are extremely thin, and the inset shadow is much deeper to blend into the site background.
       */}
       <motion.div
+        ref={chamberRef}
         className={cn(
-          "dna-chamber relative w-full max-w-[100vw] min-h-[100vh] mt-32 border-y border-white/[0.02] bg-[#010101] shadow-[inset_0_0_300px_rgba(0,0,0,1)] overflow-hidden flex flex-col items-center justify-center transition-all duration-[2000ms] ease-[0.19,1,0.22,1]",
+          "dna-chamber relative w-full max-w-[100vw] min-h-[100vh] mt-32 border-y border-white/[0.02] bg-[#010101] shadow-[inset_0_0_300px_rgba(0,0,0,1)] overflow-hidden flex flex-col items-center justify-center transition-colors duration-[2000ms] ease-[0.19,1,0.22,1] origin-center transform-gpu",
           modeClass
         )}
       >
