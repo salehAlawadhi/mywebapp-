@@ -36,6 +36,13 @@ const skills = [
 // Interactive 3D Tilt Card Component (Floating Intelligence)
 function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) {
   const ref = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const updateRect = () => {
+    if (ref.current) {
+      rectRef.current = ref.current.getBoundingClientRect();
+    }
+  };
 
   // Mouse tracking values
   const x = useMotionValue(0);
@@ -55,7 +62,8 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (!rectRef.current) updateRect();
+    const rect = rectRef.current!;
     const width = rect.width;
     const height = rect.height;
 
@@ -86,6 +94,7 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
   return (
     <motion.div
       ref={ref}
+      onMouseEnter={updateRect}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 50, filter: "blur(20px)" }}
@@ -111,13 +120,19 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
       {/* Subtly Floating Internal Content */}
       <div
         className="transform-gpu space-y-10 flex flex-col h-full pointer-events-none"
-        style={{ transform: "translateZ(40px)" }} // Physical pop out effect
+        style={{ transform: "translateZ(60px)" }} // Increased physical pop out effect
       >
-        <div className="p-4 bg-[#010101] rounded-2xl w-fit border border-white/[0.03] shadow-inner backdrop-blur-3xl">
+        <div
+          className="p-4 bg-[#010101] rounded-2xl w-fit border border-white/[0.03] shadow-inner backdrop-blur-3xl"
+          style={{ transform: "translateZ(30px)" }} // Multi-layered 3D depth
+        >
           {skill.icon}
         </div>
 
-        <div className="space-y-4 relative z-10 mt-auto">
+        <div
+          className="space-y-4 relative z-10 mt-auto"
+          style={{ transform: "translateZ(20px)" }}
+        >
           <h4 className="text-2xl font-semibold text-zinc-100 font-[family-name:var(--font-space-grotesk)] tracking-tight">
             {skill.title}
           </h4>

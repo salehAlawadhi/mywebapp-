@@ -47,25 +47,33 @@ const projects = [
 
 function PortfolioCard({ project, index, yTransform }: { project: typeof projects[0], index: number, yTransform: any }) {
   const ref = useRef<HTMLAnchorElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
 
-  // High-lag tracking for the premium "Lens Physics"
+  const updateRect = () => {
+    if (ref.current) {
+      rectRef.current = ref.current.getBoundingClientRect();
+    }
+  };
+
+  // High-lag tracking for the premium "Lens Physics" - Elite Calibration (Heavier Mass)
   const rawMouseX = useMotionValue(0);
   const rawMouseY = useMotionValue(0);
-  const mouseX = useSpring(rawMouseX, { stiffness: 100, damping: 30, mass: 1 });
-  const mouseY = useSpring(rawMouseY, { stiffness: 100, damping: 30, mass: 1 });
+  const mouseX = useSpring(rawMouseX, { stiffness: 60, damping: 40, mass: 2 });
+  const mouseY = useSpring(rawMouseY, { stiffness: 60, damping: 40, mass: 2 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!ref.current) return;
-    const { left, top } = ref.current.getBoundingClientRect();
+    if (!rectRef.current) updateRect();
+    const { left, top } = rectRef.current!;
     rawMouseX.set(e.clientX - left);
     rawMouseY.set(e.clientY - top);
   };
 
-  // The actual "Reveal Lens" mask - made softer and slightly wider for a more organic, exploratory feel
+  // The actual "Reveal Lens" mask - Elite Calibration (Softer falloff)
   const maskImage = useMotionTemplate`radial-gradient(
-    400px circle at ${mouseX}px ${mouseY}px,
-    black 25%,
-    transparent 90%
+    450px circle at ${mouseX}px ${mouseY}px,
+    black 15%,
+    transparent 95%
   )`;
 
   // The subtle edge glow around the lens - reduced intensity further
@@ -87,6 +95,7 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
         target="_blank"
         rel="noopener noreferrer"
         ref={ref}
+        onMouseEnter={updateRect}
         onMouseMove={handleMouseMove}
         className={cn(
           "relative block w-full aspect-[4/3] rounded-[2rem] overflow-hidden bg-[#020202] border border-white/[0.05] cursor-none",
@@ -94,7 +103,11 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
       >
         {/* Base Layer: Desaturated Wireframe / Ghost State */}
         <div className="absolute inset-0 z-0 flex items-center justify-center bg-black">
-          <div className={cn("absolute inset-0 opacity-40 mix-blend-screen", project.wireframe)} />
+          <motion.div
+            animate={{ opacity: [0.3, 0.4, 0.3], x: [0, 1, -1, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className={cn("absolute inset-0 opacity-40 mix-blend-screen", project.wireframe)}
+          />
           <div className="absolute w-32 h-32 border border-white/10 rounded-full flex items-center justify-center">
              <div className="w-16 h-16 border border-white/5 rounded-full" />
           </div>
@@ -117,7 +130,15 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
           {/* Scanline Effect (Hover Only) - Reduced Intensity & Added Variance */}
           {project.hasScanline && (
             <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
+               {/* Global Scanline */}
                <div className={cn("w-full h-[1px] bg-color-cyan-razor opacity-40 shadow-[0_0_8px_rgba(0,229,255,0.2)] absolute top-[-10px] left-0 transform -translate-y-full group-hover:translate-y-[800px] transition-transform duration-[4s] ease-linear", project.scanlineDelay)} />
+
+               {/* Internal Active Analysis Scanlines (High Frequency) */}
+               <motion.div
+                 animate={{ y: ["0%", "100%"] }}
+                 transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                 className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(0,229,255,0.05)_50%,transparent_100%)] bg-[size:100%_4px]"
+               />
             </div>
           )}
 

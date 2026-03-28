@@ -7,6 +7,13 @@ import React, { useRef, useEffect } from "react";
 // The magnetic CTA Button
 function MagneticButton({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLButtonElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const updateRect = () => {
+    if (ref.current) {
+      rectRef.current = ref.current.getBoundingClientRect();
+    }
+  };
 
   // More mass and lower stiffness for more inertia and softer settling
   const x = useSpring(useMotionValue(0), { stiffness: 100, damping: 15, mass: 1.5 });
@@ -14,7 +21,8 @@ function MagneticButton({ children }: { children: React.ReactNode }) {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (!rectRef.current) updateRect();
+    const rect = rectRef.current!;
     // Center of button
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
@@ -35,6 +43,7 @@ function MagneticButton({ children }: { children: React.ReactNode }) {
   return (
     <motion.button
       ref={ref}
+      onMouseEnter={updateRect}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ x, y }}
@@ -122,8 +131,17 @@ export default function HeroSection() {
           initial={{ opacity: 0, scale: 0.7, filter: "blur(50px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 6, delay: 5.0, ease: [0.19, 1, 0.22, 1] }} // Exponential Monumental curve, extremely slow reveal
-          className="text-5xl md:text-[5rem] lg:text-[7rem] font-bold tracking-tighter leading-[1.05] mb-10 font-[family-name:var(--font-space-grotesk)] text-zinc-100 mix-blend-plus-lighter"
+          className="text-5xl md:text-[5rem] lg:text-[7rem] font-bold tracking-tighter leading-[1.05] mb-10 font-[family-name:var(--font-space-grotesk)] text-zinc-100 mix-blend-plus-lighter relative"
         >
+          {/* Subtle Internal Energy Pulse for Typography - Precision Matched Styling */}
+          <motion.span
+            aria-hidden="true"
+            animate={{ opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-transparent to-transparent bg-clip-text text-transparent pointer-events-none"
+          >
+            We Engineer <span className="italic font-light">Digital Systems</span> <br /> That Scale, Convert, and Endure.
+          </motion.span>
           We Engineer <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 italic font-light">Digital Systems</span> <br /> That Scale, Convert, and Endure.
         </motion.h1>
 
@@ -156,8 +174,12 @@ export default function HeroSection() {
       {/* Elegant Bottom Gradient Fade */}
       <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-[#010101] to-transparent pointer-events-none z-20" />
 
-      {/* Decorative Grid Lines Overlay (Extremely subtle now) */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)] opacity-20 mix-blend-overlay" />
+      {/* Decorative Grid Lines Overlay with a subtle breathing light */}
+      <motion.div
+        animate={{ opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)] mix-blend-overlay"
+      />
     </section>
   );
 }

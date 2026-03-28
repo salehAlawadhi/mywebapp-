@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function CustomCursor() {
@@ -15,16 +15,49 @@ export default function CustomCursor() {
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
+  // Velocity-based squash/stretch for physical organic feel
+  const scaleX = useSpring(1, { damping: 40, stiffness: 100 });
+  const scaleY = useSpring(1, { damping: 40, stiffness: 100 });
+  const rotate = useSpring(0, { damping: 40, stiffness: 100 });
+
+  const lastElementRef = useRef<HTMLElement | null>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
   useEffect(() => {
+    let lastX = 0;
+    let lastY = 0;
+
     const handleMouseMove = (e: MouseEvent) => {
+      // Calculate velocity for squash/stretch
+      const vx = Math.abs(e.clientX - lastX);
+      const vy = Math.abs(e.clientY - lastY);
+
+      const stretch = Math.min(vx / 100, 0.4);
+      scaleX.set(1 + stretch);
+      scaleY.set(1 - stretch / 2);
+
+      // Rotate based on movement direction
+      const angle = Math.atan2(e.clientY - lastY, e.clientX - lastX) * (180 / Math.PI);
+
+      // Update last positions after calculation
+      lastX = e.clientX;
+      lastY = e.clientY;
+      if (vx > 1 || vy > 1) {
+        rotate.set(angle);
+      }
+
       // Find magnetic elements
       const target = e.target as HTMLElement;
-      const magneticElement = target.closest("a, button, input, [data-magnetic]");
+      const magneticElement = target.closest("a, button, input, [data-magnetic]") as HTMLElement | null;
 
       if (magneticElement) {
         setIsHovering(true);
         // Magnetic Pull Logic
-        const rect = magneticElement.getBoundingClientRect();
+        if (magneticElement !== lastElementRef.current) {
+          lastElementRef.current = magneticElement;
+          rectRef.current = magneticElement.getBoundingClientRect();
+        }
+        const rect = rectRef.current!;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
@@ -71,6 +104,9 @@ export default function CustomCursor() {
       style={{
         x: cursorXSpring,
         y: cursorYSpring,
+        scaleX,
+        scaleY,
+        rotate,
       }}
     >
       <motion.div

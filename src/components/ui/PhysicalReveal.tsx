@@ -49,13 +49,13 @@ export default function PhysicalReveal({
         filter: "blur(0px)"
       }}
       viewport={{ once: true, margin: "-100px" }}
-      // Monumental curve, extremely slow and heavy settling
+      // Elite Monumental curve: Even slower, heavier settling for a more premium "living system" feel
       transition={{
-        duration: 2.5,
+        duration: 3.2,
         delay: delay,
-        ease: [0.19, 1, 0.22, 1]
+        ease: [0.16, 1, 0.3, 1] // Custom quintic ease-out for softer deceleration
       }}
-      className={cn("will-change-transform", className)}
+      className={cn("will-change-[transform,opacity,filter]", className)}
     >
       {children}
     </motion.div>

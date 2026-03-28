@@ -121,6 +121,8 @@ export default function DnaChamberSection() {
       */}
       <motion.div
         ref={chamberRef}
+        animate={isSimulating ? { opacity: [1, 0.8, 1], x: [0, -1, 1, 0] } : {}}
+        transition={{ duration: 0.1, repeat: isSimulating ? 2 : 0 }}
         className={cn(
           "dna-chamber relative w-full max-w-[100vw] min-h-[100vh] mt-32 border-y border-white/[0.02] bg-[#010101] shadow-[inset_0_0_300px_rgba(0,0,0,1)] overflow-hidden flex flex-col items-center justify-center transition-colors duration-[2000ms] ease-[0.19,1,0.22,1] origin-center transform-gpu",
           modeClass

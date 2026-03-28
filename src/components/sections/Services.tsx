@@ -54,12 +54,21 @@ const services = [
 // Asymmetrical Hardware Module Card
 function ServiceCard({ service }: { service: typeof services[0] }) {
   const ref = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const updateRect = () => {
+    if (ref.current) {
+      rectRef.current = ref.current.getBoundingClientRect();
+    }
+  };
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
-    const { left, top } = ref.current.getBoundingClientRect();
+    if (!rectRef.current) updateRect();
+    const { left, top } = rectRef.current!;
     mouseX.set(e.clientX - left);
     mouseY.set(e.clientY - top);
   };
@@ -86,7 +95,7 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
         service.className
       )}
     >
-      <div ref={ref} onMouseMove={handleMouseMove} className="w-full h-full flex flex-col">
+      <div ref={ref} onMouseEnter={updateRect} onMouseMove={handleMouseMove} className="w-full h-full flex flex-col">
       {/* Light Scan Edge Effect (Outer Border) */}
       <motion.div
         className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms] ease-out"
@@ -107,6 +116,20 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
 
         {/* Very subtle noise texture internally */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
+
+        {/* Dynamic Data Stream / Border Beam Hover Effect */}
+        <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+          <motion.div
+            initial={{ offsetDistance: "0%" }}
+            animate={{ offsetDistance: "100%" }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            className="absolute w-24 h-[2px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"
+            style={{
+              offsetPath: "inset(0 round 2rem)",
+              offsetRotate: "auto"
+            }}
+          />
+        </div>
 
         <div className="p-5 bg-white/[0.015] rounded-2xl w-fit border border-white/[0.02] shadow-[0_0_30px_rgba(255,255,255,0.01)] backdrop-blur-3xl transition-transform duration-[1000ms] group-hover:scale-105">
           {service.icon}
