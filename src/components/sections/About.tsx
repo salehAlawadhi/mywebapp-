@@ -44,6 +44,11 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
     }
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", updateRect);
+    return () => window.removeEventListener("resize", updateRect);
+  }, []);
+
   // Mouse tracking values
   const x = useMotionValue(0);
   const y = useMotionValue(0);

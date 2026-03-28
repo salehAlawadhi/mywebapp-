@@ -43,7 +43,7 @@ export default function DynamicIslandDock() {
         className="w-full flex items-center justify-between glass-panel px-4 py-3 rounded-full shadow-[0_0_20px_rgba(0,229,255,0.05)] border border-white/5 bg-[#05070A]/80 backdrop-blur-3xl"
         layout
       >
-        <button className="flex items-center gap-1 text-color-text-sub hover:text-color-text-main transition-colors text-xs font-bold tracking-widest uppercase">
+        <button className="flex items-center gap-1 text-color-text-sub hover:text-color-text-main transition-colors text-xs font-bold tracking-widest uppercase" aria-label="Toggle Language">
           <span className="text-color-text-main">EN</span>
           <span className="opacity-30">|</span>
           <span>AR</span>
@@ -93,7 +93,7 @@ export default function DynamicIslandDock() {
 
         <div className="w-px h-4 bg-color-glass-border mx-2 hidden md:block" />
 
-        <button className="hidden md:flex items-center justify-center bg-color-cyan-razor text-[#010101] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-95 transition-transform duration-200">
+        <button className="hidden md:flex items-center justify-center bg-color-cyan-razor text-[#010101] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-95 transition-transform duration-200 shadow-[0_0_20px_rgba(0,229,255,0.2)]">
           Book Call
         </button>
 

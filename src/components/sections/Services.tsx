@@ -62,6 +62,11 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
     }
   };
 
+  React.useEffect(() => {
+    window.addEventListener("resize", updateRect);
+    return () => window.removeEventListener("resize", updateRect);
+  }, []);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -117,8 +122,8 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
         {/* Very subtle noise texture internally */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
 
-        {/* Dynamic Data Stream / Border Beam Hover Effect */}
-        <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+        {/* Dynamic Data Stream / Border Beam Hover Effect - Enabled by hover and also by group-active for touch support */}
+        <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-1000 pointer-events-none">
           <motion.div
             initial={{ offsetDistance: "0%" }}
             animate={{ offsetDistance: "100%" }}
@@ -167,15 +172,16 @@ export default function ServicesSection() {
 
         {/* Majestic Header */}
         <PhysicalReveal className="text-center space-y-10 max-w-4xl mx-auto" direction="up" amount={50}>
-          <h2 className="text-[10px] font-bold tracking-[0.4em] text-zinc-600 uppercase">
+          <h2 className="text-[10px] font-bold tracking-[0.4em] text-cyan-500/50 uppercase drop-shadow-[0_0_10px_rgba(0,229,255,0.2)]">
             {"" /* Engine Modules */}
+            ENGINE MODULES
           </h2>
           <h3 className="text-5xl md:text-6xl lg:text-[5rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
-            Engineered <br />
-            <span className="italic text-zinc-500 font-light">Ecosystem.</span>
+            Capabilities <br />
+            <span className="italic text-zinc-500 font-light">Of The System.</span>
           </h3>
-          <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-2xl mx-auto tracking-wide">
-            We don&apos;t build pages. We engineer structured digital systems optimized for performance, clarity, and conversion.
+          <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-2xl mx-auto tracking-wide">
+            We deliver high-performance digital environments that scale, convert, and endure. Every module is engineered for maximum business impact.
           </p>
         </PhysicalReveal>
 

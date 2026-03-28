@@ -15,6 +15,11 @@ function MagneticButton({ children }: { children: React.ReactNode }) {
     }
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", updateRect);
+    return () => window.removeEventListener("resize", updateRect);
+  }, []);
+
   // More mass and lower stiffness for more inertia and softer settling
   const x = useSpring(useMotionValue(0), { stiffness: 100, damping: 15, mass: 1.5 });
   const y = useSpring(useMotionValue(0), { stiffness: 100, damping: 15, mass: 1.5 });
@@ -149,9 +154,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 4, delay: 5.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-16 font-[family-name:var(--font-inter)] leading-relaxed font-light tracking-wide"
+          className="text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-16 font-[family-name:var(--font-inter)] leading-relaxed font-light tracking-wide"
         >
-          We design and build high-performance digital environments — from premium web platforms to automation-driven growth systems.
+          We engineer high-performance digital environments that scale, convert, and endure. From premium web platforms to automation-driven growth systems.
         </motion.p>
 
         {/* Action Buttons */}

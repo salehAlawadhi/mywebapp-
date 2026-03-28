@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface PhysicalRevealProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ export default function PhysicalReveal({
   direction = "up",
   amount = 50
 }: PhysicalRevealProps) {
+  const prefersReducedMotion = useReducedMotion();
 
   const getInitialY = () => {
     if (direction === "up") return amount;
@@ -34,7 +36,7 @@ export default function PhysicalReveal({
 
   return (
     <motion.div
-      initial={{
+      initial={prefersReducedMotion ? { opacity: 0 } : {
         opacity: 0,
         y: getInitialY(),
         x: getInitialX(),
@@ -51,7 +53,7 @@ export default function PhysicalReveal({
       viewport={{ once: true, margin: "-100px" }}
       // Elite Monumental curve: Even slower, heavier settling for a more premium "living system" feel
       transition={{
-        duration: 3.2,
+        duration: prefersReducedMotion ? 1 : 3.2,
         delay: delay,
         ease: [0.16, 1, 0.3, 1] // Custom quintic ease-out for softer deceleration
       }}

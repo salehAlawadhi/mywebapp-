@@ -55,6 +55,11 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
     }
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", updateRect);
+    return () => window.removeEventListener("resize", updateRect);
+  }, []);
+
   // High-lag tracking for the premium "Lens Physics" - Elite Calibration (Heavier Mass)
   const rawMouseX = useMotionValue(0);
   const rawMouseY = useMotionValue(0);
@@ -118,13 +123,13 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
 
         {/* Dynamic Lens Edge Glow */}
         <motion.div
-          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms] mix-blend-screen"
+          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-[1000ms] mix-blend-screen"
           style={{ background: edgeGlow }}
         />
 
         {/* Revealed Detailed Full-Color Layer underneath (The Lens) */}
         <motion.div
-          className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms]"
+          className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-[1000ms]"
           style={{ maskImage, WebkitMaskImage: maskImage }}
         >
           {/* Scanline Effect (Hover Only) - Reduced Intensity & Added Variance */}
