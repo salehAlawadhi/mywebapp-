@@ -56,6 +56,10 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
 
+  // Dynamic Shadow Position (Moves opposite to tilt)
+  const shadowX = useTransform(mouseXSpring, [-0.5, 0.5], [20, -20]);
+  const shadowY = useTransform(mouseYSpring, [-0.5, 0.5], [20, -20]);
+
   // Calculate Glare position with lag (inertia)
   const glareX = useSpring(useMotionValue(0), { stiffness: 30, damping: 20 });
   const glareY = useSpring(useMotionValue(0), { stiffness: 30, damping: 20 });
@@ -105,6 +109,7 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
+        boxShadow: useMotionTemplate`${shadowX}px ${shadowY}px 60px rgba(0, 0, 0, 0.5)`,
       }}
       className={cn(
         "bg-white/[0.01] border border-white/[0.02] backdrop-blur-2xl rounded-3xl p-8 flex flex-col gap-6 relative group transition-all duration-[1000ms]",

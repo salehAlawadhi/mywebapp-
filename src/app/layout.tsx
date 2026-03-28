@@ -42,9 +42,13 @@ export default function RootLayout({
         <NeuralBackground />
         <CustomCursor />
 
-        {/* Global Cinematic Grain Overlay - Adds depth and filmic quality */}
-        <div className="fixed inset-0 pointer-events-none z-[9998] opacity-[0.03] mix-blend-overlay">
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+        {/* Global Cinematic Overlay Layer (Grain + Vignette) */}
+        <div className="fixed inset-0 pointer-events-none z-[9998] overflow-hidden">
+          {/* Grain Texture */}
+          <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+
+          {/* Deep Cinematic Vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] mix-blend-multiply" />
         </div>
 
         {children}

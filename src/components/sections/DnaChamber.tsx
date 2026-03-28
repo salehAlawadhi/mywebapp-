@@ -141,6 +141,19 @@ export default function DnaChamberSection() {
           }}
         />
 
+        {/* Global Vertical Simulation Scanner */}
+        <AnimatePresence>
+          {isSimulating && (
+            <motion.div
+              initial={{ top: "-10%", opacity: 0 }}
+              animate={{ top: "110%", opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              className="absolute left-0 right-0 h-[100px] bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent pointer-events-none z-0"
+            />
+          )}
+        </AnimatePresence>
+
         {/* Chamber Interface Layer */}
         <div className="relative z-10 w-full max-w-4xl flex flex-col items-center justify-center gap-20 px-6 mt-16">
 

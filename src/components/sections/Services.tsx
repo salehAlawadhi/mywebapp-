@@ -123,12 +123,19 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
             initial={{ offsetDistance: "0%" }}
             animate={{ offsetDistance: "100%" }}
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            className="absolute w-24 h-[2px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"
+            className="absolute w-24 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent shadow-[0_0_15px_rgba(0,229,255,0.4)]"
             style={{
               offsetPath: "inset(0 round 2rem)",
               offsetRotate: "auto"
             }}
-          />
+          >
+            {/* Inner Glowing Core of the Beam */}
+            <motion.div
+              animate={{ opacity: [0.5, 1, 0.5], scale: [0.8, 1.2, 0.8] }}
+              transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-white/20 blur-[1px] rounded-full"
+            />
+          </motion.div>
         </div>
 
         <div className="p-5 bg-white/[0.015] rounded-2xl w-fit border border-white/[0.02] shadow-[0_0_30px_rgba(255,255,255,0.01)] backdrop-blur-3xl transition-transform duration-[1000ms] group-hover:scale-105">

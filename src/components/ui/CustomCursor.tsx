@@ -24,8 +24,14 @@ export default function CustomCursor() {
   const rectRef = useRef<DOMRect | null>(null);
 
   useEffect(() => {
-    let lastX = 0;
-    let lastY = 0;
+    let lastX = window.innerWidth / 2;
+    let lastY = window.innerHeight / 2;
+
+    const handleScroll = () => {
+      // Invalidate cache on scroll to prevent offset issues
+      lastElementRef.current = null;
+      rectRef.current = null;
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
       // Calculate velocity for squash/stretch
@@ -82,11 +88,13 @@ export default function CustomCursor() {
     const handleMouseEnter = () => setIsVisible(true);
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
     };

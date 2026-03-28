@@ -136,9 +136,9 @@ export default function HeroSection() {
           {/* Subtle Internal Energy Pulse for Typography - Precision Matched Styling */}
           <motion.span
             aria-hidden="true"
-            animate={{ opacity: [0.2, 0.4, 0.2] }}
+            animate={{ opacity: [0.2, 0.5, 0.2], filter: ["blur(4px)", "blur(12px)", "blur(4px)"] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-transparent to-transparent bg-clip-text text-transparent pointer-events-none"
+            className="absolute inset-0 bg-gradient-to-r from-cyan-400/40 via-transparent to-transparent bg-clip-text text-transparent pointer-events-none mix-blend-screen"
           >
             We Engineer <span className="italic font-light">Digital Systems</span> <br /> That Scale, Convert, and Endure.
           </motion.span>
