@@ -8,27 +8,27 @@ import PhysicalReveal from "@/components/ui/PhysicalReveal";
 
 const skills = [
   {
-    title: "Engineering",
-    description: "Building scalable web applications using React, Next.js, and TypeScript.",
-    icon: <Code2 className="w-5 h-5 text-indigo-400" />,
+    title: "Structure",
+    description: "Every project is built on solid, scalable architectural foundations.",
+    icon: <Layers className="w-5 h-5 text-indigo-400" />,
     delay: 0.1,
   },
   {
-    title: "Intelligence",
-    description: "Creating immersive experiences with complex animations and layouts.",
-    icon: <MonitorPlay className="w-5 h-5 text-emerald-400" />,
+    title: "Performance",
+    description: "Ensuring high-speed load times and optimized runtime efficiency.",
+    icon: <Cpu className="w-5 h-5 text-emerald-400" />,
     delay: 0.2,
   },
   {
-    title: "Architecture",
-    description: "Designing robust systems that scale seamlessly and maintain quality.",
-    icon: <Layers className="w-5 h-5 text-amber-400" />,
+    title: "Scalability",
+    description: "Engineering systems designed to handle exponential future growth.",
+    icon: <MonitorPlay className="w-5 h-5 text-amber-400" />,
     delay: 0.3,
   },
   {
-    title: "Performance",
-    description: "Ensuring fast load times and buttery smooth animations everywhere.",
-    icon: <Cpu className="w-5 h-5 text-rose-400" />,
+    title: "Growth",
+    description: "Delivering measurable, data-driven business results and conversions.",
+    icon: <Code2 className="w-5 h-5 text-rose-400" />,
     delay: 0.4,
   },
 ];
@@ -164,25 +164,25 @@ export default function AboutSection() {
             <h2 className="text-xs font-bold tracking-[0.3em] text-zinc-600 uppercase">
               {"" /* System Intelligence */}
             </h2>
-            <h3 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
-              Floating <br className="hidden md:block"/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">Intelligence.</span>
+            <h3 className="text-5xl md:text-6xl lg:text-[5rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
+              We approach digital products <br className="hidden md:block"/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">as systems.</span>
             </h3>
           </div>
 
           <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-xl tracking-wide">
-            Not just visually stunning, but technically profound. Combining modern frameworks with physical animation physics to build architectures that feel alive, calm, and deeply engineered.
+            We don&apos;t just design experiences. We engineer environments that evolve. Every project is built on structure, performance, scalability, and measurable growth.
           </p>
 
           <div className="pt-10 flex gap-12">
             <div className="flex flex-col gap-3">
-              <span className="text-5xl font-bold text-zinc-200 font-[family-name:var(--font-space-grotesk)]">V.11</span>
-              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">Architecture Base</span>
+              <span className="text-5xl font-bold text-zinc-200 font-[family-name:var(--font-space-grotesk)]">V.12</span>
+              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">System Architecture</span>
             </div>
             <div className="w-px h-20 bg-white/[0.05]" />
             <div className="flex flex-col gap-3">
               <span className="text-5xl font-bold text-zinc-200 font-[family-name:var(--font-space-grotesk)]">∞</span>
-              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">Potential States</span>
+              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">Measurable Growth</span>
             </div>
           </div>
         </PhysicalReveal>

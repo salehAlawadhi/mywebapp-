@@ -122,9 +122,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, scale: 0.7, filter: "blur(50px)" }}
           animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{ duration: 6, delay: 5.0, ease: [0.19, 1, 0.22, 1] }} // Exponential Monumental curve, extremely slow reveal
-          className="text-6xl md:text-[7rem] lg:text-[10rem] font-bold tracking-tighter leading-[0.95] mb-10 font-[family-name:var(--font-space-grotesk)] text-zinc-100 mix-blend-plus-lighter"
+          className="text-5xl md:text-[5rem] lg:text-[7rem] font-bold tracking-tighter leading-[1.05] mb-10 font-[family-name:var(--font-space-grotesk)] text-zinc-100 mix-blend-plus-lighter"
         >
-          Engineered <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 italic font-light">Elegance</span>
+          We Engineer <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 italic font-light">Digital Systems</span> <br /> That Scale, Convert, and Endure.
         </motion.h1>
 
         <motion.p
@@ -133,7 +133,7 @@ export default function HeroSection() {
           transition={{ duration: 4, delay: 5.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-16 font-[family-name:var(--font-inter)] leading-relaxed font-light tracking-wide"
         >
-          Designing living premium systems. Specializing in highly interactive, physically-reactive frontend architectures that leave a lasting impression.
+          We design and build high-performance digital environments — from premium web platforms to automation-driven growth systems.
         </motion.p>
 
         {/* Action Buttons */}
@@ -144,11 +144,11 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row items-center justify-center gap-8"
         >
           <MagneticButton>
-            Initialize Session
+            Explore Systems
           </MagneticButton>
 
           <button className="glass-button px-10 py-5 rounded-full font-medium tracking-[0.1em] text-sm uppercase text-zinc-400 flex items-center gap-2">
-            Establish Link
+            Start a Project
           </button>
         </motion.div>
       </div>

@@ -28,14 +28,14 @@ export default function ContactSection() {
         <PhysicalReveal direction="left" amount={60} className="flex-1 space-y-20">
           <div className="space-y-10">
             <h2 className="label-text text-color-text-sub">
-              Initiate Connection
+              Start a Project
             </h2>
-            <h3 className="display-xl text-color-text-main">
-              Let&apos;s build the <br />
-              <span className="italic text-color-text-sub font-light">future</span> together.
+            <h3 className="text-5xl md:text-6xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
+              Tell us about <br />
+              <span className="italic text-color-text-sub font-light">your vision.</span>
             </h3>
             <p className="body-lg text-color-text-sub max-w-lg">
-              Whether you have a specific project in mind or just want to explore possibilities, I&apos;m currently available for remote collaborations worldwide.
+              We&apos;ll engineer the system behind it.
             </p>
           </div>
 
@@ -44,14 +44,14 @@ export default function ContactSection() {
               <div className="w-16 h-16 rounded-full border border-color-glass-border bg-color-obsidian flex items-center justify-center transition-colors duration-[1000ms] group-hover:bg-color-deep-navy group-hover:border-white/[0.1]">
                 <Mail className="w-5 h-5 transition-transform duration-[1000ms]" />
               </div>
-              <span className="text-xl font-light group-hover:text-color-text-main transition-colors duration-[1000ms] tracking-widest">hello@helyro.os</span>
+              <span className="text-xl font-light group-hover:text-color-text-main transition-colors duration-[1000ms] tracking-widest">contact@helyro.com</span>
             </div>
 
             <div className="flex items-center gap-8 text-color-text-sub group cursor-none w-fit">
               <div className="w-16 h-16 rounded-full border border-color-glass-border bg-color-obsidian flex items-center justify-center transition-colors duration-[1000ms] group-hover:bg-color-deep-navy group-hover:border-white/[0.1]">
                 <MapPin className="w-5 h-5 transition-transform duration-[1000ms]" />
               </div>
-              <span className="text-xl font-light group-hover:text-color-text-main transition-colors duration-[1000ms] tracking-widest">Remote / Worldwide</span>
+              <span className="text-xl font-light group-hover:text-color-text-main transition-colors duration-[1000ms] tracking-widest">+966 53 213 3581</span>
             </div>
           </div>
         </PhysicalReveal>
@@ -84,7 +84,7 @@ export default function ContactSection() {
                         htmlFor="name"
                         className="absolute left-0 top-0 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-6 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
                       >
-                        What&apos;s your name?
+                        Full Name
                       </label>
                     </div>
 
@@ -100,7 +100,23 @@ export default function ContactSection() {
                         htmlFor="email"
                         className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
                       >
-                        Your email address
+                        Email Address
+                      </label>
+                    </div>
+
+                    <div className="relative group/input pt-6">
+                      <input
+                        type="text"
+                        id="projectType"
+                        required
+                        className="w-full bg-transparent border-b border-color-glass-border pb-5 text-color-text-main focus:outline-none focus:border-color-text-sub transition-colors duration-[1000ms] peer font-light text-lg tracking-wider"
+                        placeholder=" "
+                      />
+                      <label
+                        htmlFor="projectType"
+                        className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
+                      >
+                        Project Type
                       </label>
                     </div>
 
@@ -116,7 +132,7 @@ export default function ContactSection() {
                         htmlFor="message"
                         className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
                       >
-                        Tell me about your project...
+                        Message
                       </label>
                     </div>
                   </div>
@@ -125,7 +141,7 @@ export default function ContactSection() {
                     type="submit"
                     className="group/btn relative w-full overflow-hidden bg-color-text-main text-color-obsidian px-10 py-5 rounded-full font-bold tracking-[0.2em] uppercase text-xs mt-16 transition-all duration-[1000ms] hover:bg-white flex items-center justify-center gap-4 hover:scale-[1.01] active:scale-[0.99]"
                   >
-                    <span>Transmit Signal</span>
+                    <span>Submit Request</span>
                     <ArrowRight className="w-4 h-4 transition-transform duration-[1000ms] group-hover/btn:translate-x-2" />
                   </button>
 
@@ -154,7 +170,10 @@ export default function ContactSection() {
 
       {/* Refined Footer Branding */}
       <div className="w-full max-w-[85rem] mt-48 pt-12 border-t border-color-glass-border flex flex-col md:flex-row items-center justify-between gap-8 text-color-text-sub label-text z-10">
-        <p className="tracking-widest">© {new Date().getFullYear()} HELYRO OS. ALL RIGHTS RESERVED.</p>
+        <div className="flex flex-col gap-2">
+           <p className="tracking-widest">© {new Date().getFullYear()} HELYRO OS. ALL RIGHTS RESERVED.</p>
+           <p className="tracking-widest text-color-text-main mt-2">Built with precision. Designed to perform.</p>
+        </div>
         <div className="flex gap-12">
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-color-text-main transition-colors duration-[1000ms]">GitHub</a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-color-text-main transition-colors duration-[1000ms]">LinkedIn</a>

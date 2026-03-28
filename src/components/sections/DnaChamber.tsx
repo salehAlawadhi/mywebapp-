@@ -97,13 +97,16 @@ export default function DnaChamberSection() {
     <section ref={containerRef} className="relative min-h-[150vh] flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-transparent border-t border-white/[0.02]">
 
       {/* Title Header - Outside Chamber Scope */}
-      <div className="absolute top-40 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6">
+      <div className="absolute top-40 w-full px-4 text-center z-20 flex flex-col items-center gap-6">
         <h2 className="text-[10px] font-bold tracking-[0.4em] text-cyan-500/50 uppercase drop-shadow-[0_0_15px_rgba(0,200,255,0.3)]">
-          System Core
+          DNA CHAMBER
         </h2>
         <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] text-center leading-[1.05]">
-          Visual <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">DNA Chamber.</span>
+          Simulate your system <br className="hidden md:block"/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">before it exists.</span>
         </h3>
+        <p className="text-xs md:text-sm text-zinc-500 tracking-[0.2em] font-light uppercase mt-4">
+          Analyze → Build → Apply → Deploy
+        </p>
       </div>
 
       {/*
@@ -199,19 +202,19 @@ export default function DnaChamberSection() {
               active={activeMode === "precision"}
               onClick={() => handleModeChange("precision")}
               icon={<Sparkles className="w-4 h-4" />}
-              label="Precision"
+              label="Precision Mode"
             />
             <ModeButton
               active={activeMode === "luxe"}
               onClick={() => handleModeChange("luxe")}
               icon={<Layers className="w-4 h-4" />}
-              label="Luxe"
+              label="Luxe Mode"
             />
             <ModeButton
               active={activeMode === "velocity"}
               onClick={() => handleModeChange("velocity")}
               icon={<Activity className="w-4 h-4" />}
-              label="Velocity"
+              label="Velocity Mode"
             />
           </div>
 

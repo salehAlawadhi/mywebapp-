@@ -195,14 +195,17 @@ export default function PortfolioSection() {
             <h2 className="text-[10px] font-bold tracking-[0.4em] text-zinc-600 uppercase">
               {"" /* Topology Archive */}
             </h2>
-            <h3 className="text-6xl md:text-7xl lg:text-[6rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
-              Reveal <br className="hidden md:block"/>
-              <span className="italic text-zinc-500 font-light">Structure.</span>
+            <h3 className="text-5xl md:text-6xl lg:text-[5rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
+              Selected <br className="hidden md:block"/>
+              <span className="italic text-zinc-500 font-light">Systems.</span>
             </h3>
+            <p className="text-sm md:text-base text-zinc-500 font-light font-[family-name:var(--font-inter)] max-w-sm tracking-wide mt-6">
+              A collection of engineered digital products — built for performance, clarity, and growth.
+            </p>
           </div>
 
           <button className="text-zinc-600 hover:text-white transition-colors duration-1000 flex items-center gap-4 group border-b border-white/5 pb-3">
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Access Database</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">View All Projects</span>
             <ArrowUpRight className="w-4 h-4 transition-transform duration-1000 ease-[0.16,1,0.3,1] group-hover:translate-x-1 group-hover:-translate-y-1" />
           </button>
         </PhysicalReveal>

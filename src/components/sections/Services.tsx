@@ -8,44 +8,44 @@ import PhysicalReveal from "@/components/ui/PhysicalReveal";
 
 const services = [
   {
-    title: "Interface Assembly",
-    description: "Translating pixel-perfect designs into physical UI code.",
-    icon: <Paintbrush className="w-4 h-4 text-indigo-400" />,
+    title: "Web Systems Engineering",
+    description: "We don't build pages. We engineer structured digital systems optimized for performance, clarity, and conversion.",
+    icon: <LayoutTemplate className="w-4 h-4 text-indigo-400" />,
     className: "md:col-span-2 md:row-span-2 bg-gradient-to-br from-indigo-500/[0.02] to-transparent",
     delay: 0.1,
   },
   {
-    title: "Web Nodes",
-    description: "Building SPA and MPA environments.",
-    icon: <Laptop className="w-4 h-4 text-blue-400" />,
+    title: "eCommerce Architecture",
+    description: "Scalable commerce systems built for serious growth. Headless, conversion-optimized, and performance-tuned.",
+    icon: <Database className="w-4 h-4 text-blue-400" />,
     className: "md:col-span-1 md:row-span-1",
     delay: 0.2,
   },
   {
-    title: "Core Vitals",
-    description: "Optimizing frame rates for 60fps architectures.",
+    title: "Automation Systems",
+    description: "We eliminate manual workflows and replace them with intelligent, API-based system connections.",
     icon: <Zap className="w-4 h-4 text-yellow-400" />,
     className: "md:col-span-1 md:row-span-1",
     delay: 0.3,
   },
   {
-    title: "Stack Connect",
-    description: "Linking frontends with complex APIs smoothly.",
-    icon: <Database className="w-4 h-4 text-emerald-400" />,
+    title: "Growth & Advertising",
+    description: "We design and manage full performance-driven marketing systems and data-driven optimizations.",
+    icon: <Paintbrush className="w-4 h-4 text-emerald-400" />,
     className: "md:col-span-1 md:row-span-2 bg-gradient-to-b from-emerald-500/[0.02] to-transparent",
     delay: 0.4,
   },
   {
-    title: "Responsive Logic",
-    description: "Ensuring deep logic scaling across all devices.",
+    title: "SEO / GEO / AIO",
+    description: "Advanced visibility engineering for modern search ecosystems and semantic content structuring.",
     icon: <Smartphone className="w-4 h-4 text-rose-400" />,
     className: "md:col-span-1 md:row-span-1",
     delay: 0.5,
   },
   {
-    title: "System Design",
-    description: "Creating physical, reusable component libraries tailored to deep brand logic.",
-    icon: <LayoutTemplate className="w-4 h-4 text-purple-400" />,
+    title: "Application Development",
+    description: "Scalable digital products, SaaS, and admin dashboards engineered for long-term growth.",
+    icon: <Laptop className="w-4 h-4 text-purple-400" />,
     className: "md:col-span-2 md:row-span-1",
     delay: 0.6,
   },
@@ -140,12 +140,12 @@ export default function ServicesSection() {
           <h2 className="text-[10px] font-bold tracking-[0.4em] text-zinc-600 uppercase">
             {"" /* Engine Modules */}
           </h2>
-          <h3 className="text-6xl md:text-7xl lg:text-[6rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
-            Hardware <br />
+          <h3 className="text-5xl md:text-6xl lg:text-[5rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
+            Engineered <br />
             <span className="italic text-zinc-500 font-light">Ecosystem.</span>
           </h3>
           <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-2xl mx-auto tracking-wide">
-            A comprehensive suite of system modules designed to elevate your brand&apos;s digital infrastructure. Engineered for scale, speed, and absolute calm.
+            We don&apos;t build pages. We engineer structured digital systems optimized for performance, clarity, and conversion.
           </p>
         </PhysicalReveal>
 
