@@ -17,8 +17,23 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "HELYRO OS | Software Engineering Excellence",
-  description: "Luxury frontend engineering, living system design, and physical motion architectures.",
+  title: "HELYRO OS | Elite Software Engineering & Digital Systems",
+  description: "Luxury frontend engineering, scalable architecture, and physical motion architectures. We design digital systems that scale, convert, and endure.",
+  keywords: ["Software Engineering", "Frontend Development", "UX/UI Design", "Scalable Systems", "Motion Design", "Next.js", "HELYRO"],
+  authors: [{ name: "HELYRO Team" }],
+  openGraph: {
+    title: "HELYRO OS | Elite Software Engineering",
+    description: "Engineering digital systems that scale, convert, and endure.",
+    url: "https://helyro.com",
+    siteName: "HELYRO OS",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HELYRO OS | Elite Software Engineering",
+    description: "Luxury digital systems for modern enterprises.",
+  },
   icons: {
     icon: "/icon.png",
     apple: "/icon.png",
