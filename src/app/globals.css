@@ -89,17 +89,24 @@
   --dna-spacing: 0.5rem;
 }
 
-/* Custom Scrollbar */
+/* Elite Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: #010101;
 }
 ::-webkit-scrollbar-thumb {
-  background: #222;
-  border-radius: 0;
+  background: #1a1a1a;
+  border-radius: 10px;
+  border: 1px solid #010101;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #444;
+  background: #262626;
+}
+
+/* Firefox Support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1a1a1a #010101;
 }

@@ -35,10 +35,11 @@ export default function CustomCursor() {
 
     const handleMouseMove = (e: MouseEvent) => {
       // Calculate velocity for squash/stretch
-      const vx = Math.abs(e.clientX - lastX);
-      const vy = Math.abs(e.clientY - lastY);
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      const velocity = Math.sqrt(dx * dx + dy * dy);
 
-      const stretch = Math.min(vx / 100, 0.4);
+      const stretch = Math.min(velocity / 100, 0.4);
       scaleX.set(1 + stretch);
       scaleY.set(1 - stretch / 2);
 
@@ -48,7 +49,7 @@ export default function CustomCursor() {
       // Update last positions after calculation
       lastX = e.clientX;
       lastY = e.clientY;
-      if (vx > 1 || vy > 1) {
+      if (velocity > 1) {
         rotate.set(angle);
       }
 
