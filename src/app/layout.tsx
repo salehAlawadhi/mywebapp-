@@ -1,12 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Cairo } from "next/font/google";
 import "./globals.css";
 import NeuralBackground from "@/components/ui/NeuralBackground";
 import CustomCursor from "@/components/ui/CustomCursor";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
   display: "swap",
 });
 
@@ -37,11 +44,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" style={{ colorScheme: 'dark' }}>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[#010101] text-zinc-100 min-h-screen selection:bg-white/10`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${cairo.variable} antialiased bg-[#010101] text-zinc-100 min-h-screen selection:bg-white/10 font-sans`}
       >
-        <NeuralBackground />
-        <CustomCursor />
-        {children}
+        <LanguageProvider>
+          <NeuralBackground />
+          <CustomCursor />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

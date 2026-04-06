@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+html[lang="ar"] {
+  font-family: var(--font-cairo), sans-serif;
+}
+
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] h6,
+html[lang="ar"] p,
+html[lang="ar"] span,
+html[lang="ar"] div,
+html[lang="ar"] a,
+html[lang="ar"] button,
+html[lang="ar"] input,
+html[lang="ar"] textarea,
+html[lang="ar"] label {
+  font-family: var(--font-cairo), sans-serif !important;
+}
+
 @theme {
   --color-background: #010101; /* Even darker, pure obsidian */
   --color-foreground: #ededed;

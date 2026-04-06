@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Activity, Layers, Disc } from "lucide-react";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/LanguageContext";
 
 // Lazy Load Three.js Heavy Core Component
 const RefractiveCore = dynamic(() => import("@/components/ui/RefractiveCore"), {
@@ -28,6 +29,7 @@ export default function DnaChamberSection() {
   const [simText, setSimText] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const chamberRef = useRef<HTMLDivElement>(null);
+  const { lang, t } = useLanguage();
 
   useEffect(() => {
     if (!chamberRef.current || !containerRef.current) return;
@@ -62,20 +64,12 @@ export default function DnaChamberSection() {
     // Trigger subtle signal movement on type (Simulation logic)
     if (!isSimulating && e.target.value.length > 0) {
       setIsSimulating(true);
-      setSimText("Analyzing visual structure...");
-
-      setTimeout(() => {
-        setSimText("Building layout parameters...");
-      }, 1500);
-
-      setTimeout(() => {
-        setSimText("Applying motion identity...");
-      }, 3000);
+      setSimText(t.dna[lang].simulating);
 
       setTimeout(() => {
         setIsSimulating(false);
         setSimText("");
-      }, 4500);
+      }, 3000);
     }
   };
 
@@ -99,13 +93,13 @@ export default function DnaChamberSection() {
       {/* Title Header - Outside Chamber Scope */}
       <div className="absolute top-40 w-full px-4 text-center z-20 flex flex-col items-center gap-6">
         <h2 className="text-[10px] font-bold tracking-[0.4em] text-cyan-500/50 uppercase drop-shadow-[0_0_15px_rgba(0,200,255,0.3)]">
-          DNA CHAMBER
+          {t.dna[lang].tag}
         </h2>
         <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] text-center leading-[1.05]">
-          Simulate your system <br className="hidden md:block"/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">before it exists.</span>
+          {t.dna[lang].title_line1} <br className="hidden md:block"/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">{t.dna[lang].title_line2}</span>
         </h3>
         <p className="text-xs md:text-sm text-zinc-500 tracking-[0.2em] font-light uppercase mt-4">
-          Analyze → Build → Apply → Deploy
+          {t.dna[lang].subtitle}
         </p>
       </div>
 
@@ -157,7 +151,7 @@ export default function DnaChamberSection() {
               }}
             />
             <label className="absolute left-1/2 -translate-x-1/2 top-4 text-zinc-600 font-light tracking-[0.3em] uppercase text-sm transition-all duration-[1000ms] ease-out peer-focus:-top-10 peer-focus:text-xs peer-focus:text-cyan-500/70 peer-valid:-top-10 peer-valid:text-xs peer-valid:text-zinc-500 cursor-text pointer-events-none whitespace-nowrap">
-              Initialize Uplink (Type Name)
+              {t.dna[lang].input_label}
             </label>
 
             {/* Input Energy Feedback Glow - appears gradually, less intense */}
@@ -190,7 +184,7 @@ export default function DnaChamberSection() {
                   className="flex items-center gap-3 text-zinc-600"
                 >
                   <Disc className="w-4 h-4" />
-                  <span className="text-xs tracking-[0.2em] uppercase">Awaiting Input</span>
+                  <span className="text-xs tracking-[0.2em] uppercase">{t.dna[lang].awaiting}</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -202,19 +196,19 @@ export default function DnaChamberSection() {
               active={activeMode === "precision"}
               onClick={() => handleModeChange("precision")}
               icon={<Sparkles className="w-4 h-4" />}
-              label="Precision Mode"
+              label={t.dna[lang].btn_precision}
             />
             <ModeButton
               active={activeMode === "luxe"}
               onClick={() => handleModeChange("luxe")}
               icon={<Layers className="w-4 h-4" />}
-              label="Luxe Mode"
+              label={t.dna[lang].btn_luxe}
             />
             <ModeButton
               active={activeMode === "velocity"}
               onClick={() => handleModeChange("velocity")}
               icon={<Activity className="w-4 h-4" />}
-              label="Velocity Mode"
+              label={t.dna[lang].btn_velocity}
             />
           </div>
 

@@ -5,6 +5,7 @@ import { useRef, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import PhysicalReveal from "@/components/ui/PhysicalReveal";
+import { useLanguage } from "@/lib/LanguageContext";
 
 const projects = [
   {
@@ -142,7 +143,7 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
 
           <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
              <div className="bg-white/10 backdrop-blur-2xl rounded-full px-8 py-5 border border-white/20 text-white flex items-center gap-4 shadow-[0_0_50px_rgba(255,255,255,0.1)]">
-                <span className="label-text">View Application</span>
+                <span className="label-text">Explore</span>
                 <ArrowUpRight className="w-4 h-4" />
              </div>
           </div>
@@ -170,6 +171,8 @@ function PortfolioCard({ project, index, yTransform }: { project: typeof project
 
 export default function PortfolioSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { lang, t } = useLanguage();
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -184,7 +187,7 @@ export default function PortfolioSection() {
   const yTransform = useTransform(smoothProgress, [0, 1], ["20%", "-20%"]);
 
   return (
-    <section ref={containerRef} className="relative min-h-[300vh] py-40 flex flex-col justify-start items-center overflow-hidden bg-transparent">
+    <section id="work" ref={containerRef} className="relative min-h-[300vh] py-40 flex flex-col justify-start items-center overflow-hidden bg-transparent">
 
       {/* Sticky Container for Horizontal Scroll */}
       <div className="w-full max-w-[100vw] px-4 md:px-8 z-10 sticky top-[15vh]">
@@ -193,19 +196,19 @@ export default function PortfolioSection() {
         <PhysicalReveal direction="up" amount={50} className="max-w-[85rem] mx-auto flex flex-col md:flex-row md:items-end justify-between mb-32 gap-10">
           <div className="space-y-8">
             <h2 className="text-[10px] font-bold tracking-[0.4em] text-zinc-600 uppercase">
-              {"" /* Topology Archive */}
+              {t.portfolio[lang].tag}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-[5rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
-              Selected <br className="hidden md:block"/>
-              <span className="italic text-zinc-500 font-light">Systems.</span>
+              {t.portfolio[lang].title_line1} <br className="hidden md:block"/>
+              <span className="italic text-zinc-500 font-light">{t.portfolio[lang].title_line2}</span>
             </h3>
             <p className="text-sm md:text-base text-zinc-500 font-light font-[family-name:var(--font-inter)] max-w-sm tracking-wide mt-6">
-              A collection of engineered digital products — built for performance, clarity, and growth.
+              {t.portfolio[lang].description}
             </p>
           </div>
 
           <button className="text-zinc-600 hover:text-white transition-colors duration-1000 flex items-center gap-4 group border-b border-white/5 pb-3">
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">View All Projects</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">{t.portfolio[lang].btn_all}</span>
             <ArrowUpRight className="w-4 h-4 transition-transform duration-1000 ease-[0.16,1,0.3,1] group-hover:translate-x-1 group-hover:-translate-y-1" />
           </button>
         </PhysicalReveal>

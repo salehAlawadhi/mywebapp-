@@ -4,9 +4,12 @@ import { useState } from "react";
 import { ArrowRight, Mail, MapPin, CheckCircle2 } from "lucide-react";
 import PhysicalReveal from "@/components/ui/PhysicalReveal";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/lib/LanguageContext";
+import { cn } from "@/lib/utils";
 
 export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { lang, t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-color-void py-40">
+    <section id="contact" className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-color-void py-40">
 
       {/* Decorative Deep Space Blur Background Element (Extremely restrained) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-color-deep-navy rounded-[100%] blur-[250px] pointer-events-none mix-blend-screen opacity-50" />
@@ -28,14 +31,14 @@ export default function ContactSection() {
         <PhysicalReveal direction="left" amount={60} className="flex-1 space-y-20">
           <div className="space-y-10">
             <h2 className="label-text text-color-text-sub">
-              Start a Project
+              {t.contact[lang].title}
             </h2>
             <h3 className="text-5xl md:text-6xl font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
-              Tell us about <br />
-              <span className="italic text-color-text-sub font-light">your vision.</span>
+              {t.contact[lang].subtitle_line1} <br />
+              <span className="italic text-color-text-sub font-light">{t.contact[lang].subtitle_line2}</span>
             </h3>
             <p className="body-lg text-color-text-sub max-w-lg">
-              We&apos;ll engineer the system behind it.
+              {t.contact[lang].desc}
             </p>
           </div>
 
@@ -84,7 +87,7 @@ export default function ContactSection() {
                         htmlFor="name"
                         className="absolute left-0 top-0 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-6 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
                       >
-                        Full Name
+                        {t.contact[lang].label_name}
                       </label>
                     </div>
 
@@ -100,7 +103,7 @@ export default function ContactSection() {
                         htmlFor="email"
                         className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
                       >
-                        Email Address
+                        {t.contact[lang].label_email}
                       </label>
                     </div>
 
@@ -116,7 +119,7 @@ export default function ContactSection() {
                         htmlFor="projectType"
                         className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
                       >
-                        Project Type
+                        {t.contact[lang].label_type}
                       </label>
                     </div>
 
@@ -132,7 +135,7 @@ export default function ContactSection() {
                         htmlFor="message"
                         className="absolute left-0 top-6 text-color-text-sub font-light transition-all duration-[1000ms] peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-color-cyan-logic peer-focus:tracking-[0.2em] peer-focus:uppercase peer-valid:-top-2 peer-valid:text-[10px] peer-valid:text-color-text-ghost peer-valid:tracking-[0.2em] peer-valid:uppercase cursor-text pointer-events-none"
                       >
-                        Message
+                        {t.contact[lang].label_msg}
                       </label>
                     </div>
                   </div>
@@ -141,8 +144,8 @@ export default function ContactSection() {
                     type="submit"
                     className="group/btn relative w-full overflow-hidden bg-color-text-main text-color-obsidian px-10 py-5 rounded-full font-bold tracking-[0.2em] uppercase text-xs mt-16 transition-all duration-[1000ms] hover:bg-white flex items-center justify-center gap-4 hover:scale-[1.01] active:scale-[0.99]"
                   >
-                    <span>Submit Request</span>
-                    <ArrowRight className="w-4 h-4 transition-transform duration-[1000ms] group-hover/btn:translate-x-2" />
+                    <span>{t.contact[lang].btn_submit}</span>
+                    <ArrowRight className={cn("w-4 h-4 transition-transform duration-[1000ms]", lang === 'ar' ? "group-hover/btn:-translate-x-2 rotate-180" : "group-hover/btn:translate-x-2")} />
                   </button>
 
                 </motion.form>
@@ -157,9 +160,9 @@ export default function ContactSection() {
                   <div className="w-20 h-20 rounded-full border border-color-cyan-razor/20 bg-color-cyan-razor/5 flex items-center justify-center text-color-cyan-razor mb-4">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h4 className="headline text-2xl text-color-text-main">Message received.</h4>
+                  <h4 className="headline text-2xl text-color-text-main">{t.contact[lang].success_msg}</h4>
                   <p className="body-md text-color-text-sub tracking-wider">
-                    Response within 24 hours.
+                    {t.contact[lang].success_desc}
                   </p>
                 </motion.div>
               )}
@@ -171,8 +174,8 @@ export default function ContactSection() {
       {/* Refined Footer Branding */}
       <div className="w-full max-w-[85rem] mt-48 pt-12 border-t border-color-glass-border flex flex-col md:flex-row items-center justify-between gap-8 text-color-text-sub label-text z-10">
         <div className="flex flex-col gap-2">
-           <p className="tracking-widest">© {new Date().getFullYear()} HELYRO OS. ALL RIGHTS RESERVED.</p>
-           <p className="tracking-widest text-color-text-main mt-2">Built with precision. Designed to perform.</p>
+           <p className="tracking-widest">{t.contact[lang].footer_rights}</p>
+           <p className="tracking-widest text-color-text-main mt-2">{t.contact[lang].footer_brand}</p>
         </div>
         <div className="flex gap-12">
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-color-text-main transition-colors duration-[1000ms]">GitHub</a>

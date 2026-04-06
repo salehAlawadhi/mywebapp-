@@ -5,36 +5,29 @@ import { Code2, MonitorPlay, Layers, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React, { useRef, useEffect } from "react";
 import PhysicalReveal from "@/components/ui/PhysicalReveal";
+import { useLanguage } from "@/lib/LanguageContext";
 
-const skills = [
+const skillConfig = [
   {
-    title: "Structure",
-    description: "Every project is built on solid, scalable architectural foundations.",
     icon: <Layers className="w-5 h-5 text-indigo-400" />,
     delay: 0.1,
   },
   {
-    title: "Performance",
-    description: "Ensuring high-speed load times and optimized runtime efficiency.",
     icon: <Cpu className="w-5 h-5 text-emerald-400" />,
     delay: 0.2,
   },
   {
-    title: "Scalability",
-    description: "Engineering systems designed to handle exponential future growth.",
     icon: <MonitorPlay className="w-5 h-5 text-amber-400" />,
     delay: 0.3,
   },
   {
-    title: "Growth",
-    description: "Delivering measurable, data-driven business results and conversions.",
     icon: <Code2 className="w-5 h-5 text-rose-400" />,
     delay: 0.4,
   },
 ];
 
 // Interactive 3D Tilt Card Component (Floating Intelligence)
-function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) {
+function TiltCard({ skill, config, index }: { skill: { title: string, description: string }, config: typeof skillConfig[0], index: number }) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Mouse tracking values
@@ -91,7 +84,7 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
       initial={{ opacity: 0, y: 50, filter: "blur(20px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1.8, delay: skill.delay, ease: [0.22, 1, 0.36, 1] }} // Slower, softer ease
+      transition={{ duration: 1.8, delay: config.delay, ease: [0.22, 1, 0.36, 1] }} // Slower, softer ease
       style={{
         rotateX,
         rotateY,
@@ -114,7 +107,7 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
         style={{ transform: "translateZ(40px)" }} // Physical pop out effect
       >
         <div className="p-4 bg-[#010101] rounded-2xl w-fit border border-white/[0.03] shadow-inner backdrop-blur-3xl">
-          {skill.icon}
+          {config.icon}
         </div>
 
         <div className="space-y-4 relative z-10 mt-auto">
@@ -133,6 +126,7 @@ function TiltCard({ skill, index }: { skill: typeof skills[0], index: number }) 
 export default function AboutSection() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const { lang, t } = useLanguage();
 
   useEffect(() => {
     const handleMouse = (e: MouseEvent) => {
@@ -148,7 +142,7 @@ export default function AboutSection() {
   const bgY = useSpring(useTransform(mouseY, [-500, 500], [30, -30]), { damping: 100, stiffness: 20 });
 
   return (
-    <section className="relative min-h-[120vh] py-40 flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-transparent">
+    <section id="about" className="relative min-h-[120vh] py-40 flex flex-col justify-center items-center overflow-hidden px-4 md:px-8 bg-transparent">
 
       {/* Majestic Floating Background Elements */}
       <motion.div style={{ x: bgX, y: bgY }} className="absolute inset-0 z-0 pointer-events-none">
@@ -162,35 +156,35 @@ export default function AboutSection() {
         <PhysicalReveal className="flex-1 space-y-14 lg:pr-16" direction="left" amount={60}>
           <div className="space-y-8">
             <h2 className="text-xs font-bold tracking-[0.3em] text-zinc-600 uppercase">
-              {"" /* System Intelligence */}
+              {t.about[lang].tag}
             </h2>
             <h3 className="text-5xl md:text-6xl lg:text-[5rem] font-bold tracking-tight text-zinc-100 font-[family-name:var(--font-space-grotesk)] leading-[1.05]">
-              We approach digital products <br className="hidden md:block"/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">as systems.</span>
+              {t.about[lang].title_line1} <br className="hidden md:block"/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-800 font-light italic">{t.about[lang].title_line2}</span>
             </h3>
           </div>
 
           <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-[family-name:var(--font-inter)] font-light max-w-xl tracking-wide">
-            We don&apos;t just design experiences. We engineer environments that evolve. Every project is built on structure, performance, scalability, and measurable growth.
+            {t.about[lang].description}
           </p>
 
           <div className="pt-10 flex gap-12">
             <div className="flex flex-col gap-3">
-              <span className="text-5xl font-bold text-zinc-200 font-[family-name:var(--font-space-grotesk)]">V.12</span>
-              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">System Architecture</span>
+              <span className="text-5xl font-bold text-zinc-200 font-[family-name:var(--font-space-grotesk)]">{t.about[lang].stat1_value}</span>
+              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">{t.about[lang].stat1_label}</span>
             </div>
             <div className="w-px h-20 bg-white/[0.05]" />
             <div className="flex flex-col gap-3">
-              <span className="text-5xl font-bold text-zinc-200 font-[family-name:var(--font-space-grotesk)]">∞</span>
-              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">Measurable Growth</span>
+              <span className="text-5xl font-bold text-zinc-200 font-[family-name:var(--font-space-grotesk)]">{t.about[lang].stat2_value}</span>
+              <span className="text-[10px] text-zinc-600 uppercase tracking-[0.25em] font-medium">{t.about[lang].stat2_label}</span>
             </div>
           </div>
         </PhysicalReveal>
 
         {/* Right Side: 3D Floating Glass Cards */}
         <div className="flex-1 w-full max-w-2xl relative grid grid-cols-1 sm:grid-cols-2 gap-8" style={{ perspective: "1500px" }}>
-          {skills.map((skill, index) => (
-            <TiltCard key={index} skill={skill} index={index} />
+          {t.about[lang].skills.map((skill, index) => (
+            <TiltCard key={index} skill={skill} config={skillConfig[index]} index={index} />
           ))}
         </div>
       </div>
