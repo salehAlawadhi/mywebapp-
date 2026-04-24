@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #FAFAFA; /* Off-white, extremely slight warmth */
-  --color-foreground: #111111; /* Charcoal black */
+  --color-background: #050505; /* Deep luxury black */
+  --color-foreground: #FAFAFA; /* Off-white text */
 
-  --color-primary: #1A365D; /* Deep Blue / Navy */
-  --color-primary-foreground: #FFFFFF;
+  --color-primary: #FFFFFF;
+  --color-primary-foreground: #000000;
 
   --color-accent: #06B6D4; /* Cyan / Teal accent */
   --color-accent-foreground: #FFFFFF;
 
-  --color-accent-secondary: #10B981; /* Green accent */
+  --color-accent-secondary: #25D366; /* WhatsApp Green accent */
 
-  --color-muted: #F3F4F6;
-  --color-muted-foreground: #6B7280;
+  --color-muted: #1A1A1A;
+  --color-muted-foreground: #A1A1AA;
 
-  --color-border: #E5E7EB;
-  --color-input: #F9FAFB;
-  --color-ring: #1A365D;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-input: #111111;
+  --color-ring: #06B6D4;
 
-  --font-sans: var(--font-cairo), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: var(--font-cairo), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -27,58 +27,37 @@
     @apply border-border;
   }
   html {
-    /* Optimize font rendering and provide smooth base behavior */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-background text-foreground antialiased overflow-x-hidden selection:bg-primary/10 selection:text-primary;
-    overscroll-behavior-y: none;
+    @apply bg-background text-foreground antialiased selection:bg-white/20 selection:text-white;
+    /* Removed overflow-x-hidden here as the Orchestrator handles it dynamically */
   }
 }
 
 @layer utilities {
-  .glass-card {
-    @apply bg-white/80 border border-border backdrop-blur-xl rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300;
-  }
-
-  .glass-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 border border-transparent shadow-sm transition-all duration-300 ease-out;
-  }
-
-  .glass-button-outline {
-    @apply bg-transparent text-primary border border-primary hover:bg-primary/5 transition-all duration-300 ease-out;
-  }
-}
-
-/* Custom Scrollbar (Clean & Subtle) */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-background);
-}
-::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
-}
-
-@layer utilities {
-  /* Premium Hover Effect */
   .hover-lift {
-    @apply transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5;
-  }
-
-  /* Subtle Glow on dark elements */
-  .glow-shadow {
-    box-shadow: 0 0 40px -10px rgba(26, 54, 93, 0.15);
+    @apply transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2;
   }
 
   .glow-shadow-accent {
-    box-shadow: 0 0 30px -5px rgba(37, 211, 102, 0.4); /* WhatsApp green glow */
+    box-shadow: 0 0 30px -5px rgba(37, 211, 102, 0.3);
   }
+}
+
+/* Elite Thin Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }

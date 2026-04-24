@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" style={{ colorScheme: 'light' }}>
+    <html lang="ar" dir="rtl" style={{ colorScheme: "dark" }}>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${cairo.variable} antialiased bg-background text-foreground min-h-screen font-sans`}
       >
