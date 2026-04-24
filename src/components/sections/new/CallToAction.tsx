@@ -1,10 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
 export default function CallToAction() {
+  const phoneNumber = "+966500000000"; // Replace with actual number
+  const message = encodeURIComponent("مرحباً، أريد البدء بمشروع جديد.");
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
   return (
     <section className="w-full py-24 px-4 bg-primary text-primary-foreground relative overflow-hidden">
       {/* Decorative subtle background shape */}
@@ -26,7 +29,7 @@ export default function CallToAction() {
           transition={{ delay: 0.1 }}
           className="text-primary-foreground/80 text-lg md:text-xl mb-10 max-w-2xl"
         >
-          نحن هنا لبناء حلول تقنية تعزز من مبيعاتك وتختصر المسافة بينك وبين عملائك. ابدأ معنا اليوم.
+          تواصل معنا مباشرة عبر واتساب للبدء في تحويل أفكارك إلى واقع رقمي يحقق لك أرباحاً.
         </motion.p>
 
         <motion.div
@@ -34,15 +37,12 @@ export default function CallToAction() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+          className="flex justify-center w-full"
         >
-          <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="bg-white text-primary hover:bg-white/90 px-8 py-4 rounded-xl font-bold text-lg transition-colors w-full sm:w-auto flex items-center justify-center gap-2 group">
-            <MessageCircle className="w-5 h-5" />
-            تواصل عبر الواتساب
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="bg-[#25D366] text-white hover:bg-[#20bd5a] px-10 py-5 rounded-2xl font-bold text-xl transition-all w-full sm:w-auto flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 hover-lift glow-shadow-accent group">
+            <MessageCircle className="w-7 h-7" />
+            تواصل عبر الواتساب الآن
           </a>
-          <Link href="/start-project" className="bg-transparent text-white border border-white/30 hover:bg-white/10 px-8 py-4 rounded-xl font-medium text-lg transition-colors w-full sm:w-auto text-center">
-            ابدأ مشروعك
-          </Link>
         </motion.div>
       </div>
     </section>

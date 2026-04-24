@@ -2,6 +2,7 @@ import Header from "@/components/sections/new/Header";
 import SubpageHeader from "@/components/sections/new/SubpageHeader";
 import CallToAction from "@/components/sections/new/CallToAction";
 import { Monitor, Briefcase, Users, LayoutTemplate } from "lucide-react";
+import Image from "next/image";
 
 export const metadata = {
   title: "مواقع الشركات | HELYRO OS",
@@ -30,6 +31,8 @@ const packages = [
 ];
 
 export default function CompaniesPage() {
+  const whatsappUrl = `https://wa.me/+966500000000?text=${encodeURIComponent("مرحباً، أريد البدء بمشروع موقع للشركة.")}`;
+
   return (
     <div className="flex flex-col items-center justify-start min-h-screen w-full selection:bg-primary/10 selection:text-primary-foreground">
       <Header />
@@ -38,6 +41,32 @@ export default function CompaniesPage() {
           title="مواقع الشركات والأعمال"
           description="موقع شركة واضح واحترافي يشرح خدماتك بسرعة ويقوي حضورك الرقمي."
         />
+
+        {/* Visual Proof Section */}
+        <section className="w-full py-16 px-4 bg-muted/30 border-b border-border/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <div className="w-full md:w-1/2 text-right">
+                <h2 className="text-3xl font-bold mb-6">واجهة احترافية تعكس ثقة عملائك</h2>
+                <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+                  نحن نصمم مواقع للشركات تركز على شيء واحد: تحويل الزائر إلى عميل حقيقي. من خلال تصميم نظيف، وسرعة تحميل فائقة، وأزرار تواصل واضحة ومباشرة.
+                </p>
+                <a href={whatsappUrl} className="inline-block bg-[#25D366] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#20bd5a] transition-all hover-lift glow-shadow-accent">
+                  اطلب موقعك الآن عبر واتساب
+                </a>
+              </div>
+              <div className="w-full md:w-1/2 relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-xl border border-border/50 bg-white">
+                <Image
+                  src="/portfolio/quip.png"
+                  alt="نموذج موقع شركة"
+                  fill priority loading="eager"
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
 
         <section className="w-full py-20 px-4">
           <div className="max-w-6xl mx-auto">
@@ -73,7 +102,7 @@ export default function CompaniesPage() {
                       </li>
                     ))}
                   </ul>
-                  <button className="glass-button w-full py-3 rounded-lg font-medium">ابدأ مشروعك</button>
+                  <a href={whatsappUrl} className="glass-button w-full py-3 rounded-lg font-medium text-center block">تواصل للبدء</a>
                 </div>
               ))}
             </div>

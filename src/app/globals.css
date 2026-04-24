@@ -66,3 +66,19 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+@layer utilities {
+  /* Premium Hover Effect */
+  .hover-lift {
+    @apply transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5;
+  }
+
+  /* Subtle Glow on dark elements */
+  .glow-shadow {
+    box-shadow: 0 0 40px -10px rgba(26, 54, 93, 0.15);
+  }
+
+  .glow-shadow-accent {
+    box-shadow: 0 0 30px -5px rgba(37, 211, 102, 0.4); /* WhatsApp green glow */
+  }
+}

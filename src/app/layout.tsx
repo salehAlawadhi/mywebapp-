@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, Cairo } from "next/font/google";
 import "./globals.css";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,14 +39,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Set dir="rtl" and lang="ar" as default for the Saudi market strategy.
-  // Removed LanguageProvider as we are focusing firmly on Arabic first now.
   return (
     <html lang="ar" dir="rtl" style={{ colorScheme: 'light' }}>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${cairo.variable} antialiased bg-background text-foreground min-h-screen font-sans`}
       >
         {children}
+        <WhatsAppButton />
       </body>
     </html>
   );
