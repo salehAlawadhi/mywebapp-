@@ -1,7 +1,6 @@
 import Header from "@/components/sections/new/Header";
-import HeroSection from "@/components/sections/new/Hero";
-import Showcase from "@/components/sections/new/Showcase";
-import ServicesGrid from "@/components/sections/new/ServicesGrid";
+import MainSimulator from "@/components/simulators/MainSimulator";
+import PortfolioGrid from "@/components/sections/new/PortfolioGrid";
 import CallToAction from "@/components/sections/new/CallToAction";
 
 export default function Home() {
@@ -9,9 +8,8 @@ export default function Home() {
     <div className="flex flex-col items-center justify-start min-h-screen w-full selection:bg-primary/10 selection:text-primary-foreground relative">
       <Header />
       <main className="w-full flex flex-col items-center flex-1">
-        <HeroSection />
-        <Showcase />
-        <ServicesGrid />
+        <MainSimulator />
+        <PortfolioGrid />
         <CallToAction />
       </main>
 
