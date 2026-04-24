@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { MessageCircle } from "lucide-react";
 
 export default function CallToAction() {
   return (
@@ -34,12 +36,13 @@ export default function CallToAction() {
           transition={{ delay: 0.2 }}
           className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
         >
-          <button className="bg-white text-primary hover:bg-white/90 px-8 py-4 rounded-xl font-bold text-lg transition-colors w-full sm:w-auto">
+          <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="bg-white text-primary hover:bg-white/90 px-8 py-4 rounded-xl font-bold text-lg transition-colors w-full sm:w-auto flex items-center justify-center gap-2 group">
+            <MessageCircle className="w-5 h-5" />
             تواصل عبر الواتساب
-          </button>
-          <button className="bg-transparent text-white border border-white/30 hover:bg-white/10 px-8 py-4 rounded-xl font-medium text-lg transition-colors w-full sm:w-auto">
-            احجز استشارة مجانية
-          </button>
+          </a>
+          <Link href="/start-project" className="bg-transparent text-white border border-white/30 hover:bg-white/10 px-8 py-4 rounded-xl font-medium text-lg transition-colors w-full sm:w-auto text-center">
+            ابدأ مشروعك
+          </Link>
         </motion.div>
       </div>
     </section>

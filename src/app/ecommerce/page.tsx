@@ -36,7 +36,7 @@ export default function EcommercePage() {
       <main className="w-full flex flex-col items-center flex-1">
         <SubpageHeader
           title="المتاجر الإلكترونية"
-          description="نساعدك على إطلاق متجرك بسرعة على المنصات المحلية (سلة / زد)، أو نخصص مظهر متجرك الحالي، أو نبني لك متجراً خاصاً لزيادة مبيعاتك وتسهيل رحلة العميل."
+          description="متجر مرتب ومخصص يرفع وضوح المنتجات ويحسن تجربة الشراء."
         />
 
         <section className="w-full py-20 px-4">

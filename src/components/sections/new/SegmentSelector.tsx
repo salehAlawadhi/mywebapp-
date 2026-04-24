@@ -2,11 +2,12 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Store, Building2, ShoppingCart, TrendingUp } from "lucide-react";
+import { Building2, Store, ShoppingCart, TrendingUp } from "lucide-react";
 
+// Reordered according to strategy: 1. Companies 2. Restaurants 3. Ecommerce
 const segments = [
-  { id: "restaurant", label: "أنا مطعم", icon: Store, path: "/restaurants" },
   { id: "company", label: "أنا شركة", icon: Building2, path: "/companies" },
+  { id: "restaurant", label: "أنا مطعم", icon: Store, path: "/restaurants" },
   { id: "ecommerce", label: "متجر إلكتروني", icon: ShoppingCart, path: "/ecommerce" },
   { id: "digital", label: "تطوير رقمي", icon: TrendingUp, path: "/digital" },
 ];

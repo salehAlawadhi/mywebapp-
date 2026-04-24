@@ -36,7 +36,7 @@ export default function CompaniesPage() {
       <main className="w-full flex flex-col items-center flex-1">
         <SubpageHeader
           title="مواقع الشركات والأعمال"
-          description="لا تجعل العميل يضيع في تفاصيل معقدة. نصمم موقعاً يوضح قيمتك بسرعة، ويبني الثقة، ويوجه العميل للتواصل معك مباشرة."
+          description="موقع شركة واضح واحترافي يشرح خدماتك بسرعة ويقوي حضورك الرقمي."
         />
 
         <section className="w-full py-20 px-4">

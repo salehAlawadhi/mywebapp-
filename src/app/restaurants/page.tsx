@@ -36,7 +36,7 @@ export default function RestaurantsPage() {
       <main className="w-full flex flex-col items-center flex-1">
         <SubpageHeader
           title="حلول المطاعم والمقاهي"
-          description="نصمم منيو رقمي ذكي وسريع يفتح الشهية، مع إمكانية إضافة طلبات مباشرة وربط بخرائط الفروع لتعزيز تجربة عملائك."
+          description="منيو QR سريع ومرتب يسهل على العميل التصفح ويعكس جودة المكان."
         />
 
         <section className="w-full py-20 px-4">
