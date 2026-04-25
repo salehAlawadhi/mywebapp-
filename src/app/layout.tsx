@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, Cairo } from "next/font/google";
 import "./globals.css";
-import NeuralBackground from "@/components/ui/NeuralBackground";
-import CustomCursor from "@/components/ui/CustomCursor";
-import { LanguageProvider } from "@/lib/LanguageContext";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,8 +22,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "HELYRO OS | Software Engineering Excellence",
-  description: "Luxury frontend engineering, living system design, and physical motion architectures.",
+  title: "HELYRO OS | حلول رقمية سريعة ومبتكرة",
+  description: "نصمم حلولاً رقمية سريعة، واضحة، وعملية: مواقع شركات، متاجر إلكترونية، منيو QR للمطاعم، وصفحات هبوط.",
   icons: {
     icon: "/icon.png",
     apple: "/icon.png",
@@ -33,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#010101",
+  themeColor: "#FAFAFA",
 };
 
 export default function RootLayout({
@@ -42,15 +40,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" style={{ colorScheme: 'dark' }}>
+    <html lang="ar" dir="rtl" style={{ colorScheme: "dark" }}>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${cairo.variable} antialiased bg-[#010101] text-zinc-100 min-h-screen selection:bg-white/10 font-sans`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${cairo.variable} antialiased bg-background text-foreground min-h-screen font-sans`}
       >
-        <LanguageProvider>
-          <NeuralBackground />
-          <CustomCursor />
-          {children}
-        </LanguageProvider>
+        {children}
+        <WhatsAppButton />
       </body>
     </html>
   );
