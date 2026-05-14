@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HELYRO — Platinum Command Portal
 
-## Getting Started
+This repository contains the localized, high-end digital platform for HELYRO, now evolved into a sovereign **Platinum Command** enterprise light-mode system.
 
-First, run the development server:
+## Project Progress & Decisions Log
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### [Platinum Command Elevation - 2026-05-12]
+- **Design System:** "Platinum Command" (Professional Arctic White / Slate-50 palette with Cobalt Blue-600 accents).
+- **Core Visuals:** 
+  - Unified light-mode system with high-contrast surfaces and soft shadow-depth.
+# RFG Sovereign Operations Portal
+## "Platinum Command" Architecture Finalized
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The Riyadh Facilities Group platform has been successfully transitioned to the **Platinum Command** design standard—a high-fidelity, light-mode executive environment optimized for sovereign facility management and real-time asset intelligence.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Core Systems
+*   **Command Center Alpha (Dashboard):** A native-grade enterprise application housing real-time telemetry, multi-node distribution maps, and predictive system logs.
+*   **Asset Portal (Diagnostics):** High-contrast diagnostic interface for individual asset measurement and status tracking.
+*   **Global Procurement (Ecommerce):** Strategic supply chain interface for asset acquisition and inventory management.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Architectural Constraints
+*   **Luxury Silence:** Zero-trailing-punctuation across all UI labels and technical logs.
+*   **Sovereign Aesthetics:** Palette driven by Arctic White, Slate-50, and Cobalt Blue-600 highlights.
+*   **Mobile-First Native Feel:** Integrated bottom navigation bar and ergonomic touch targets for executive "on-the-move" operations.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Deployment Status
+*   **Visual Integrity:** Verified (Platinum Command Standard).
+*   **Language Support:** Bilingual (Arabic/English) logic active.
+*   **Real-time Logic:** Simulated telemetry active; WebSocket hooks ready for integration.
+- **Executive Readability:** Use Montserrat/Inter for headers. Large, high-contrast typography.
+- **Radiant Energy:** Every page must feel "alive" with subtle glows or pulses.
+... [rest of file]

@@ -1,37 +1,30 @@
-import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk, Cairo } from "next/font/google";
+import type { Metadata } from "next";
+import { Inter, Cormorant_Garamond, Noto_Naskh_Arabic } from "next/font/google";
 import "./globals.css";
-import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
-const inter = Inter({
-  variable: "--font-inter",
+const inter = Inter({ 
   subsets: ["latin"],
-  display: "swap",
+  variable: "--font-modern",
 });
 
-const cairo = Cairo({
-  variable: "--font-cairo",
-  subsets: ["arabic", "latin"],
-  display: "swap",
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-luxury",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  display: "swap",
+const notoArabic = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-arabic",
 });
 
 export const metadata: Metadata = {
-  title: "HELYRO OS | حلول رقمية سريعة ومبتكرة",
-  description: "نصمم حلولاً رقمية سريعة، واضحة، وعملية: مواقع شركات، متاجر إلكترونية، منيو QR للمطاعم، وصفحات هبوط.",
+  title: "HELYRO | Intelligent Execution",
+  description: "Premium Digital Experience Studio",
   icons: {
     icon: "/icon.png",
-    apple: "/icon.png",
   },
-};
-
-export const viewport: Viewport = {
-  themeColor: "#FAFAFA",
 };
 
 export default function RootLayout({
@@ -40,12 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" style={{ colorScheme: "dark" }}>
-      <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${cairo.variable} antialiased bg-background text-foreground min-h-screen font-sans`}
-      >
+    <html lang="en" className={`${inter.variable} ${cormorant.variable} ${notoArabic.variable}`} suppressHydrationWarning>
+      <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+      </head>
+      <body className="antialiased luxury-gradient min-h-screen relative">
+
         {children}
-        <WhatsAppButton />
       </body>
     </html>
   );

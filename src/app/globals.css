@@ -1,63 +1,192 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #050505; /* Deep luxury black */
-  --color-foreground: #FAFAFA; /* Off-white text */
-
-  --color-primary: #FFFFFF;
-  --color-primary-foreground: #000000;
-
-  --color-accent: #06B6D4; /* Cyan / Teal accent */
-  --color-accent-foreground: #FFFFFF;
-
-  --color-accent-secondary: #25D366; /* WhatsApp Green accent */
-
-  --color-muted: #1A1A1A;
-  --color-muted-foreground: #A1A1AA;
-
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-input: #111111;
-  --color-ring: #06B6D4;
-
-  --font-sans: var(--font-cairo), ui-sans-serif, system-ui, sans-serif;
+  /* HELYRO INTELLIGENT NAVY - PROFESSIONAL & CORPORATE */
+  --color-helyro-navy: #0B1120;
+  --color-helyro-deep: #070D18;
+  --color-helyro-panel: #16243D;
+  --color-helyro-steel: #2D436B;
+  --color-helyro-accent: #476B9E;
+  --color-helyro-silver: #8FA6C7;
+  --color-helyro-white: #E6EBF2;
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-white/20 selection:text-white;
-    /* Removed overflow-x-hidden here as the Orchestrator handles it dynamically */
+    background-color: var(--color-helyro-navy);
+    color: var(--color-helyro-white);
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
   }
 }
 
 @layer utilities {
-  .hover-lift {
-    @apply transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2;
+  /* INTELLIGENT NAVY UTILITIES */
+  .navy-radiance {
+    background: 
+      radial-gradient(circle at 50% -20%, rgba(71, 107, 158, 0.15) 0%, transparent 60%),
+      var(--color-helyro-navy);
+    background-attachment: fixed;
   }
 
-  .glow-shadow-accent {
-    box-shadow: 0 0 30px -5px rgba(37, 211, 102, 0.3);
+  .soft-glow {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(116, 156, 216, 0.12) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
   }
-}
 
-/* Elite Thin Scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
+  .hero-daylight {
+    background:
+      radial-gradient(circle at 70% 28%, rgba(178, 207, 255, 0.26) 0%, rgba(178, 207, 255, 0.08) 26%, transparent 52%),
+      radial-gradient(circle at 18% 72%, rgba(255, 255, 255, 0.12) 0%, transparent 42%),
+      linear-gradient(180deg, rgba(11, 17, 32, 0.06) 0%, rgba(11, 17, 32, 0.32) 100%);
+  }
+
+  .hero-orbit {
+    position: absolute;
+    width: 28rem;
+    height: 28rem;
+    right: 7%;
+    top: 16%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(151, 188, 255, 0.22), transparent 62%);
+    filter: blur(10px);
+    animation: hero-float 9s ease-in-out infinite alternate;
+    opacity: 0.8;
+  }
+
+  .hero-scan {
+    position: absolute;
+    inset: auto 8% 18% auto;
+    width: 28rem;
+    height: 0.18rem;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), rgba(101, 146, 214, 0.25), transparent);
+    box-shadow: 0 0 34px rgba(151, 188, 255, 0.32);
+    animation: hero-scan 4.8s ease-in-out infinite;
+    opacity: 0.55;
+  }
+
+  .typewriter-line {
+    display: block;
+    min-height: 2.4rem;
+  }
+
+  .typewriter-caret {
+    display: inline-block;
+    width: 0.12em;
+    height: 1em;
+    margin-inline-start: 0.18em;
+    background: currentColor;
+    animation: caret-blink 900ms steps(2, start) infinite;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  @keyframes hero-float {
+    0% { transform: translate3d(0, 0, 0) scale(0.96); }
+    100% { transform: translate3d(-2rem, 1.4rem, 0) scale(1.06); }
+  }
+
+  @keyframes hero-scan {
+    0%, 100% { transform: translate3d(0, 0, 0) scaleX(0.72); opacity: 0.25; }
+    45% { transform: translate3d(-4rem, -1.2rem, 0) scaleX(1); opacity: 0.72; }
+  }
+
+  @keyframes caret-blink {
+    0%, 45% { opacity: 1; }
+    46%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-orbit,
+    .hero-scan,
+    .typewriter-caret {
+      animation: none;
+    }
+  }
+
+  @keyframes aura-move {
+    0% { transform: translate(-5%, -5%) scale(1); }
+    100% { transform: translate(5%, 5%) scale(1.1); }
+  }
+
+  /* REFINED CRYSTALLINE PANELS */
+  .crystal-panel {
+    background: rgba(22, 36, 61, 0.6);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(143, 166, 199, 0.1);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .crystal-panel:hover {
+    background: rgba(22, 36, 61, 0.8);
+    border-color: rgba(143, 166, 199, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  /* BOLD TYPOGRAPHY - THE SUPREME TEXT */
+  .text-luxury {
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .text-shine-bold {
+    background: linear-gradient(135deg, 
+      #ffffff 0%, 
+      #ffffff 60%, 
+      var(--color-helyro-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: shine-move 8s infinite alternate ease-in-out;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+  }
+
+  @keyframes shine-move {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  /* BUTTONS - MAGNETIC AUTHORITY */
+  .btn-absolute {
+    @apply px-12 py-6 rounded-full font-black uppercase tracking-[0.4em] text-sm transition-all duration-500 relative overflow-hidden;
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: none;
+  }
+
+  .btn-absolute::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .btn-absolute:hover::after {
+    transform: translateX(100%);
+  }
+
+  .btn-absolute:hover {
+    transform: scale(1.05) translateY(-5px);
+    background: var(--color-helyro-accent);
+    color: #ffffff;
+    box-shadow: 0 30px 60px rgba(59, 130, 246, 0.4);
+  }
 }
