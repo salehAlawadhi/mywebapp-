@@ -96,13 +96,13 @@ export default function HelyroHome() {
 
       if (!deleting && letterIndex < phrase.length) {
         letterIndex += 1;
-        timeoutId = setTimeout(tick, 150);
+        timeoutId = setTimeout(tick, 200);
         return;
       }
 
       if (!deleting && letterIndex === phrase.length) {
         deleting = true;
-        timeoutId = setTimeout(tick, 4000);
+        timeoutId = setTimeout(tick, 6000);
         return;
       }
 
@@ -157,9 +157,12 @@ export default function HelyroHome() {
             className={`w-full max-w-6xl ${lang === 'ar' ? 'text-right mr-auto' : 'text-left ml-0'}`}
           >
             <div>
-              <div className="mb-7 flex flex-col gap-3" dir="ltr">
-                <span className="text-4xl md:text-6xl font-black tracking-tighter text-white leading-none">HELYRO</span>
-                <span className="text-sm md:text-base font-black uppercase tracking-[0.36em] text-helyro-accent">Digital Studio</span>
+              <div className="mb-10 flex flex-col md:flex-row items-center md:items-end gap-6" dir="ltr">
+                <img src="/logo.png" alt="HELYRO Logo" className="h-24 w-24 md:h-32 md:w-32 object-contain brightness-0 invert" />
+                <div className="flex flex-col gap-1">
+                  <span className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-none">HELYRO</span>
+                  <span className="text-sm md:text-base font-black uppercase tracking-[0.36em] text-helyro-accent">Digital Studio</span>
+                </div>
               </div>
               <span className="inline-block rounded-full bg-white/8 px-8 py-4 text-helyro-white text-base md:text-xl font-black shadow-xl ring-1 ring-white/10 mb-6">
                 {c.tag}
@@ -174,9 +177,9 @@ export default function HelyroHome() {
                 <span className="block text-sm md:text-base font-black uppercase tracking-[0.22em] text-helyro-accent mb-3">
                   {lang === 'ar' ? 'نجهز لك' : 'Now building'}
                 </span>
-                <span className="typewriter-line text-3xl md:text-5xl font-black text-white leading-[1.05] tracking-tighter">
+                <span className="typewriter-line text-3xl md:text-5xl font-black text-helyro-accent leading-[1.05] tracking-tighter">
                   {typedText}
-                  <span className="typewriter-caret" aria-hidden="true" />
+                  <span className="typewriter-caret bg-helyro-accent" aria-hidden="true" />
                 </span>
               </div>
               <div className="flex flex-col sm:flex-row gap-5 md:gap-8">
@@ -195,20 +198,19 @@ export default function HelyroHome() {
         <div className="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-helyro-accent/5 rounded-full blur-[120px] z-0" />
       </section>
 
-      {/* STRATEGIC ALLIANCES - INTEGRATED PREMUM DESIGN */}
-      <section className="py-32 md:py-48 bg-[#03070E] border-y border-white/5 relative z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-500/5 via-transparent to-transparent opacity-40" />
+      {/* PARTNERS - EXECUTIVE GRID (Light Theme for Clarity) */}
+      <section id="partners" className="py-24 md:py-32 bg-slate-50 relative overflow-hidden">
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12 relative z-10">
-          <div className="text-center mb-24">
-            <span className="text-sm font-black tracking-[0.4em] text-sky-400 uppercase mb-6 block">
+          <div className="text-center mb-16 md:mb-24">
+            <span className="text-xs md:text-sm font-black tracking-[0.4em] text-helyro-navy uppercase mb-4 block">
               {lang === 'ar' ? 'التحالفات الاستراتيجية' : 'Strategic Alliances'}
             </span>
-            <h2 className="text-4xl md:text-7xl font-black tracking-tighter text-white leading-[0.9]">
-              {lang === 'ar' ? 'شركاء النجاح العالميين' : 'Our Global Partners'}
+            <h2 className="text-3xl md:text-6xl font-black tracking-tighter text-slate-900 leading-none">
+              {lang === 'ar' ? 'شركاء النجاح' : 'Our Partners'}
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-12 md:gap-24 items-center">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 items-center">
             {[
               { name: "Through History", logo: "/logos/throughhistory.png", url: "https://throughhistory.org" },
               { name: "New Ways", logo: "/logos/newways.jpeg", url: "https://newways.sa/" },
@@ -221,19 +223,19 @@ export default function HelyroHome() {
                 href={partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="group relative flex flex-col items-center justify-center transition-all duration-700 hover:scale-105"
+                transition={{ delay: i * 0.05 }}
+                className="flex flex-col items-center justify-center"
               >
-                <div className="relative h-20 w-40 md:h-24 md:w-56 flex items-center justify-center p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-white/10 transition-all">
+                <div className="w-full h-32 md:h-40 flex items-center justify-center p-6 rounded-[24px] bg-white border border-slate-200 shadow-sm">
                   <img 
                     src={partner.logo} 
                     alt={partner.name}
-                    className="max-w-full max-h-full object-contain transition-all duration-700"
+                    className="max-w-full max-h-full object-contain"
                   />
                 </div>
-                <span className="text-[8px] font-black tracking-[0.3em] text-white/20 uppercase mt-4 group-hover:text-sky-400 transition-colors duration-500">
+                <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase mt-4">
                   {partner.name}
                 </span>
               </motion.a>

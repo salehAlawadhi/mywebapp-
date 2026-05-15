@@ -79,7 +79,7 @@ export default function ExperienceOrchestrator() {
       <MenuDrawer 
         isOpen={isMenuOpen} 
         onClose={() => setIsMenuOpen(false)} 
-        onNavigate={(view) => setActiveView(view as ViewId)} 
+        lang="en"
       />
       
       <AnimatePresence mode="wait">

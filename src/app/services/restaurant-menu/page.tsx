@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -54,14 +55,12 @@ const dict = {
 const categories = ["All", "Mezze", "Mains", "Grill", "Seafood", "Desserts", "Drinks"];
 
 const menuItems = [
-  { id: "mandi-lamb-royal", category: "Mains", name: "مندي لحم بلدي", nameEn: "Royal Lamb Mandi", desc: "لحم غنم طازج مطهو ببطء في حفرة التنور التقليدية، يقدم مع أرز المندي المدخن والمرق", price: 95, badge: "الأكثر مبيعاً", image: "https://images.unsplash.com/photo-1633436375795-12b3b339712f?q=80&w=800" },
-  { id: "mandi-chicken-traditional", category: "Mains", name: "مندي دجاج فاخر", nameEn: "Premium Chicken Mandi", desc: "دجاج متبل بخلطة المندي السرية ومحمر بعناية، يقدم على طبقة من أرز البسمتي المعطر بالدخان", price: 65, badge: "تقليدي", image: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800" },
-  { id: "kabsa-lamb-najdi", category: "Mains", name: "كبسة لحم نجدية", nameEn: "Najdi Lamb Kabsa", desc: "أرز بسمتي أحمر مطهو بمرق اللحم والبهارات النجدية القوية، مزين بالزبيب واللوز المقرمش", price: 88, badge: "طبق نجد", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800" },
-  { id: "saleeg-lamb-premium", category: "Mains", name: "سليق لحم ملكي", nameEn: "Royal Lamb Saleeg", desc: "أرز أبيض كريمي مطهو بالحليب والسمن البري، يقدم مع قطع اللحم الكبيرة والمسمنة", price: 90, badge: "حجازي", image: "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?q=80&w=800" },
-  { id: "grills-platter", category: "Grill", name: "مشاوي مشكلة ملكية", nameEn: "Royal Grills Platter", desc: "أسياخ كباب لحم، كباب دجاج، شيش طاووق، وريش غنم، تقدم مع خبز التنور والثومية", price: 125, badge: "للمشاركة", image: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=800" },
-  { id: "jareesh-traditional", category: "Mezze", name: "جريش أبيض شعبي", nameEn: "Traditional Jareesh", desc: "جريش قمح مطهو باللبن على نار هادئة لساعات، مزين بكشنة البصل والليمون الأسود", price: 40, badge: "شعبي", image: "https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?q=80&w=800" },
-  { id: "hummus-pine-nuts", category: "Mezze", name: "حمص ناعم بالصنوبر", nameEn: "Smooth Hummus", desc: "حمص بالطحينة محضر يومياً، مغطى بزيت الزيتون البكر وحبات الصنوبر المحمص", price: 32, badge: "مقبلات", image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=800" },
-  { id: "saudi-coffee-hospitality", category: "Drinks", name: "قهوة سعودية أصيلة", nameEn: "Saudi Hospitality Coffee", desc: "قهوة شقراء بالهيل والزعفران، تقدم مع تمر خلاص فاخر وطحينة", price: 35, badge: "ضيافة", image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=800" },
+  { id: "mandi-lamb-royal", category: "Mains", name: "مندي لحم ملكي", nameEn: "Royal Lamb Mandi", desc: "لحم غنم طازج مطهو ببطء في حفرة التنور التقليدية، يقدم مع أرز المندي المدخن والمرق", price: 125, badge: "EXECUTIVE", image: "https://images.unsplash.com/photo-1590593162211-f1f55fbf291b?q=80&w=800" },
+  { id: "mandi-chicken-traditional", category: "Mains", name: "مندي دجاج فاخر", nameEn: "Premium Chicken Mandi", desc: "دجاج متبل بخلطة المندي السرية ومحمر بعناية، يقدم على طبقة من أرز البسمتي المعطر بالدخان", price: 85, badge: "SIGNATURE", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800" },
+  { id: "kabsa-lamb-najdi", category: "Mains", name: "كبسة لحم نجدية", nameEn: "Najdi Lamb Kabsa", desc: "أرز بسمتي أحمر مطهو بمرق اللحم والبهارات النجدية القوية، مزين بالزبيب واللوز المقرمش", price: 95, badge: "TRADITION", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800" },
+  { id: "grills-platter", category: "Grill", name: "مشاوي مشكلة ملكية", nameEn: "Royal Grills Platter", desc: "أسياخ كباب لحم، كباب دجاج، شيش طاووق، وريش غنم، تقدم مع خبز التنور والثومية", price: 145, badge: "FEAST", image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800" },
+  { id: "hummus-pine-nuts", category: "Mezze", name: "حمص ناعم بالصنوبر", nameEn: "Smooth Hummus", desc: "حمص بالطحينة محضر يومياً، مغطى بزيت الزيتون البكر وحبات الصنوبر المحمص", price: 42, badge: "STARTER", image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=800" },
+  { id: "saudi-coffee-hospitality", category: "Drinks", name: "قهوة سعودية ملكية", nameEn: "Royal Saudi Coffee", desc: "قهوة شقراء بالهيل والزعفران، تقدم مع تمر خلاص فاخر وطحينة", price: 45, badge: "HERITAGE", image: "https://images.unsplash.com/photo-1582234372722-50d7ccc30ebd?q=80&w=800" },
 ];
 
 type Cart = Record<string, number>;
@@ -110,62 +109,78 @@ export default function RestaurantMenuServicePage() {
 
   return (
     <main className={`min-h-screen bg-[#f8fafc] text-[#0b1120] ${lang === "ar" ? "rtl" : "ltr"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
-      {/* Header with Back & Language Toggle */}
-      <div className="flex items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 rounded-full bg-[#0b1120]/5 px-5 py-2.5 text-xs font-black tracking-widest text-[#0b1120] transition-all hover:bg-[#0b1120]/10 active:scale-95">
-          <ArrowLeft className={`h-4 w-4 ${lang === "ar" ? "rotate-180" : ""}`} />
-          {t.back}
+      {/* Branded Header */}
+      <div className="flex items-center justify-between px-6 py-8 md:px-12">
+        <Link href="/" className="group flex items-center gap-4 transition-all hover:-translate-x-2">
+          <div className="h-12 w-12 rounded-2xl bg-[#0b1120] flex items-center justify-center text-white shadow-xl">
+            <ArrowLeft className={`h-5 w-5 ${lang === "ar" ? "rotate-180" : ""}`} />
+          </div>
+          <span className="text-sm font-black tracking-widest text-[#0b1120] uppercase">{t.back}</span>
         </Link>
-        <button onClick={() => setLang(lang === "en" ? "ar" : "en")} className="rounded-full bg-white border px-4 py-2 text-[10px] font-black uppercase tracking-tighter shadow-sm hover:bg-gray-50 transition-colors">
-          {lang === "en" ? "العربية" : "ENGLISH"}
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex flex-col items-end mr-4">
+            <span className="text-xl font-black tracking-tighter text-[#0b1120]">HELYRO</span>
+            <span className="text-[8px] font-bold tracking-[0.3em] text-[#94a3b8] uppercase">Dining System</span>
+          </div>
+          <button onClick={() => setLang(lang === "en" ? "ar" : "en")} className="h-12 px-6 rounded-2xl bg-white border border-slate-200 text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-slate-50 transition-all">
+            {lang === "en" ? "العربية" : "ENGLISH"}
+          </button>
+        </div>
       </div>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden px-6 pb-20 pt-16">
-        <div className="relative z-10">
-          <p className="mb-2 text-[10px] font-black uppercase tracking-[0.4em] text-white/60">{t.title}</p>
-          <h1 className="text-5xl font-black tracking-tighter text-white md:text-8xl">Bayan Dining</h1>
+      <div className="relative overflow-hidden px-6 pb-24 pt-20 md:px-12">
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="mb-4 inline-block rounded-full bg-white/10 backdrop-blur-md px-6 py-2 text-[10px] font-black uppercase tracking-[0.4em] text-white">
+              {t.title}
+            </span>
+            <h1 className="text-6xl font-black tracking-tighter text-white md:text-9xl leading-none">HELYRO<br/>Gastronomy</h1>
+          </motion.div>
         </div>
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200" 
+            src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2000" 
             alt="Restaurant Interior" 
-            className="h-full w-full object-cover brightness-[0.45]" 
+            className="h-full w-full object-cover brightness-[0.4]" 
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#f8fafc] via-transparent to-[#0b1120]/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#f8fafc] via-transparent to-transparent" />
         </div>
       </div>
 
       {/* Menu Content */}
       <div className="rounded-t-[40px] bg-white px-6 pb-32 pt-10 shadow-[0_-12px_40px_rgba(0,0,0,0.03)]">
-        <div className="mx-auto max-w-2xl">
-          <div className="mb-6">
-            <h2 className="text-3xl font-black tracking-tighter text-[#0b1120]">{t.menu}</h2>
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 text-center">
+            <h2 className="text-4xl md:text-7xl font-black tracking-tighter text-[#0b1120]">{t.menu}</h2>
           </div>
 
           {/* Search Bar */}
-          <div className="relative mb-8 group">
-            <Search className={`absolute ${lang === "ar" ? "right-4" : "left-4"} top-1/2 h-5 w-5 -translate-y-1/2 text-[#94a3b8] transition-colors group-focus-within:text-[#0b1120]`} />
+          <div className="relative mb-12 group max-w-3xl mx-auto">
+            <Search className={`absolute ${lang === "ar" ? "right-6" : "left-6"} top-1/2 h-6 w-6 -translate-y-1/2 text-[#94a3b8] transition-colors group-focus-within:text-[#0b1120]`} />
             <input 
               type="text" 
               value={searchQuery} 
               onChange={(e) => setSearchQuery(e.target.value)} 
               placeholder={t.search} 
-              className={`w-full rounded-2xl border-none bg-[#f1f5f9] py-4 ${lang === "ar" ? "pr-12 pl-4" : "pl-12 pr-4"} text-sm font-bold text-[#0b1120] transition-all focus:bg-white focus:ring-2 focus:ring-[#0b1120]`} 
+              className={`w-full rounded-full border-none bg-[#f1f5f9] py-6 ${lang === "ar" ? "pr-16 pl-8" : "pl-16 pr-8"} text-base font-bold text-[#0b1120] transition-all focus:bg-white focus:ring-4 focus:ring-[#0b1120]/5 shadow-sm`} 
             />
           </div>
 
           {/* Categories */}
-          <div className="no-scrollbar mb-8 flex gap-2 overflow-x-auto pb-2">
+          <div className="no-scrollbar mb-12 flex flex-wrap justify-center gap-3">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap rounded-full px-6 py-3 text-[11px] font-black uppercase tracking-widest transition-all ${
+                className={`whitespace-nowrap rounded-full px-8 py-4 text-xs font-black uppercase tracking-widest transition-all ${
                   activeCategory === cat 
-                    ? "bg-[#0b1120] text-white shadow-xl shadow-black/20" 
-                    : "bg-[#f1f5f9] text-[#5d6c86] hover:bg-[#e2e8f0]"
+                    ? "bg-[#0b1120] text-white shadow-2xl shadow-black/30 scale-105" 
+                    : "bg-[#f1f5f9] text-[#5d6c86] hover:bg-[#e2e8f0] hover:scale-105"
                 }`}
               >
                 {t[cat.toLowerCase() as keyof typeof t]}
@@ -174,51 +189,53 @@ export default function RestaurantMenuServicePage() {
           </div>
 
           {/* Menu Items Grid */}
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visibleItems.length > 0 ? (
               visibleItems.map((item) => {
                 const qty = cart[item.id] ?? 0;
                 return (
-                  <article key={item.id} className="flex gap-4 rounded-[24px] bg-white p-3 shadow-[0_4px_20px_rgba(0,0,0,0.02)] ring-1 ring-[#eef2f8] transition-all hover:shadow-[0_12px_40px_rgba(11,17,32,0.05)] group">
-                    <div className="relative h-24 w-24 md:h-28 md:w-28 shrink-0 overflow-hidden rounded-[20px] bg-gray-100">
-                      <img src={item.image} alt={lang === "ar" ? item.name : item.nameEn} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <article key={item.id} className="flex flex-col gap-5 rounded-[32px] bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] ring-1 ring-[#eef2f8] transition-all hover:shadow-[0_20px_60px_rgba(11,17,32,0.08)] hover:-translate-y-2 group">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] bg-gray-100">
+                      <img src={item.image} alt={lang === "ar" ? item.name : item.nameEn} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <div className="absolute top-4 left-4">
+                        <span className="rounded-full bg-black/40 backdrop-blur-md px-4 py-2 text-[10px] font-black text-white uppercase tracking-widest">
+                          {item.badge}
+                        </span>
+                      </div>
                     </div>
-                    <div className="min-w-0 flex-1 flex flex-col justify-between py-1">
-                      <div className="flex items-start justify-between gap-3 text-start">
-                        <div className="min-w-0">
-                          <div className="mb-1 flex flex-wrap items-center gap-2">
-                            <h3 className={`text-base md:text-xl font-bold leading-tight text-[#0b1120]`}>
-                              {lang === "ar" ? item.name : item.nameEn}
-                            </h3>
-                            <span className="rounded-full bg-[#0b1120]/5 px-2 py-0.5 text-[9px] font-bold text-[#0b1120] uppercase">
-                              {item.badge}
-                            </span>
-                          </div>
-                          <p className="text-[11px] md:text-sm font-medium text-[#5d6c86] leading-snug line-clamp-2">
-                            {item.desc}
+                    <div className="flex flex-col gap-4 flex-grow">
+                      <div>
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="text-xl md:text-2xl font-black text-[#0b1120]">
+                            {lang === "ar" ? item.name : item.nameEn}
+                          </h3>
+                          <p className="text-lg md:text-xl font-black text-[#0b1120]">
+                            SAR {item.price}
                           </p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm md:text-lg font-black text-[#0b1120] whitespace-nowrap">SAR {item.price}</p>
-                        </div>
+                        <p className="text-sm font-medium text-[#5d6c86] leading-relaxed line-clamp-3">
+                          {item.desc}
+                        </p>
                       </div>
-                      <div className="mt-3 flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#94a3b8] uppercase tracking-wider">
-                          <Clock3 className="h-3.5 w-3.5" />
+
+                      <div className="mt-auto pt-4 flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-[10px] font-black text-[#94a3b8] uppercase tracking-wider">
+                          <Clock3 className="h-4 w-4" />
                           <span>{t.readyIn}</span>
                         </div>
+                        
                         {qty > 0 ? (
-                          <div className="flex items-center rounded-full bg-[#0b1120] p-1 text-white shadow-lg">
-                            <button onClick={() => removeItem(item.id)} className="grid h-8 w-8 place-items-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-                              <Minus className="h-3.5 w-3.5" />
+                          <div className="flex items-center rounded-2xl bg-[#0b1120] p-1.5 text-white shadow-xl">
+                            <button onClick={() => removeItem(item.id)} className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 hover:bg-white/20 transition-colors">
+                              <Minus className="h-4 w-4" />
                             </button>
-                            <span className="w-8 text-center text-xs font-black">{qty}</span>
-                            <button onClick={() => addItem(item.id)} className="grid h-8 w-8 place-items-center rounded-full bg-white text-[#0b1120] hover:bg-gray-100 transition-colors">
-                              <Plus className="h-3.5 w-3.5" />
+                            <span className="w-10 text-center text-sm font-black">{qty}</span>
+                            <button onClick={() => addItem(item.id)} className="grid h-10 w-10 place-items-center rounded-xl bg-white text-[#0b1120] hover:bg-gray-100 transition-colors">
+                              <Plus className="h-4 w-4" />
                             </button>
                           </div>
                         ) : (
-                          <button onClick={() => addItem(item.id)} className="rounded-full bg-[#0b1120] px-5 py-2.5 text-[10px] md:text-[11px] font-bold text-white uppercase hover:bg-black transition-all active:scale-95">
+                          <button onClick={() => addItem(item.id)} className="rounded-2xl bg-[#0b1120] px-8 py-4 text-[10px] font-black text-white uppercase hover:bg-black transition-all active:scale-95 shadow-lg shadow-black/10">
                             {t.add}
                           </button>
                         )}

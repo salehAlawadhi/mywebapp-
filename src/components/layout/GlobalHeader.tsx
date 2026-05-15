@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Activity, ShoppingBag, Shield, Menu } from "lucide-react";
-import MenuDrawer from "./MenuDrawer";
+import { ArrowLeft, Activity, ShoppingBag, Shield } from "lucide-react";
 
 interface GlobalHeaderProps {
   lang: 'en' | 'ar';
@@ -12,7 +11,6 @@ interface GlobalHeaderProps {
 
 export const GlobalHeader = ({ lang, setLang, slug, themeColor = "bg-slate-950" }: GlobalHeaderProps) => {
   const [scrolled, setScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -34,19 +32,19 @@ export const GlobalHeader = ({ lang, setLang, slug, themeColor = "bg-slate-950" 
         {/* CENTER: IDENTITY */}
         <div className="flex flex-col items-center group cursor-pointer relative py-2">
           <Link href="/" className="flex items-center gap-4 md:gap-6 relative">
-            <div className="h-10 w-10 md:h-20 md:w-20 relative z-10">
+            <div className="h-10 w-10 md:h-14 md:w-14 relative z-10">
               <img 
-                src="/brand-logo.png" 
-                alt="Riyadh Group" 
+                src="/logo.png" 
+                alt="HELYRO Logo" 
                 className={`w-full h-full object-contain transition-all duration-700 group-hover:scale-110 ${scrolled ? '' : 'brightness-0 invert'}`}
               />
             </div>
             <div className="flex flex-col relative z-10 items-center md:items-start">
               <h1 className={`text-xs md:text-2xl font-black tracking-tighter uppercase leading-none transition-colors duration-500 ${scrolled ? 'text-slate-900' : 'text-white'}`}>
-                {lang === 'ar' ? 'مجموعة الرياض' : 'Riyadh Group'}
+                {lang === 'ar' ? 'هيـليرو' : 'HELYRO'}
               </h1>
               <span className={`text-[8px] md:text-[10px] font-bold tracking-[0.45em] uppercase transition-colors duration-500 ${scrolled ? 'text-slate-400' : 'text-white/30'}`}>
-                {lang === 'ar' ? 'البوابة العالمية' : 'Global Hub'}
+                {lang === 'ar' ? 'استوديو رقمي' : 'Digital Studio'}
               </span>
             </div>
           </Link>
@@ -61,16 +59,9 @@ export const GlobalHeader = ({ lang, setLang, slug, themeColor = "bg-slate-950" 
             >
               {lang === 'en' ? 'AR' : 'EN'}
             </button>
-            <button 
-              onClick={() => setIsMenuOpen(true)}
-              className={`h-12 w-12 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-xl border hover:scale-110 active:scale-95 ${scrolled ? 'bg-slate-900 border-slate-900 text-white' : 'bg-white/10 border-white/10 text-white'}`}
-            >
-              <Menu size={20} />
-            </button>
           </div>
         </div>
       </div>
-      <MenuDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} lang={lang} />
     </header>
   );
 };
