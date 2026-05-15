@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -10,13 +9,6 @@ interface MenuDrawerProps {
 }
 
 const MenuDrawer = ({ isOpen, onClose, lang }: MenuDrawerProps) => {
-  const menuItems = [
-    { en: "Home", ar: "الرئيسية", href: "/" },
-    { en: "Services", ar: "الخدمات", href: "/#services" },
-    { en: "Solutions", ar: "الحلول", href: "/#solutions" },
-    { en: "Contact", ar: "تواصل معنا", href: "/#contact" }
-  ];
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -48,31 +40,22 @@ const MenuDrawer = ({ isOpen, onClose, lang }: MenuDrawerProps) => {
               </button>
             </div>
 
-            <nav className="flex flex-col gap-8">
-              {menuItems.map((item, i) => (
-                <motion.div
-                  key={item.en}
-                  initial={{ opacity: 0, x: lang === 'ar' ? -20 : 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <Link 
-                    href={item.href} 
-                    onClick={onClose}
-                    className="group flex flex-col"
-                  >
-                    <span className="text-[10px] font-bold text-sky-400 uppercase tracking-[0.4em] mb-2 opacity-60 group-hover:opacity-100 transition-opacity">0{i + 1}</span>
-                    <span className="text-4xl md:text-5xl font-medium text-white tracking-tight group-hover:text-sky-400 transition-colors">
-                      {lang === 'ar' ? item.ar : item.en}
-                    </span>
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
+            <div className="flex-grow flex flex-col justify-center">
+              <div className="space-y-4">
+                <span className="text-[10px] font-black text-sky-400 uppercase tracking-[0.6em] mb-4 block">
+                  {lang === 'ar' ? 'الهوية التنفيذية' : 'Executive Identity'}
+                </span>
+                <h3 className="text-4xl font-black text-white leading-tight">
+                  {lang === 'ar' ? 'السيادة الرقمية\nللعلامات التجارية العالمية.' : 'Digital Sovereignty\nfor Global Brands.'}
+                </h3>
+              </div>
+            </div>
 
             <div className="mt-auto pt-12 border-t border-white/5">
               <div className="flex flex-col gap-6">
-                <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">Direct Communication</p>
+                <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">
+                  {lang === 'ar' ? 'التواصل المباشر' : 'Direct Communication'}
+                </p>
                 <a href="mailto:hello@helyro.com" className="text-xl font-medium text-white hover:text-sky-400 transition-colors">hello@helyro.com</a>
                 <div className="flex gap-6 mt-4">
                   <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-colors cursor-pointer border border-white/10">LN</div>
