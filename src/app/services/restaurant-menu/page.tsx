@@ -12,6 +12,7 @@ import {
   ChevronRight,
   ShoppingBag,
 } from "lucide-react";
+import { Logo } from "@/components/layout/Logo";
 
 const dict = {
   en: {
@@ -55,12 +56,12 @@ const dict = {
 const categories = ["All", "Mezze", "Mains", "Grill", "Seafood", "Desserts", "Drinks"];
 
 const menuItems = [
-  { id: "mandi-lamb-royal", category: "Mains", name: "مندي لحم ملكي", nameEn: "Royal Lamb Mandi", desc: "لحم غنم طازج مطهو ببطء في حفرة التنور التقليدية، يقدم مع أرز المندي المدخن والمرق", price: 125, badge: "EXECUTIVE", image: "https://images.unsplash.com/photo-1590593162211-f1f55fbf291b?q=80&w=800" },
-  { id: "mandi-chicken-traditional", category: "Mains", name: "مندي دجاج فاخر", nameEn: "Premium Chicken Mandi", desc: "دجاج متبل بخلطة المندي السرية ومحمر بعناية، يقدم على طبقة من أرز البسمتي المعطر بالدخان", price: 85, badge: "SIGNATURE", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800" },
-  { id: "kabsa-lamb-najdi", category: "Mains", name: "كبسة لحم نجدية", nameEn: "Najdi Lamb Kabsa", desc: "أرز بسمتي أحمر مطهو بمرق اللحم والبهارات النجدية القوية، مزين بالزبيب واللوز المقرمش", price: 95, badge: "TRADITION", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800" },
-  { id: "grills-platter", category: "Grill", name: "مشاوي مشكلة ملكية", nameEn: "Royal Grills Platter", desc: "أسياخ كباب لحم، كباب دجاج، شيش طاووق، وريش غنم، تقدم مع خبز التنور والثومية", price: 145, badge: "FEAST", image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800" },
-  { id: "hummus-pine-nuts", category: "Mezze", name: "حمص ناعم بالصنوبر", nameEn: "Smooth Hummus", desc: "حمص بالطحينة محضر يومياً، مغطى بزيت الزيتون البكر وحبات الصنوبر المحمص", price: 42, badge: "STARTER", image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=800" },
-  { id: "saudi-coffee-hospitality", category: "Drinks", name: "قهوة سعودية ملكية", nameEn: "Royal Saudi Coffee", desc: "قهوة شقراء بالهيل والزعفران، تقدم مع تمر خلاص فاخر وطحينة", price: 45, badge: "HERITAGE", image: "https://images.unsplash.com/photo-1582234372722-50d7ccc30ebd?q=80&w=800" },
+  { id: "mandi-lamb", category: "Mains", name: "مندي لحم", nameEn: "Lamb Mandi", desc: "لحم غنم طازج مطهو ببطء في حفرة التنور التقليدية، يقدم مع أرز المندي المدخن والمرق", price: 88, badge: "SIGNATURE", image: "/menu/lamb_mandi.png" },
+  { id: "mandi-chicken", category: "Mains", name: "مندي دجاج", nameEn: "Chicken Mandi", desc: "دجاج متبل بخلطة المندي السرية ومحمر بعناية، يقدم على طبقة من أرز البسمتي المعطر بالدخان", price: 42, badge: "CLASSIC", image: "/menu/chicken_mandi.png" },
+  { id: "kabsa-lamb-najdi", category: "Mains", name: "كبسة لحم نجدية", nameEn: "Najdi Lamb Kabsa", desc: "أرز بسمتي أحمر مطهو بمرق اللحم والبهارات النجدية القوية، مزين بالبيض المسلوق والزبيب واللوز المقرمش", price: 75, badge: "TRADITION", image: "/menu/kabsa_with_egg.png" },
+  { id: "grills-platter", category: "Grill", name: "مشاوي مشكلة", nameEn: "Grills Platter", desc: "أسياخ كباب لحم، كباب دجاج، شيش طاووق، وريش غنم، تقدم مع خبز التنور والثومية", price: 95, badge: "PREMIUM", image: "/menu/grills.png" },
+  { id: "hummus-pine-nuts", category: "Mezze", name: "حمص ناعم بالصنوبر", nameEn: "Smooth Hummus", desc: "حمص بالطحينة محضر يومياً، مغطى بزيت الزيتون البكر وحبات الصنوبر المحمص", price: 24, badge: "STARTER", image: "/menu/hummus.png" },
+  { id: "saudi-coffee", category: "Drinks", name: "قهوة سعودية", nameEn: "Saudi Coffee", desc: "قهوة شقراء بالهيل والزعفران، تقدم مع تمر خلاص فاخر وطحينة", price: 32, badge: "HOSPITALITY", image: "/menu/coffee.png" },
 ];
 
 type Cart = Record<string, number>;
@@ -108,7 +109,7 @@ export default function RestaurantMenuServicePage() {
   });
 
   return (
-    <main className={`min-h-screen bg-[#f8fafc] text-[#0b1120] ${lang === "ar" ? "rtl" : "ltr"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
+    <main className={`min-h-screen bg-[#fcfcfc] text-[#0f172a] ${lang === "ar" ? "rtl" : "ltr"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
       {/* Branded Header */}
       <div className="flex items-center justify-between px-6 py-8 md:px-12">
         <Link href="/" className="group flex items-center gap-4 transition-all hover:-translate-x-2">
@@ -117,13 +118,10 @@ export default function RestaurantMenuServicePage() {
           </div>
           <span className="text-sm font-black tracking-widest text-[#0b1120] uppercase">{t.back}</span>
         </Link>
-        <div className="flex items-center gap-3">
-          <div className="flex flex-col items-end mr-4">
-            <span className="text-xl font-black tracking-tighter text-[#0b1120]">HELYRO</span>
-            <span className="text-[8px] font-bold tracking-[0.3em] text-[#94a3b8] uppercase">Dining System</span>
-          </div>
-          <button onClick={() => setLang(lang === "en" ? "ar" : "en")} className="h-12 px-6 rounded-2xl bg-white border border-slate-200 text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-slate-50 transition-all">
-            {lang === "en" ? "العربية" : "ENGLISH"}
+        <div className="flex items-center gap-6">
+          <Logo scrolled={true} className="h-10 w-10" />
+          <button onClick={() => setLang(lang === "en" ? "ar" : "en")} className="h-12 w-12 rounded-2xl bg-white border border-slate-200 text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-slate-50 transition-all">
+            {lang === "en" ? "AR" : "EN"}
           </button>
         </div>
       </div>
@@ -144,16 +142,16 @@ export default function RestaurantMenuServicePage() {
         </div>
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2000" 
-            alt="Restaurant Interior" 
-            className="h-full w-full object-cover brightness-[0.4]" 
+            src="https://images.unsplash.com/photo-1544124499-58912cbddaad?q=80&w=2000" 
+            alt="Saudi Traditional Feast" 
+            className="h-full w-full object-cover brightness-[0.5]" 
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#f8fafc] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#fcfcfc] via-transparent to-[#0f172a]/20" />
         </div>
       </div>
 
       {/* Menu Content */}
-      <div className="rounded-t-[40px] bg-white px-6 pb-32 pt-10 shadow-[0_-12px_40px_rgba(0,0,0,0.03)]">
+      <div className="rounded-t-[40px] bg-white px-6 pb-32 pt-10 shadow-[0_-12px_40px_rgba(0,0,0,0.02)]">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 text-center">
             <h2 className="text-4xl md:text-7xl font-black tracking-tighter text-[#0b1120]">{t.menu}</h2>

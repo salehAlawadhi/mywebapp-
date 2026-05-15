@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { GlobalHeader } from '@/components/layout/GlobalHeader';
+import { Logo } from '@/components/layout/Logo';
 
 /**
  * HELYRO ABSOLUTE AUTHORITY
@@ -96,28 +97,28 @@ export default function HelyroHome() {
 
       if (!deleting && letterIndex < phrase.length) {
         letterIndex += 1;
-        timeoutId = setTimeout(tick, 200);
+        timeoutId = setTimeout(tick, 500); // Slower typing
         return;
       }
 
       if (!deleting && letterIndex === phrase.length) {
         deleting = true;
-        timeoutId = setTimeout(tick, 6000);
+        timeoutId = setTimeout(tick, 10000); // Longer pause
         return;
       }
 
       if (deleting && letterIndex > 0) {
         letterIndex -= 1;
-        timeoutId = setTimeout(tick, 100);
+        timeoutId = setTimeout(tick, 300); // Slower deleting
         return;
       }
 
       deleting = false;
       phraseIndex = (phraseIndex + 1) % phrases.length;
-      timeoutId = setTimeout(tick, 1000);
+      timeoutId = setTimeout(tick, 3000); // Longer pause before next
     };
 
-    timeoutId = setTimeout(tick, 1000);
+    timeoutId = setTimeout(tick, 2000);
 
     return () => clearTimeout(timeoutId);
   }, [lang, t]);
@@ -158,7 +159,7 @@ export default function HelyroHome() {
           >
             <div>
               <div className="mb-10 flex flex-col md:flex-row items-center md:items-end gap-6" dir="ltr">
-                <img src="/logo.png" alt="HELYRO Logo" className="h-24 w-24 md:h-32 md:w-32 object-contain brightness-0 invert" />
+                <Logo scrolled={false} className="h-24 w-24 md:h-32 md:w-32" />
                 <div className="flex flex-col gap-1">
                   <span className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-none">HELYRO</span>
                   <span className="text-sm md:text-base font-black uppercase tracking-[0.36em] text-helyro-accent">Digital Studio</span>
@@ -198,8 +199,8 @@ export default function HelyroHome() {
         <div className="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-helyro-accent/5 rounded-full blur-[120px] z-0" />
       </section>
 
-      {/* PARTNERS - EXECUTIVE GRID (Light Theme for Clarity) */}
-      <section id="partners" className="py-24 md:py-32 bg-slate-50 relative overflow-hidden">
+      {/* PARTNERS - EXECUTIVE GRID (Refined Background) */}
+      <section id="partners" className="py-24 md:py-32 bg-white relative overflow-hidden border-y border-slate-100">
         <div className="max-w-screen-2xl mx-auto px-6 md:px-12 relative z-10">
           <div className="text-center mb-16 md:mb-24">
             <span className="text-xs md:text-sm font-black tracking-[0.4em] text-helyro-navy uppercase mb-4 block">
@@ -210,7 +211,7 @@ export default function HelyroHome() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 items-center">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-10 items-center">
             {[
               { name: "Through History", logo: "/logos/throughhistory.png", url: "https://throughhistory.org" },
               { name: "New Ways", logo: "/logos/newways.jpeg", url: "https://newways.sa/" },
@@ -223,21 +224,18 @@ export default function HelyroHome() {
                 href={partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="flex flex-col items-center justify-center"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: i * 0.1, duration: 1 }}
+                className="flex items-center justify-center transition-all duration-700"
               >
-                <div className="w-full h-32 md:h-40 flex items-center justify-center p-6 rounded-[24px] bg-white border border-slate-200 shadow-sm">
+                <div className="w-full h-24 md:h-28 flex items-center justify-center p-4">
                   <img 
                     src={partner.logo} 
                     alt={partner.name}
                     className="max-w-full max-h-full object-contain"
                   />
                 </div>
-                <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase mt-4">
-                  {partner.name}
-                </span>
               </motion.a>
             ))}
           </div>
