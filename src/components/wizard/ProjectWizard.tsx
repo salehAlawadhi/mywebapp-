@@ -3,7 +3,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function ProjectWizard({ onComplete, onBack }: { onComplete: (data: any) => void, onBack: () => void }) {
+type ProjectFormData = {
+  type: string;
+  brandName: string;
+  tagline: string;
+  scale: string;
+  email: string;
+};
+
+export default function ProjectWizard({ onComplete, onBack }: { onComplete: (data: ProjectFormData) => void, onBack: () => void }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     type: '',

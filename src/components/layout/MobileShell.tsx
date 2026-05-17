@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Logo } from './Logo';
 
 interface MobileShellProps {
   children: React.ReactNode;
@@ -26,12 +26,10 @@ export default function MobileShell({ children, activeTab, onTabChange, onOpenMe
       {/* Header */}
       <header className="fixed top-0 w-full h-[64px] z-[100] glass-nav flex justify-between items-center px-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-helyro-blue flex items-center justify-center text-white font-black text-xs shadow-lg shadow-helyro-blue/20">
-            H
-          </div>
+          <Logo scrolled={false} className="w-8 h-8" />
           <div className="flex flex-col">
             <span className="text-[14px] font-black tracking-tight leading-none uppercase">HELYRO</span>
-            <span className="text-[8px] font-bold text-helyro-steel uppercase tracking-[0.1em]">Intelligent Execution</span>
+            <span className="text-[8px] font-bold text-helyro-steel uppercase tracking-[0.1em]">Premium Services</span>
           </div>
         </div>
 
@@ -55,16 +53,6 @@ export default function MobileShell({ children, activeTab, onTabChange, onOpenMe
       <main className="flex-1 pb-[80px]">
         {children}
       </main>
-
-      {/* Floating WhatsApp */}
-      <motion.button 
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-[96px] right-4 w-12 h-12 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/20 z-40"
-      >
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" className="w-6 h-6 brightness-0 invert" alt="WA" />
-      </motion.button>
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 w-full h-[72px] z-[100] glass-nav px-2 flex justify-between items-center">

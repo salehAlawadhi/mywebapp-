@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 
 export default function AppDemo({ onBack }: { onBack: () => void }) {
   const transactions = [
@@ -26,7 +25,7 @@ export default function AppDemo({ onBack }: { onBack: () => void }) {
         {/* Greeting */}
         <div className="mb-6">
           <h2 className="text-xl font-black tracking-tighter text-white">Good evening, Alex</h2>
-          <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Here's your overview</p>
+          <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Here&apos;s your overview</p>
         </div>
 
         {/* Balance Card */}

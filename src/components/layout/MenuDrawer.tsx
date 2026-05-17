@@ -56,7 +56,7 @@ const MenuDrawer = ({ isOpen, onClose, lang }: MenuDrawerProps) => {
                 <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">
                   {lang === 'ar' ? 'التواصل المباشر' : 'Direct Communication'}
                 </p>
-                <a href="mailto:hello@helyro.com" className="text-xl font-medium text-white hover:text-sky-400 transition-colors">hello@helyro.com</a>
+                <a href="mailto:contact@rakanalsaffa.com" className="text-xl font-medium text-white hover:text-sky-400 transition-colors">contact@rakanalsaffa.com</a>
                 <div className="flex gap-6 mt-4">
                   <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-colors cursor-pointer border border-white/10">LN</div>
                   <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-colors cursor-pointer border border-white/10">TW</div>

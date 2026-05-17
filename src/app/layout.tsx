@@ -20,12 +20,27 @@ const notoArabic = Noto_Naskh_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "HELYRO | Intelligent Execution",
-  description: "Premium Digital Experience Studio",
+  metadataBase: new URL("https://helyro.com"),
+  title: "HELYRO | Live Digital Experience Studio",
+  description: "Live website, restaurant, app, ecommerce, automation, and SEO demos for businesses ready to launch with confidence.",
+  openGraph: {
+    title: "HELYRO | Live Digital Experience Studio",
+    description: "Open live demos for company websites, restaurant menus, stores, dashboards, automation, and SEO-ready pages.",
+    images: [
+      {
+        url: "/horo-mobile.webp",
+        width: 900,
+        height: 507,
+        alt: "HELYRO live digital experience studio",
+      },
+    ],
+  },
   icons: {
-    icon: "/icon.png",
+    icon: "/logo.png",
   },
 };
+
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 
 export default function RootLayout({
   children,
@@ -40,6 +55,7 @@ export default function RootLayout({
       <body className="antialiased luxury-gradient min-h-screen relative">
 
         {children}
+        <WhatsAppButton />
       </body>
     </html>
   );

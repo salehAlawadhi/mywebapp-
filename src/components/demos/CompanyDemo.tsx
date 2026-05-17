@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 
 export default function CompanyDemo({ onBack }: { onBack: () => void }) {
   const trustLogos = ['PIF', 'Aramco', 'SDAIA', 'STC', 'NEOM'];
@@ -115,7 +114,7 @@ export default function CompanyDemo({ onBack }: { onBack: () => void }) {
       {/* CTA Card */}
       <section className="px-4">
         <div className="p-10 glass-card bg-helyro-blue border-none text-center">
-          <h3 className="text-3xl font-black text-black tracking-tighter mb-4 leading-none">LET'S BUILD WHAT'S NEXT.</h3>
+          <h3 className="text-3xl font-black text-black tracking-tighter mb-4 leading-none">LET&apos;S BUILD WHAT&apos;S NEXT.</h3>
           <p className="text-[10px] font-black text-black/40 uppercase tracking-widest mb-10">Start your transformation</p>
           <div className="space-y-3">
             <button className="w-full py-5 bg-black text-white rounded-2xl font-black text-[10px] tracking-[0.2em] uppercase shadow-xl active:scale-95 transition-all">

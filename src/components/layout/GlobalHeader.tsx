@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Activity, ShoppingBag, Shield } from "lucide-react";
 import { Logo } from "./Logo";
 
 interface GlobalHeaderProps {
   lang: 'en' | 'ar';
   setLang: (l: 'en' | 'ar') => void;
   slug?: string;
-  themeColor?: string;
 }
 
-export const GlobalHeader = ({ lang, setLang, slug, themeColor = "bg-slate-950" }: GlobalHeaderProps) => {
+export const GlobalHeader = ({ lang, setLang }: GlobalHeaderProps) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -19,10 +17,8 @@ export const GlobalHeader = ({ lang, setLang, slug, themeColor = "bg-slate-950" 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isHome = !slug;
-
   return (
-    <header className={`fixed top-0 left-0 right-0 z-[200] px-4 py-4 md:px-12 transition-all duration-700 pointer-events-none ${scrolled ? 'md:py-4 bg-white/80 backdrop-blur-3xl shadow-2xl shadow-slate-200/20 border-b border-slate-100' : 'md:py-8'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-[200] px-4 md:px-12 transition-all duration-200 ease-out pointer-events-none ${scrolled ? 'py-4 bg-[#0B1120]/85 backdrop-blur-md' : 'py-6 md:py-8 bg-transparent border-transparent'}`}>
       <div className="mx-auto max-w-screen-2xl flex items-center justify-between pointer-events-auto">
         
         {/* LEFT: LOGO */}
@@ -37,7 +33,7 @@ export const GlobalHeader = ({ lang, setLang, slug, themeColor = "bg-slate-950" 
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} 
-              className={`h-12 w-12 rounded-2xl transition-all duration-500 text-[10px] font-black shadow-xl backdrop-blur-xl border hover:scale-110 active:scale-95 ${scrolled ? 'bg-slate-100 border-slate-200 text-slate-900 hover:bg-slate-900 hover:text-white' : 'bg-white/10 border-white/10 text-white hover:bg-white hover:text-slate-900'}`}
+              className={`h-12 w-12 rounded-2xl transition-all duration-500 text-[10px] font-black shadow-xl backdrop-blur-xl border hover:scale-110 active:scale-95 ${scrolled ? 'bg-white/5 border-white/10 text-white hover:bg-white hover:text-slate-900' : 'bg-white/10 border-white/10 text-white hover:bg-white hover:text-slate-900'}`}
             >
               {lang === 'en' ? 'AR' : 'EN'}
             </button>

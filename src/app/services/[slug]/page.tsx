@@ -4,33 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
-  BarChart3,
-  Bell,
-  Building2,
-  Check,
-  Clock3,
-  Filter,
-  MessageCircle,
-  PackageCheck,
   Plus,
-  Search,
-  Send,
   ShieldCheck,
   ShoppingBag,
   SlidersHorizontal,
   Users,
-  WalletCards,
   LayoutGrid,
   Activity,
   Shield,
-  User,
   ChevronRight,
   Terminal,
-  Play,
-  Heart,
-  Zap,
 } from "lucide-react";
 import { GlobalHeader } from "@/components/layout/GlobalHeader";
 
@@ -38,11 +24,50 @@ type ServiceKey = "company-website" | "app-dashboard" | "ecommerce-store" | "cus
 
 const serviceKeys: ServiceKey[] = ["company-website", "app-dashboard", "ecommerce-store", "custom-system"];
 
+type IconComponent = React.ComponentType<{ className?: string }>;
+
+type CompanyContent = {
+  tag: string;
+  hero: string;
+  about: string;
+  stats: { label: string; value: string }[];
+  solutionsTitle: string;
+  solutions: { name: string; slug: string; desc: string; icon: IconComponent; color: string; bg: string }[];
+  servicesTitle: string;
+  services: { name: string; desc: string; image: string }[];
+  projectsTitle: string;
+  alliancesTitle: string;
+  alliances: { name: string; url: string; logo: string }[];
+};
+
+type EcommerceContent = {
+  tag: string;
+  title: string;
+  search: string;
+  add: string;
+  cart: string;
+  checkout: string;
+};
+
+type OpsContent = {
+  tag: string;
+  title: string;
+  stats: string[];
+  tasks: string;
+};
+
+type PortalContent = {
+  tag: string;
+  title: string;
+  id: string;
+  status: string[];
+};
+
 const products = [
-  { id: "protocol-set", name: "Sovereign Hospitality Set", nameAr: "طقم الضيافة السيادية", category: "Hospitality", categoryAr: "الضيافة", price: 1250, tag: "REGION-01 REPOSITORY", image: "/platform/hospitality_item.png" },
-  { id: "integrity-diffuser", name: "Clean Air Filtration System", nameAr: "نظام تنقية الهواء الذكي", category: "Facilities", categoryAr: "المرافق", price: 4500, tag: "PRIORITY LOGISTICS", image: "/platform/air_item.png" },
-  { id: "secure-terminal", name: "Sovereign Access Terminal", nameAr: "بوابة الدخول السيادية", category: "Security", categoryAr: "الأمن", price: 8900, tag: "CERTIFIED", image: "/platform/secure_item.png" },
-  { id: "textile-vault", name: "Maintenance Control Drone", nameAr: "طائرة التحكم بالصيانة", category: "Robotics", categoryAr: "الروبوتات", price: 12000, tag: "STRATEGIC ASSET", image: "/platform/drone_item.png" },
+  { id: "protocol-set", name: "Service Launch Package", nameAr: "باقة إطلاق خدمة", category: "Launch", categoryAr: "إطلاق", price: 1250, tag: "READY TO SELL", image: "/platform/hospitality_item.webp" },
+  { id: "integrity-diffuser", name: "Website Care Plan", nameAr: "خطة عناية بالموقع", category: "Support", categoryAr: "دعم", price: 4500, tag: "MONTHLY CARE", image: "/platform/air_item.webp" },
+  { id: "secure-terminal", name: "Client Portal Setup", nameAr: "إعداد بوابة عملاء", category: "Portal", categoryAr: "بوابة", price: 8900, tag: "CUSTOM FLOW", image: "/platform/secure_item.webp" },
+  { id: "textile-vault", name: "Automation Workflow", nameAr: "مسار أتمتة", category: "Automation", categoryAr: "أتمتة", price: 12000, tag: "BUSINESS SYSTEM", image: "/platform/drone_item.webp" },
 ];
 
 const opsTasks = [
@@ -52,19 +77,39 @@ const opsTasks = [
   ["Facility Perimeter Scan", "Completed", "Standard"],
 ];
 
+const companyReveal = {
+  hidden: { opacity: 0, y: 34 },
+  show: { opacity: 1, y: 0 },
+};
+
+const companyStagger = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.06,
+    },
+  },
+};
+
 
 export default function ServiceExperiencePage() {
   const params = useParams<{ slug: string }>();
   const [lang, setLang] = useState<'en' | 'ar'>('en');
   const slug = serviceKeys.includes(params.slug as ServiceKey) ? (params.slug as ServiceKey) : "company-website";
+  const inquiryUrl = `https://wa.me/966532133581?text=${encodeURIComponent(
+    lang === 'ar'
+      ? 'مرحباً HELYRO، أريد مناقشة تجربة رقمية أو موقع شركة.'
+      : 'Hello HELYRO, I want to discuss a digital experience or company website.'
+  )}`;
 
   const t = useMemo(() => ({
     en: {
       back: "BACK",
       company: {
-        tag: "THE STANDARD OF EXCELLENCE",
-        hero: "Sovereign Excellence in Facility Management",
-        about: "Riyadh Facilities Group (RFG) is the kingdom's premier strategic partner for integrated facility management delivering elite reliability for the projects that define Saudi Arabia's vision",
+        tag: "CORPORATE WEBSITE DEMO",
+        hero: "A company website that sells confidence",
+        about: "This HELYRO demo shows how a service company can present trust, capability, projects, partners, and inquiry flow in one polished web experience.",
         stats: [
           { label: "CITY COVERAGE", value: "18 CITIES" },
           { label: "ELITE TEAM", value: "1,200+" },
@@ -72,15 +117,15 @@ export default function ServiceExperiencePage() {
         ],
         solutionsTitle: "Integrated Ecosystem",
         solutions: [
-          { name: "Sovereign Command", slug: "app-dashboard", desc: "Real-time intelligence and operational control for strategic assets", icon: Activity, color: "text-indigo-600", bg: "bg-indigo-50" },
-          { name: "Strategic Procurement", slug: "ecommerce-store", desc: "Global supply chain and specialized requisition interface", icon: ShoppingBag, color: "text-emerald-600", bg: "bg-emerald-50" },
-          { name: "Asset Protection", slug: "custom-system", desc: "Critical infrastructure security and maintenance management", icon: Shield, color: "text-rose-600", bg: "bg-rose-50" }
+          { name: "Operations Dashboard", slug: "app-dashboard", desc: "A live dashboard style for teams, metrics, approvals, and daily work", icon: Activity, color: "text-indigo-600", bg: "bg-indigo-50" },
+          { name: "Service Commerce", slug: "ecommerce-store", desc: "A catalog and order flow for products, services, packages, or bookings", icon: ShoppingBag, color: "text-emerald-600", bg: "bg-emerald-50" },
+          { name: "Custom Portal", slug: "custom-system", desc: "A private client or staff portal for requests, status, and follow-up", icon: Shield, color: "text-rose-600", bg: "bg-rose-50" }
         ],
         servicesTitle: "Strategic Pillars",
         services: [
-          { name: "Sovereign Maintenance", desc: "Predictive engineering for high-stakes governmental and corporate environments", image: "/platform/maintenance_tech.png" },
-          { name: "Clinical Hospitality", desc: "Hospital-grade sanitation and protocol-driven hospitality for executive spaces", image: "/platform/hospitality_tech.png" },
-          { name: "Defensive Operations", desc: "Advanced security architecture integrating human intelligence with AI surveillance", image: "/platform/defensive_tech.png" }
+          { name: "Service Pages", desc: "Clear pages for every offer so visitors understand value before they call", image: "/platform/maintenance_tech.png" },
+          { name: "Trust Sections", desc: "Partners, project proof, metrics, and service detail arranged for fast decision-making", image: "/platform/hospitality_tech.png" },
+          { name: "Inquiry Flow", desc: "Direct contact paths that turn interest into WhatsApp conversations and project briefs", image: "/platform/defensive_tech.png" }
         ],
         projectsTitle: "Strategic Portfolio",
         alliancesTitle: "Strategic Alliances",
@@ -99,32 +144,32 @@ export default function ServiceExperiencePage() {
         }
       },
       ecommerce: {
-        tag: "GLOBAL SUPPLY CHAIN",
-        title: "Strategic Procurement",
-        search: "Search inventory and asset specifications",
-        add: "RESERVE",
-        cart: "Requisition Total",
-        checkout: "GENERATE ORDER"
+        tag: "ECOMMERCE DEMO",
+        title: "Online Store Experience",
+        search: "Search products, packages, services",
+        add: "ADD TO CART",
+        cart: "Cart Total",
+        checkout: "START SIMILAR STORE"
       },
       ops: {
-        tag: "DIAGNOSTIC INTELLIGENCE",
-        title: "Operations Center Alpha",
-        stats: ["Revenue Telemetry", "Operational Load", "System Integrity"],
-        tasks: "Mission Control Stream"
+        tag: "APP DASHBOARD DEMO",
+        title: "Business Dashboard",
+        stats: ["Lead Activity", "Project Load", "System Health"],
+        tasks: "Work Queue"
       },
       portal: {
-        tag: "ASSET INTERFACE",
-        title: "Infrastructure Portal",
-        id: "TELEMETRY",
-        status: ["LOGGED", "DISPATCHED", "IN-FIELD", "STABILIZED"]
+        tag: "CUSTOM PORTAL DEMO",
+        title: "Client Request Portal",
+        id: "REQUEST FLOW",
+        status: ["SUBMITTED", "ASSIGNED", "IN PROGRESS", "RESOLVED"]
       }
     },
     ar: {
       back: "العودة",
       company: {
-        tag: "معايير التميز العالمية",
-        hero: "التميز السيادي في إدارة المرافق",
-        about: "مجموعة الرياض للمرافق (RFG) هي الشريك الاستراتيجي الرائد في المملكة للإدارة المتكاملة للمرافق لتقديم موثوقية النخبة للمشاريع التي ترسم ملامح رؤية السعودية",
+        tag: "نموذج موقع شركة",
+        hero: "موقع شركة يبني الثقة بسرعة",
+        about: "هذا نموذج من HELYRO يوضح كيف يمكن لشركة خدمات أن تعرض الثقة، القدرات، المشاريع، الشركاء، وطريقة التواصل داخل تجربة ويب واحدة مصقولة.",
         stats: [
           { label: "تغطية المدن", value: "١٨ مدينة" },
           { label: "فريق النخبة", value: "١٢٠٠+" },
@@ -132,15 +177,15 @@ export default function ServiceExperiencePage() {
         ],
         solutionsTitle: "المنظومة المتكاملة",
         solutions: [
-          { name: "القيادة السيادية", slug: "app-dashboard", desc: "الذكاء الفوري والتحكم العملياتي للأصول الاستراتيجية", icon: Activity, color: "text-indigo-600", bg: "bg-indigo-50" },
-          { name: "المشتريات الاستراتيجية", slug: "ecommerce-store", desc: "سلسلة التوريد العالمية وواجهة طلب الأصول المتخصصة", icon: ShoppingBag, color: "text-emerald-600", bg: "bg-emerald-50" },
-          { name: "حماية الأصول", slug: "custom-system", desc: "أمن البنية التحتية الحيوية وإدارة الصيانة الشاملة", icon: Shield, color: "text-rose-600", bg: "bg-rose-50" }
+          { name: "لوحة تشغيل", slug: "app-dashboard", desc: "نموذج لوحة لفريق العمل، المؤشرات، الموافقات، والمتابعة اليومية", icon: Activity, color: "text-indigo-600", bg: "bg-indigo-50" },
+          { name: "كتالوج خدمات", slug: "ecommerce-store", desc: "تجربة عرض وطلب للمنتجات، الخدمات، الباقات، أو الحجوزات", icon: ShoppingBag, color: "text-emerald-600", bg: "bg-emerald-50" },
+          { name: "بوابة مخصصة", slug: "custom-system", desc: "بوابة عملاء أو موظفين للطلبات، الحالات، والمتابعة", icon: Shield, color: "text-rose-600", bg: "bg-rose-50" }
         ],
         servicesTitle: "الركائز الاستراتيجية",
         services: [
-          { name: "الصيانة السيادية", desc: "هندسة تنبؤية للبيئات الحكومية والشركات عالية الأهمية", image: "/platform/maintenance.png" },
-          { name: "الضيافة المعيارية", desc: "تعقيم طبي وضيافة بروتوكولية مصممة للمساحات التنفيذية", image: "/platform/hospitality.png" },
-          { name: "العمليات الدفاعية", desc: "بنية أمنية متقدمة تدمج الذكاء البشري مع المراقبة الذكية", image: "/platform/defensive.png" }
+          { name: "صفحات الخدمات", desc: "صفحات واضحة لكل خدمة حتى يفهم الزائر القيمة قبل التواصل", image: "/platform/maintenance.png" },
+          { name: "أقسام الثقة", desc: "شركاء، أعمال، أرقام، وتفاصيل خدمة مرتبة لاتخاذ قرار أسرع", image: "/platform/hospitality.png" },
+          { name: "مسار التواصل", desc: "طرق اتصال مباشرة تحول اهتمام الزائر إلى محادثة واتساب وملخص مشروع", image: "/platform/defensive.png" }
         ],
         projectsTitle: "المشاريع الاستراتيجية",
         alliancesTitle: "التحالفات الاستراتيجية",
@@ -159,24 +204,24 @@ export default function ServiceExperiencePage() {
         }
       },
       ecommerce: {
-        tag: "سلسلة التوريد العالمية",
-        title: "المشتريات الاستراتيجية",
-        search: "البحث في المخزون ومواصفات الأصول",
-        add: "حجز الأصل",
-        cart: "إجمالي الطلب",
-        checkout: "إصدار الطلب"
+        tag: "نموذج متجر إلكتروني",
+        title: "تجربة متجر إلكتروني",
+        search: "ابحث عن منتجات، باقات، خدمات",
+        add: "إضافة للسلة",
+        cart: "إجمالي السلة",
+        checkout: "ابدأ متجر مشابه"
       },
       ops: {
-        tag: "الذكاء التشخيصي",
-        title: "مركز العمليات ألفا",
-        stats: ["بيانات الإيرادات", "حمل التشغيل", "سلامة النظام"],
-        tasks: "بث التحكم بالمهمة"
+        tag: "نموذج لوحة تطبيق",
+        title: "لوحة تحكم أعمال",
+        stats: ["نشاط العملاء", "ضغط المشاريع", "صحة النظام"],
+        tasks: "قائمة العمل"
       },
       portal: {
-        tag: "واجهة الأصول",
-        title: "بوابة البنية التحتية",
-        id: "بيانات القياس",
-        status: ["تم التسجيل", "تم الإرسال", "في الموقع", "تم الاستقرار"]
+        tag: "نموذج بوابة مخصصة",
+        title: "بوابة طلبات العملاء",
+        id: "مسار الطلب",
+        status: ["تم الإرسال", "تم التعيين", "قيد التنفيذ", "تم الحل"]
       }
     }
   }), []);
@@ -204,9 +249,9 @@ export default function ServiceExperiencePage() {
           <span className="text-[10px] font-black uppercase tracking-widest">{lang === 'ar' ? 'التشغيل' : 'Ops'}</span>
         </Link>
         <div className="relative -top-8">
-          <button className={`h-16 w-16 rounded-full flex items-center justify-center text-white shadow-2xl border-[6px] border-white active:scale-90 transition-all ${slug === 'ecommerce-store' ? 'bg-emerald-600 shadow-emerald-600/40' : slug === 'app-dashboard' ? 'bg-indigo-600 shadow-indigo-600/40' : slug === 'custom-system' ? 'bg-rose-600 shadow-rose-600/40' : 'bg-blue-600 shadow-blue-600/40'}`}>
+          <a href={inquiryUrl} target="_blank" rel="noopener noreferrer" aria-label={lang === 'ar' ? 'ابدأ مشروعك مع HELYRO' : 'Start a project with HELYRO'} className={`h-16 w-16 rounded-full flex items-center justify-center text-white shadow-2xl border-[6px] border-white active:scale-90 transition-all ${slug === 'ecommerce-store' ? 'bg-emerald-600 shadow-emerald-600/40' : slug === 'app-dashboard' ? 'bg-indigo-600 shadow-indigo-600/40' : slug === 'custom-system' ? 'bg-rose-600 shadow-rose-600/40' : 'bg-blue-600 shadow-blue-600/40'}`}>
              <Plus size={32} />
-          </button>
+          </a>
         </div>
         <Link href="/services/ecommerce-store" className={`flex flex-col items-center gap-2 transition-all active:scale-90 ${slug === "ecommerce-store" ? 'text-emerald-600' : 'text-slate-400'}`}>
           <ShoppingBag size={24} strokeWidth={2.5} />
@@ -232,41 +277,84 @@ export default function ServiceExperiencePage() {
   );
 }
 
-function CompanyWebsite({ lang, content }: { lang: 'en' | 'ar', content: any }) {
+function CompanyWebsite({ lang, content }: { lang: 'en' | 'ar', content: CompanyContent }) {
+  const inquiryUrl = `https://wa.me/966532133581?text=${encodeURIComponent(
+    lang === 'ar'
+      ? 'مرحباً HELYRO، أريد موقع شركة أو تجربة رقمية مشابهة لهذا النموذج.'
+      : 'Hello HELYRO, I want a company website or digital experience like this demo.'
+  )}`;
+
   return (
     <div className="relative z-10 min-h-screen text-slate-900 bg-white">
       {/* Hero Section */}
       <section className="relative mx-auto max-w-screen-2xl px-6 pt-12 pb-16 md:px-12 md:pt-32 md:pb-24 overflow-hidden text-left">
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-600/5 border border-blue-600/10 mb-8">
+        <motion.div
+          className="relative z-10"
+          variants={companyStagger}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.div
+            variants={companyReveal}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-600/5 border border-blue-600/10 mb-8"
+          >
             <span className="h-1.5 w-1.5 rounded-full bg-blue-600 animate-pulse" />
             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">{content.tag}</p>
-          </div>
-          <h2 className="max-w-[1300px] text-[clamp(2.5rem,12vw,140px)] font-black leading-[0.9] tracking-[-0.04em] text-slate-900 mb-12">
+          </motion.div>
+          <motion.h2
+            variants={companyReveal}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-[1300px] text-[clamp(2.5rem,12vw,140px)] font-black leading-[0.9] tracking-[-0.04em] text-slate-900 mb-12"
+          >
             {content.hero}
-          </h2>
-          <div className="grid gap-12 md:gap-24 md:grid-cols-[1.2fr_1fr] items-start mt-16 md:mt-24">
+          </motion.h2>
+          <motion.div
+            variants={companyReveal}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="grid gap-12 md:gap-24 md:grid-cols-[1.2fr_1fr] items-start mt-16 md:mt-24"
+          >
             <div className="space-y-10">
               <p className="text-xl md:text-4xl font-medium leading-[1.3] text-slate-400 max-w-2xl border-l-2 border-blue-600/30 pl-8 italic">
                 {content.about}
               </p>
             </div>
-            <div className="grid grid-cols-1 gap-6">
-              {content.stats.map((stat: any, idx: number) => (
-                <div key={idx} className={`p-8 rounded-[32px] bg-slate-50 border border-slate-100 shadow-sm group hover:shadow-xl hover:shadow-blue-600/5 transition-all duration-500 relative overflow-hidden ${idx === 1 ? 'md:translate-x-12' : ''}`}>
+            <motion.div
+              variants={companyStagger}
+              className="grid grid-cols-1 gap-6"
+            >
+              {content.stats.map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={companyReveal}
+                  whileHover={{ y: -6, scale: 1.015 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className={`p-8 rounded-[32px] bg-slate-50 border border-slate-100 shadow-sm group hover:shadow-xl hover:shadow-blue-600/5 transition-colors duration-500 relative overflow-hidden ${idx === 1 ? 'md:translate-x-12' : ''}`}
+                >
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600/0 via-blue-600/40 to-blue-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <p className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900 group-hover:text-blue-600 transition-colors">{stat.value}</p>
                   <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mt-2">{stat.label}</p>
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Solutions Section - The "App Gateway" */}
-      <section className="bg-slate-50 py-24 md:py-48">
+      <motion.section
+        className="bg-slate-50 py-24 md:py-48"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-120px" }}
+        variants={companyStagger}
+      >
         <div className="mx-auto max-w-screen-2xl px-6 md:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 md:mb-32">
+          <motion.div
+            variants={companyReveal}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 md:mb-32"
+          >
             <div className="max-w-2xl">
               <p className="text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-4">OUR CAPABILITIES</p>
               <h3 className="text-4xl md:text-7xl font-black tracking-tighter text-slate-900 leading-none">
@@ -276,11 +364,18 @@ function CompanyWebsite({ lang, content }: { lang: 'en' | 'ar', content: any }) 
             <p className="text-slate-400 text-sm md:text-xl max-w-md font-medium">
               {lang === 'ar' ? 'حلول رقمية متكاملة لربط الأصول والعمليات والبيانات في منصة واحدة سيادية' : 'Integrated digital solutions connecting assets, operations, and data in one sovereign platform'}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {content.solutions.map((sol: any) => (
-              <Link href={`/services/${sol.slug}`} key={sol.slug} className="group relative rounded-[48px] bg-white p-10 md:p-14 border border-slate-200 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:border-blue-600/20 transition-all duration-700 overflow-hidden">
+          <motion.div variants={companyStagger} className="grid gap-8 md:grid-cols-3">
+            {content.solutions.map((sol) => (
+              <motion.div
+                key={sol.slug}
+                variants={companyReveal}
+                whileHover={{ y: -10 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link href={`/services/${sol.slug}`} className="group relative block rounded-[48px] bg-white p-10 md:p-14 border border-slate-200 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:border-blue-600/20 transition-colors duration-700 overflow-hidden">
+                <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-blue-600/0 blur-2xl group-hover:bg-blue-600/10 transition-colors duration-700" />
                 <div className={`h-20 w-20 rounded-[32px] ${sol.bg} flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-700`}>
                   <sol.icon className={`h-8 w-8 ${sol.color}`} />
                 </div>
@@ -293,20 +388,33 @@ function CompanyWebsite({ lang, content }: { lang: 'en' | 'ar', content: any }) 
                   <ChevronRight size={16} />
                 </div>
               </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Services Section */}
-      <section className="mx-auto max-w-screen-2xl px-6 py-24 md:px-12 md:py-48">
-        <div className="mb-20 md:mb-32">
+      <motion.section
+        className="mx-auto max-w-screen-2xl px-6 py-24 md:px-12 md:py-48"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-120px" }}
+        variants={companyStagger}
+      >
+        <motion.div variants={companyReveal} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="mb-20 md:mb-32">
           <p className="text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-4">OPERATIONAL PILLARS</p>
           <h3 className="text-4xl md:text-7xl font-black tracking-tighter text-slate-900 leading-none">{content.servicesTitle}</h3>
-        </div>
-        <div className="grid gap-12 lg:grid-cols-3">
-          {content.services.map((service: any, idx: number) => (
-            <article key={idx} className="group cursor-pointer">
+        </motion.div>
+        <motion.div variants={companyStagger} className="grid gap-12 lg:grid-cols-3">
+          {content.services.map((service, idx) => (
+            <motion.article
+              key={idx}
+              variants={companyReveal}
+              whileHover={{ y: -8 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="group cursor-pointer"
+            >
               <div className="aspect-[4/5] overflow-hidden rounded-[48px] mb-8 bg-slate-100 shadow-2xl relative">
                 <Image 
                   src={service.image} 
@@ -319,10 +427,10 @@ function CompanyWebsite({ lang, content }: { lang: 'en' | 'ar', content: any }) 
               </div>
               <h4 className="text-2xl md:text-3xl font-black tracking-tighter text-slate-900 mb-4 uppercase">{service.name}</h4>
               <p className="text-slate-400 text-sm md:text-lg leading-relaxed font-medium">{service.desc}</p>
-            </article>
+            </motion.article>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
       
       {/* Strategic Alliances */}
       <section className="mx-auto max-w-screen-2xl px-6 py-24 md:px-12 border-y border-slate-100 bg-slate-50/50">
@@ -332,7 +440,7 @@ function CompanyWebsite({ lang, content }: { lang: 'en' | 'ar', content: any }) 
             <h3 className="text-3xl font-black tracking-tighter text-slate-900 leading-none uppercase">{content.alliancesTitle}</h3>
           </div>
           <div className="flex-1 grid grid-cols-2 md:grid-cols-5 gap-12 items-center">
-            {content.alliances.map((alliance: any, idx: number) => (
+            {content.alliances.map((alliance, idx) => (
               <a 
                 key={idx} 
                 href={alliance.url} 
@@ -405,27 +513,27 @@ function CompanyWebsite({ lang, content }: { lang: 'en' | 'ar', content: any }) 
           <div className="relative z-10">
             <span className="text-[10px] md:text-sm font-black tracking-[0.5em] uppercase opacity-60 mb-8 block">ESTABLISH PARTNERSHIP</span>
             <h3 className="text-5xl md:text-9xl font-black tracking-tighter leading-none mb-16 italic">
-              {lang === 'ar' ? 'تواصل مع القيادة' : 'Sovereignty Begins Here'}
+              {lang === 'ar' ? 'ابدأ تجربة شركتك' : 'Start Your Company Demo'}
             </h3>
             <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-              <button className="w-full md:w-auto px-16 py-8 bg-white text-indigo-900 rounded-[40px] text-[11px] md:text-sm font-black uppercase tracking-[0.3em] hover:bg-slate-50 transition-all active:scale-95 shadow-2xl">
+              <a href={inquiryUrl} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto px-16 py-8 bg-white text-indigo-900 rounded-[40px] text-[11px] md:text-sm font-black uppercase tracking-[0.3em] hover:bg-slate-50 transition-all active:scale-95 shadow-2xl">
                 {lang === 'ar' ? 'طلب عرض شراكة' : 'Request Proposal'}
-              </button>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       <footer className="px-10 py-12 border-t border-slate-100 flex justify-between items-center opacity-30 text-[10px] font-black tracking-widest uppercase">
-        <p>© 2026 RIYADH FACILITIES GROUP   ARCTIC WHITE PROTOCOL</p>
-        <p>SAUDI VISION 2030 ALIGNED</p>
+        <p>© 2026 HELYRO   CORPORATE WEBSITE DEMO</p>
+        <p>LIVE EXPERIENCE SYSTEM</p>
       </footer>
     </div>
   );
 }
 
-function EcommerceStore({ lang, content }: { lang: 'en' | 'ar', content: any }) {
-  const [query, setQuery] = useState("");
+function EcommerceStore({ lang, content }: { lang: 'en' | 'ar', content: EcommerceContent }) {
+  const query = "";
   const [cart, setCart] = useState<Record<string, number>>({});
   const total = useMemo(() => products.reduce((sum, item) => sum + (cart[item.id] ?? 0) * item.price, 0), [cart]);
   const visible = products.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
@@ -440,7 +548,7 @@ function EcommerceStore({ lang, content }: { lang: 'en' | 'ar', content: any }) 
           </div>
           <div className="flex items-center gap-6 p-6 rounded-[32px] bg-white border border-slate-100 shadow-xl shadow-slate-200/40">
              <div className="text-right">
-               <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Requisition Value</p>
+               <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">{content.cart}</p>
                <p className="text-2xl font-black tracking-tighter text-slate-900 italic">SAR {total}</p>
              </div>
              <div className="h-12 w-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white">
@@ -474,11 +582,11 @@ function EcommerceStore({ lang, content }: { lang: 'en' | 'ar', content: any }) 
                    <h3 className="text-4xl font-black tracking-tighter text-slate-900 mb-6">{lang === 'ar' ? product.nameAr : product.name}</h3>
                    <div className="flex items-center justify-between border-t border-slate-100 pt-8 mt-auto">
                      <p className="text-2xl font-black tracking-tighter text-slate-900">SAR {product.price}</p>
-                     <button 
+                   <button 
                        onClick={() => setCart(c => ({...c, [product.id]: (c[product.id] ?? 0) + 1}))}
                        className="px-8 py-4 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-600/20"
                      >
-                       RESERVE ASSET
+                       {content.add}
                      </button>
                    </div>
                  </div>
@@ -508,10 +616,10 @@ function EcommerceStore({ lang, content }: { lang: 'en' | 'ar', content: any }) 
             </div>
             <div className="h-[1px] w-full md:w-[1px] md:h-12 bg-slate-100 relative z-10" />
             <button 
-              onClick={() => alert('Order confirmed. System Po generated.')}
+              onClick={() => window.open(`https://wa.me/966532133581?text=${encodeURIComponent(lang === 'ar' ? 'مرحباً HELYRO، أريد متجر إلكتروني مشابه لهذا النموذج.' : 'Hello HELYRO, I want an ecommerce store like this demo.')}`, '_blank', 'noopener,noreferrer')}
               className="w-full md:w-auto relative z-10 px-12 py-6 bg-emerald-600 text-white rounded-[24px] text-[11px] font-black uppercase tracking-[0.3em] hover:bg-emerald-700 transition-all active:scale-95 shadow-xl shadow-emerald-600/30"
             >
-              SECURE CHECKOUT
+              {content.checkout}
             </button>
           </div>
         </div>
@@ -520,8 +628,7 @@ function EcommerceStore({ lang, content }: { lang: 'en' | 'ar', content: any }) 
   );
 }
 
-function OperationsDashboard({ lang, content }: { lang: 'en' | 'ar', content: any }) {
-  const [activeTab, setActiveTab] = useState('overview');
+function OperationsDashboard({ content }: { lang: 'en' | 'ar', content: OpsContent }) {
   const [chartData, setChartData] = useState<{height: string}[]>([]);
 
   React.useEffect(() => {
@@ -603,7 +710,7 @@ function OperationsDashboard({ lang, content }: { lang: 'en' | 'ar', content: an
                    {opsTasks.map((t, i) => (
                      <div key={i} className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-indigo-600/20 transition-all cursor-pointer group">
                         <div className="text-left">
-                           <p className="text-[10px] font-black text-slate-900 uppercase tracking-tighter">{t[0]}</p>
+                       <p className="text-[10px] font-black text-slate-900 uppercase tracking-tighter">{t[0]}</p>
                            <p className="text-[10px] font-bold text-slate-400 uppercase mt-1">{t[1]}</p>
                         </div>
                         <ChevronRight className="h-4 w-4 text-slate-200 group-hover:text-indigo-600 transition-colors" />
@@ -623,7 +730,7 @@ function OperationsDashboard({ lang, content }: { lang: 'en' | 'ar', content: an
   );
 }
 
-function FacilityPortal({ lang, content }: { lang: 'en' | 'ar', content: any }) {
+function FacilityPortal({ lang, content }: { lang: 'en' | 'ar', content: PortalContent }) {
   const [activeStep, setActiveStep] = useState(1);
 
   return (
@@ -634,7 +741,7 @@ function FacilityPortal({ lang, content }: { lang: 'en' | 'ar', content: any }) 
            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-rose-600">{content.id} REGION 01</p>
         </div>
         <h2 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-slate-900 mb-12">
-           {lang === 'ar' ? 'سلامة الأصول السيادية' : 'Sovereign Asset Integrity'}
+           {content.title}
         </h2>
       </section>
 
@@ -682,11 +789,11 @@ function FacilityPortal({ lang, content }: { lang: 'en' | 'ar', content: any }) 
                  <div className="space-y-6">
                     <div className="p-6 rounded-3xl bg-slate-50 border border-slate-100">
                        <p className="text-rose-600 text-[10px] font-black uppercase tracking-widest mb-3">AUTO-SENSOR 08:00</p>
-                       <p className="text-sm text-slate-500 font-medium leading-relaxed italic">"Vibration levels detected above threshold (4.2mm/s) at Compressor Unit-4 Protocol alpha-9 initiated"</p>
+                       <p className="text-sm text-slate-500 font-medium leading-relaxed italic">&quot;Vibration levels detected above threshold (4.2mm/s) at Compressor Unit-4 Protocol alpha-9 initiated&quot;</p>
                     </div>
                     <div className="p-6 rounded-3xl bg-slate-50 border border-slate-100">
                        <p className="text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-3">SYSTEM UPDATE 12:45</p>
-                       <p className="text-sm text-slate-500 font-medium leading-relaxed">"Coolant levels verified Spare parts identified in inventory RFG-551 Dispatch approved"</p>
+                       <p className="text-sm text-slate-500 font-medium leading-relaxed">&quot;Coolant levels verified Spare parts identified in inventory HLY-551 Dispatch approved&quot;</p>
                     </div>
                  </div>
               </div>
@@ -695,8 +802,8 @@ function FacilityPortal({ lang, content }: { lang: 'en' | 'ar', content: any }) 
                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[80px] -mr-32 -mt-32 group-hover:bg-white/20 transition-all duration-1000" />
                  <h4 className="text-xl font-black uppercase tracking-tighter mb-12 relative z-10 italic">Commander Controls</h4>
                  <div className="grid gap-4 relative z-10">
-                    <button className="w-full py-6 bg-white text-rose-900 rounded-[28px] text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-xl">APPROVE MISSION</button>
-                    <button className="w-full py-6 bg-rose-500/20 text-white rounded-[28px] text-[10px] font-black uppercase tracking-widest border border-white/20 hover:bg-white/10 transition-all backdrop-blur-md">REQUEST MODIFICATION</button>
+                    <a href={`https://wa.me/966532133581?text=${encodeURIComponent(lang === 'ar' ? 'مرحباً HELYRO، أريد بوابة أو نظام مخصص مشابه لهذا النموذج.' : 'Hello HELYRO, I want a custom portal or system like this demo.')}`} target="_blank" rel="noopener noreferrer" className="w-full py-6 bg-white text-rose-900 rounded-[28px] text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-xl text-center">START SIMILAR SYSTEM</a>
+                    <Link href="/" className="w-full py-6 bg-rose-500/20 text-white rounded-[28px] text-[10px] font-black uppercase tracking-widest border border-white/20 hover:bg-white/10 transition-all backdrop-blur-md text-center">BACK TO HELYRO</Link>
                  </div>
               </div>
            </section>
@@ -704,8 +811,8 @@ function FacilityPortal({ lang, content }: { lang: 'en' | 'ar', content: any }) 
       </main>
 
       <footer className="px-10 py-12 border-t border-slate-100 flex justify-between items-center opacity-30 text-[10px] font-black tracking-widest uppercase">
-        <p>© 2026 RIYADH FACILITIES GROUP   ASSET COMMAND PORTAL</p>
-        <p>SECURE AUTHORITY</p>
+        <p>© 2026 HELYRO   CUSTOM SYSTEM DEMO</p>
+        <p>SECURE CLIENT PORTAL</p>
       </footer>
     </div>
   );

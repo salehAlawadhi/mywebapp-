@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -56,12 +56,12 @@ const dict = {
 const categories = ["All", "Mezze", "Mains", "Grill", "Seafood", "Desserts", "Drinks"];
 
 const menuItems = [
-  { id: "mandi-lamb", category: "Mains", name: "مندي لحم", nameEn: "Lamb Mandi", desc: "لحم غنم طازج مطهو ببطء في حفرة التنور التقليدية، يقدم مع أرز المندي المدخن والمرق", price: 88, badge: "SIGNATURE", image: "/menu/lamb_mandi.png" },
-  { id: "mandi-chicken", category: "Mains", name: "مندي دجاج", nameEn: "Chicken Mandi", desc: "دجاج متبل بخلطة المندي السرية ومحمر بعناية، يقدم على طبقة من أرز البسمتي المعطر بالدخان", price: 42, badge: "CLASSIC", image: "/menu/chicken_mandi.png" },
-  { id: "kabsa-lamb-najdi", category: "Mains", name: "كبسة لحم نجدية", nameEn: "Najdi Lamb Kabsa", desc: "أرز بسمتي أحمر مطهو بمرق اللحم والبهارات النجدية القوية، مزين بالبيض المسلوق والزبيب واللوز المقرمش", price: 75, badge: "TRADITION", image: "/menu/kabsa_with_egg.png" },
-  { id: "grills-platter", category: "Grill", name: "مشاوي مشكلة", nameEn: "Grills Platter", desc: "أسياخ كباب لحم، كباب دجاج، شيش طاووق، وريش غنم، تقدم مع خبز التنور والثومية", price: 95, badge: "PREMIUM", image: "/menu/grills.png" },
-  { id: "hummus-pine-nuts", category: "Mezze", name: "حمص ناعم بالصنوبر", nameEn: "Smooth Hummus", desc: "حمص بالطحينة محضر يومياً، مغطى بزيت الزيتون البكر وحبات الصنوبر المحمص", price: 24, badge: "STARTER", image: "/menu/hummus.png" },
-  { id: "saudi-coffee", category: "Drinks", name: "قهوة سعودية", nameEn: "Saudi Coffee", desc: "قهوة شقراء بالهيل والزعفران، تقدم مع تمر خلاص فاخر وطحينة", price: 32, badge: "HOSPITALITY", image: "/menu/coffee.png" },
+  { id: "mandi-lamb", category: "Mains", name: "مندي لحم", nameEn: "Lamb Mandi", desc: "لحم غنم طازج مطهو ببطء في حفرة التنور التقليدية، يقدم مع أرز المندي المدخن والمرق", price: 88, badge: "SIGNATURE", image: "/menu/lamb_mandi.webp" },
+  { id: "mandi-chicken", category: "Mains", name: "مندي دجاج", nameEn: "Chicken Mandi", desc: "دجاج متبل بخلطة المندي السرية ومحمر بعناية، يقدم على طبقة من أرز البسمتي المعطر بالدخان", price: 42, badge: "CLASSIC", image: "/menu/chicken_mandi.webp" },
+  { id: "kabsa-lamb-najdi", category: "Mains", name: "كبسة لحم نجدية", nameEn: "Najdi Lamb Kabsa", desc: "أرز بسمتي أحمر مطهو بمرق اللحم والبهارات النجدية القوية، مزين بالبيض المسلوق والزبيب واللوز المقرمش", price: 75, badge: "TRADITION", image: "/menu/kabsa_with_egg.webp" },
+  { id: "grills-platter", category: "Grill", name: "مشاوي مشكلة", nameEn: "Grills Platter", desc: "أسياخ كباب لحم، كباب دجاج، شيش طاووق، وريش غنم، تقدم مع خبز التنور والثومية", price: 95, badge: "PREMIUM", image: "/menu/grills.webp" },
+  { id: "hummus-pine-nuts", category: "Mezze", name: "حمص ناعم بالصنوبر", nameEn: "Smooth Hummus", desc: "حمص بالطحينة محضر يومياً، مغطى بزيت الزيتون البكر وحبات الصنوبر المحمص", price: 24, badge: "STARTER", image: "/menu/hummus.webp" },
+  { id: "saudi-coffee", category: "Drinks", name: "قهوة سعودية", nameEn: "Saudi Coffee", desc: "قهوة شقراء بالهيل والزعفران، تقدم مع تمر خلاص فاخر وطحينة", price: 32, badge: "HOSPITALITY", image: "/menu/coffee.webp" },
 ];
 
 type Cart = Record<string, number>;
@@ -145,6 +145,8 @@ export default function RestaurantMenuServicePage() {
             src="https://images.unsplash.com/photo-1544124499-58912cbddaad?q=80&w=2000" 
             alt="Saudi Traditional Feast" 
             className="h-full w-full object-cover brightness-[0.5]" 
+            fetchPriority="high"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#fcfcfc] via-transparent to-[#0f172a]/20" />
         </div>
@@ -194,7 +196,7 @@ export default function RestaurantMenuServicePage() {
                 return (
                   <article key={item.id} className="flex flex-col gap-5 rounded-[32px] bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] ring-1 ring-[#eef2f8] transition-all hover:shadow-[0_20px_60px_rgba(11,17,32,0.08)] hover:-translate-y-2 group">
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] bg-gray-100">
-                      <img src={item.image} alt={lang === "ar" ? item.name : item.nameEn} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <img src={item.image} alt={lang === "ar" ? item.name : item.nameEn} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" />
                       <div className="absolute top-4 left-4">
                         <span className="rounded-full bg-black/40 backdrop-blur-md px-4 py-2 text-[10px] font-black text-white uppercase tracking-widest">
                           {item.badge}
