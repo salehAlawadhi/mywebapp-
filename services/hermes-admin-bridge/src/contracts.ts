@@ -34,3 +34,24 @@ export const hermesRunStatusSchema = z.object({
 });
 
 export type HermesRunStatus = z.infer<typeof hermesRunStatusSchema>;
+
+export const notificationEventSchema = z.object({
+  eventId: z.string().uuid(),
+  eventType: z.enum([
+    "TASK_READY",
+    "APPROVAL_REQUIRED",
+    "TASK_COMPLETED",
+    "TASK_FAILED",
+  ]),
+  occurredAt: z.string().datetime(),
+  taskId: z.string().uuid().optional(),
+  projectId: z.string().uuid().optional(),
+  message: z.string().trim().min(1).max(4_000),
+  channels: z
+    .array(z.enum(["telegram", "whatsapp", "email"]))
+    .min(1)
+    .max(3),
+  data: z.record(z.string(), z.unknown()).default({}),
+});
+
+export type NotificationEvent = z.infer<typeof notificationEventSchema>;

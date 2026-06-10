@@ -8,6 +8,8 @@ const configSchema = z.object({
   DATABASE_URL: z.string().url(),
   HERMES_API_URL: z.string().url(),
   HERMES_API_KEY: z.string().min(32),
+  N8N_WEBHOOK_URL: z.string().url(),
+  N8N_WEBHOOK_SIGNING_SECRET: z.string().min(32),
   REQUEST_TIMEOUT_MS: z.coerce.number().int().min(1_000).max(300_000).default(120_000),
 });
 

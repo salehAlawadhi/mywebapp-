@@ -4,6 +4,7 @@ import { buildApp } from "../src/app.js";
 import type { BridgeConfig } from "../src/config.js";
 import type { HermesClient } from "../src/hermes-client.js";
 import { MemoryIdempotencyStore } from "../src/idempotency.js";
+import type { N8nClient } from "../src/n8n-client.js";
 
 const config: BridgeConfig = {
   NODE_ENV: "test",
@@ -13,6 +14,8 @@ const config: BridgeConfig = {
   DATABASE_URL: "postgresql://bridge:bridge@postgres:5432/bridge",
   HERMES_API_URL: "http://hermes:8642",
   HERMES_API_KEY: "b".repeat(32),
+  N8N_WEBHOOK_URL: "http://n8n:5678/webhook/helyro",
+  N8N_WEBHOOK_SIGNING_SECRET: "c".repeat(32),
   REQUEST_TIMEOUT_MS: 5_000,
 };
 
@@ -32,11 +35,21 @@ function mockHermes(): HermesClient {
   };
 }
 
-function testDependencies(hermes: HermesClient = mockHermes()) {
+function mockN8n(): N8nClient {
+  return {
+    send: vi.fn().mockResolvedValue(undefined),
+  };
+}
+
+function testDependencies(
+  hermes: HermesClient = mockHermes(),
+  n8n: N8nClient = mockN8n(),
+) {
   return {
     config,
     hermes,
     idempotency: new MemoryIdempotencyStore(),
+    n8n,
   };
 }
 
@@ -120,7 +133,12 @@ describe("Hermes admin bridge", () => {
   it("returns the cached response for a repeated dispatch", async () => {
     const hermes = mockHermes();
     const idempotency = new MemoryIdempotencyStore();
-    const app = await buildApp({ config, hermes, idempotency });
+    const app = await buildApp({
+      config,
+      hermes,
+      idempotency,
+      n8n: mockN8n(),
+    });
     const idempotencyKey = randomUUID();
     const payload = {
       taskId: randomUUID(),
@@ -183,6 +201,68 @@ describe("Hermes admin bridge", () => {
     expect(response.statusCode).toBe(409);
     expect(response.json().error.code).toBe("IDEMPOTENCY_KEY_CONFLICT");
     expect(hermes.createRun).toHaveBeenCalledOnce();
+    await app.close();
+  });
+
+  it("forwards a validated notification to n8n once", async () => {
+    const n8n = mockN8n();
+    const app = await buildApp(testDependencies(mockHermes(), n8n));
+    const idempotencyKey = randomUUID();
+    const payload = {
+      eventId: randomUUID(),
+      eventType: "APPROVAL_REQUIRED",
+      occurredAt: new Date().toISOString(),
+      taskId: randomUUID(),
+      message: "A task is waiting for owner approval.",
+      channels: ["telegram"],
+    };
+    const request = {
+      method: "POST" as const,
+      url: "/v1/notifications",
+      headers: {
+        authorization: `Bearer ${config.BRIDGE_ADMIN_TOKEN}`,
+        "idempotency-key": idempotencyKey,
+      },
+      payload,
+    };
+
+    const first = await app.inject(request);
+    const second = await app.inject(request);
+
+    expect(first.statusCode).toBe(202);
+    expect(second.json()).toEqual(first.json());
+    expect(n8n.send).toHaveBeenCalledOnce();
+    await app.close();
+  });
+
+  it("does not cache failed n8n delivery attempts", async () => {
+    const n8n = mockN8n();
+    vi.mocked(n8n.send)
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValueOnce(undefined);
+    const app = await buildApp(testDependencies(mockHermes(), n8n));
+    const request = {
+      method: "POST" as const,
+      url: "/v1/notifications",
+      headers: {
+        authorization: `Bearer ${config.BRIDGE_ADMIN_TOKEN}`,
+        "idempotency-key": randomUUID(),
+      },
+      payload: {
+        eventId: randomUUID(),
+        eventType: "TASK_COMPLETED",
+        occurredAt: new Date().toISOString(),
+        message: "Task completed.",
+        channels: ["telegram"],
+      },
+    };
+
+    const failed = await app.inject(request);
+    const retried = await app.inject(request);
+
+    expect(failed.statusCode).toBe(502);
+    expect(retried.statusCode).toBe(202);
+    expect(n8n.send).toHaveBeenCalledTimes(2);
     await app.close();
   });
 });

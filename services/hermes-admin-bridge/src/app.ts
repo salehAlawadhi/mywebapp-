@@ -6,7 +6,10 @@ import Fastify, {
 } from "fastify";
 import { z } from "zod";
 import type { BridgeConfig } from "./config.js";
-import { dispatchRunSchema } from "./contracts.js";
+import {
+  dispatchRunSchema,
+  notificationEventSchema,
+} from "./contracts.js";
 import {
   HermesRequestError,
   type HermesClient,
@@ -19,11 +22,13 @@ import {
   bearerTokenFromHeader,
   constantTimeEqual,
 } from "./security.js";
+import type { N8nClient } from "./n8n-client.js";
 
 export interface AppDependencies {
   config: BridgeConfig;
   hermes: HermesClient;
   idempotency: IdempotencyStore;
+  n8n: N8nClient;
 }
 
 export async function buildApp(
@@ -181,6 +186,95 @@ export async function buildApp(
       }
     },
   );
+
+  app.post("/v1/notifications", async (request, reply) => {
+    const idempotencyKey = request.headers["idempotency-key"];
+    if (
+      typeof idempotencyKey !== "string" ||
+      !z.string().uuid().safeParse(idempotencyKey).success
+    ) {
+      return reply.code(400).send({
+        error: {
+          code: "IDEMPOTENCY_KEY_REQUIRED",
+          message: "A UUID Idempotency-Key header is required.",
+        },
+      });
+    }
+
+    const parsed = notificationEventSchema.safeParse(request.body);
+    if (!parsed.success) {
+      return reply.code(422).send({
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Invalid notification event.",
+          details: parsed.error.flatten(),
+        },
+      });
+    }
+
+    const scope = "n8n-notification";
+    let claim;
+    try {
+      claim = await dependencies.idempotency.claim(
+        scope,
+        idempotencyKey,
+        requestHash(parsed.data),
+      );
+    } catch {
+      return reply.code(503).send({
+        error: {
+          code: "IDEMPOTENCY_STORE_UNAVAILABLE",
+          message: "The request cannot be safely processed right now.",
+        },
+      });
+    }
+
+    if (claim.state === "cached") {
+      return reply.code(claim.statusCode).send(claim.responseBody);
+    }
+    if (claim.state === "conflict") {
+      return reply.code(409).send({
+        error: {
+          code: "IDEMPOTENCY_KEY_CONFLICT",
+          message: "This idempotency key was used with a different request.",
+        },
+      });
+    }
+    if (claim.state === "in_progress") {
+      return reply.code(409).send({
+        error: {
+          code: "REQUEST_IN_PROGRESS",
+          message: "A request with this idempotency key is still running.",
+        },
+      });
+    }
+
+    try {
+      await dependencies.n8n.send(parsed.data, idempotencyKey);
+      const responseBody = {
+        data: {
+          accepted: true,
+          eventId: parsed.data.eventId,
+          requestId: request.id,
+        },
+      };
+      await dependencies.idempotency.complete(
+        scope,
+        idempotencyKey,
+        202,
+        responseBody,
+      );
+      return reply.code(202).send(responseBody);
+    } catch {
+      await dependencies.idempotency.release(scope, idempotencyKey);
+      return reply.code(502).send({
+        error: {
+          code: "N8N_UNAVAILABLE",
+          message: "The notification service is currently unavailable.",
+        },
+      });
+    }
+  });
 
   return app;
 }
