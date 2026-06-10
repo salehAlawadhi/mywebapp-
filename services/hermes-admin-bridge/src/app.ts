@@ -12,6 +12,10 @@ import {
   type HermesClient,
 } from "./hermes-client.js";
 import {
+  requestHash,
+  type IdempotencyStore,
+} from "./idempotency.js";
+import {
   bearerTokenFromHeader,
   constantTimeEqual,
 } from "./security.js";
@@ -19,6 +23,7 @@ import {
 export interface AppDependencies {
   config: BridgeConfig;
   hermes: HermesClient;
+  idempotency: IdempotencyStore;
 }
 
 export async function buildApp(
@@ -33,10 +38,16 @@ export async function buildApp(
   await app.register(helmet, { global: true });
 
   app.get("/health", async (_request, reply) => {
-    const hermesAvailable = await dependencies.hermes.health();
-    return reply.code(hermesAvailable ? 200 : 503).send({
-      status: hermesAvailable ? "ok" : "degraded",
+    const [hermesAvailable, databaseAvailable] = await Promise.all([
+      dependencies.hermes.health(),
+      dependencies.idempotency.health(),
+    ]);
+    const isHealthy = hermesAvailable && databaseAvailable;
+
+    return reply.code(isHealthy ? 200 : 503).send({
+      status: isHealthy ? "ok" : "degraded",
       hermes: hermesAvailable ? "available" : "unavailable",
+      database: databaseAvailable ? "available" : "unavailable",
     });
   });
 
@@ -84,17 +95,65 @@ export async function buildApp(
       });
     }
 
+    const scope = "hermes-run";
+    let claim;
     try {
-      const run = await dependencies.hermes.createRun(parsed.data);
-      return reply.code(202).send({
+      claim = await dependencies.idempotency.claim(
+        scope,
+        idempotencyKey,
+        requestHash(parsed.data),
+      );
+    } catch {
+      return reply.code(503).send({
+        error: {
+          code: "IDEMPOTENCY_STORE_UNAVAILABLE",
+          message: "The request cannot be safely processed right now.",
+        },
+      });
+    }
+
+    if (claim.state === "cached") {
+      return reply.code(claim.statusCode).send(claim.responseBody);
+    }
+    if (claim.state === "conflict") {
+      return reply.code(409).send({
+        error: {
+          code: "IDEMPOTENCY_KEY_CONFLICT",
+          message: "This idempotency key was used with a different request.",
+        },
+      });
+    }
+    if (claim.state === "in_progress") {
+      return reply.code(409).send({
+        error: {
+          code: "REQUEST_IN_PROGRESS",
+          message: "A request with this idempotency key is still running.",
+        },
+      });
+    }
+
+    try {
+      const run = await dependencies.hermes.createRun(
+        parsed.data,
+        idempotencyKey,
+      );
+      const responseBody = {
         data: {
           runId: run.runId,
           status: run.status,
           taskId: parsed.data.taskId,
           requestId: request.id,
         },
-      });
+      };
+      await dependencies.idempotency.complete(
+        scope,
+        idempotencyKey,
+        202,
+        responseBody,
+      );
+      return reply.code(202).send(responseBody);
     } catch (error) {
+      await dependencies.idempotency.release(scope, idempotencyKey);
       return sendUpstreamError(error, reply);
     }
   });

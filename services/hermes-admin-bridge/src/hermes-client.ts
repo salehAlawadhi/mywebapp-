@@ -6,7 +6,10 @@ import {
 } from "./contracts.js";
 
 export interface HermesClient {
-  createRun(input: DispatchRunInput): Promise<{ runId: string; status: string }>;
+  createRun(
+    input: DispatchRunInput,
+    idempotencyKey: string,
+  ): Promise<{ runId: string; status: string }>;
   getRun(runId: string): Promise<HermesRunStatus>;
   stopRun(runId: string): Promise<{ status: string }>;
   health(): Promise<boolean>;
@@ -21,9 +24,11 @@ export class HttpHermesClient implements HermesClient {
 
   async createRun(
     input: DispatchRunInput,
+    idempotencyKey: string,
   ): Promise<{ runId: string; status: string }> {
     const response = await this.request("/v1/runs", {
       method: "POST",
+      headers: { "Idempotency-Key": idempotencyKey },
       body: JSON.stringify({
         session_id: `helyro-task:${input.taskId}`,
         instructions: input.instructions,
