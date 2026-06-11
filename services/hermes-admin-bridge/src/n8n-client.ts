@@ -8,6 +8,7 @@ export interface N8nClient {
 export class HttpN8nClient implements N8nClient {
   constructor(
     private readonly webhookUrl: string,
+    private readonly authToken: string,
     private readonly signingSecret: string,
     private readonly timeoutMs: number,
     private readonly fetcher: typeof fetch = fetch,
@@ -29,6 +30,7 @@ export class HttpN8nClient implements N8nClient {
       headers: {
         "Content-Type": "application/json",
         "Idempotency-Key": idempotencyKey,
+        "X-HELYRO-Webhook-Token": this.authToken,
         "X-HELYRO-Timestamp": timestamp,
         "X-HELYRO-Signature": `sha256=${signature}`,
       },

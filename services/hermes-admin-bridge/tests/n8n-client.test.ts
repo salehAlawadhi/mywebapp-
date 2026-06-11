@@ -8,6 +8,7 @@ describe("HttpN8nClient", () => {
     const secret = "s".repeat(32);
     const client = new HttpN8nClient(
       "http://n8n:5678/webhook/helyro",
+      "a".repeat(32),
       secret,
       5_000,
       fetcher,
@@ -34,6 +35,7 @@ describe("HttpN8nClient", () => {
     expect(headers["X-HELYRO-Signature"]).toBe(
       `sha256=${expectedSignature}`,
     );
+    expect(headers["X-HELYRO-Webhook-Token"]).toBe("a".repeat(32));
     expect(JSON.parse(body)).toEqual(event);
   });
 });

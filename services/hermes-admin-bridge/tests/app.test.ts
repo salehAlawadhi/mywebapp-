@@ -15,6 +15,7 @@ const config: BridgeConfig = {
   HERMES_API_URL: "http://hermes:8642",
   HERMES_API_KEY: "b".repeat(32),
   N8N_WEBHOOK_URL: "http://n8n:5678/webhook/helyro",
+  N8N_WEBHOOK_AUTH_TOKEN: "d".repeat(32),
   N8N_WEBHOOK_SIGNING_SECRET: "c".repeat(32),
   REQUEST_TIMEOUT_MS: 5_000,
 };

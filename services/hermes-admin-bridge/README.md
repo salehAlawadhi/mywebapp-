@@ -9,7 +9,7 @@ Agent, and n8n.
 - Validate task handoffs before dispatching Hermes runs.
 - Preserve request idempotency in PostgreSQL.
 - Proxy Hermes run status and cancellation.
-- Sign notification events sent to n8n.
+- Authenticate and sign notification events sent to n8n.
 
 It does not own clients, projects, task state, approvals, or deliverables.
 Those remain authoritative in the admin application database.
@@ -70,6 +70,8 @@ Migrations use a PostgreSQL advisory lock and are recorded in
 - Do not assign a public domain.
 - Connect only to the private admin, PostgreSQL, Hermes, and n8n network.
 - Store all secrets as runtime-only Coolify variables.
+- Configure the n8n Webhook node with Header Auth using
+  `X-HELYRO-Webhook-Token` and `N8N_WEBHOOK_AUTH_TOKEN`.
 
 Hermes API Server must be enabled on its private Docker interface. Never expose
 port `8642` publicly.

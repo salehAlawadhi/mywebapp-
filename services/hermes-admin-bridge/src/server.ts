@@ -15,6 +15,7 @@ const hermes = new HttpHermesClient(
 const idempotency = new PostgresIdempotencyStore(pool);
 const n8n = new HttpN8nClient(
   config.N8N_WEBHOOK_URL,
+  config.N8N_WEBHOOK_AUTH_TOKEN,
   config.N8N_WEBHOOK_SIGNING_SECRET,
   config.REQUEST_TIMEOUT_MS,
 );
