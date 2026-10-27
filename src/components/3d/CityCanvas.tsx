@@ -10,18 +10,18 @@ export default function CityCanvas() {
     const container = mountRef.current;
     if (!container) return;
 
-    // 1. SCENE & ATMOSPHERIC FOG
+    // 1. SCENE & RIYADH NOCTURNAL ATMOSPHERE
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x060A14, 0.0035);
+    scene.fog = new THREE.FogExp2(0x060A14, 0.0028);
 
     const camera = new THREE.PerspectiveCamera(
-      52,
+      48,
       container.clientWidth / container.clientHeight,
       1,
-      1600
+      1800
     );
-    // Camera positioned with an imposing upward angle framing the whole tower
-    camera.position.set(-15, 105, 275);
+    // Cinematic camera angle framing the Riyadh skyline
+    camera.position.set(-20, 85, 235);
 
     const renderer = new THREE.WebGLRenderer({ 
       antialias: true, 
@@ -31,283 +31,281 @@ export default function CityCanvas() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.6;
+    renderer.toneMappingExposure = 1.35;
     container.appendChild(renderer.domElement);
 
-    // 2. ILLUMINATION
-    const ambientLight = new THREE.AmbientLight(0x1e3a5f, 2.8);
+    // 2. LIGHTING & RIYADH AMBIENCE
+    const ambientLight = new THREE.AmbientLight(0x0d1b2a, 2.2);
     scene.add(ambientLight);
 
-    const mainLight = new THREE.DirectionalLight(0x7dd3fc, 3.5);
-    mainLight.position.set(80, 240, 160);
-    scene.add(mainLight);
+    const moonLight = new THREE.DirectionalLight(0x7dd3fc, 2.6);
+    moonLight.position.set(120, 260, 160);
+    scene.add(moonLight);
 
-    const cyanRim = new THREE.DirectionalLight(0x00f5ff, 3.2);
-    cyanRim.position.set(-160, 140, -60);
+    const cyanRim = new THREE.DirectionalLight(0x00f5ff, 2.2);
+    cyanRim.position.set(-160, 140, -40);
     scene.add(cyanRim);
 
-    // 3. VIVID PROCEDURAL NEON WINDOW TEXTURE GENERATOR
-    const createGlowingTexture = (density = 0.6) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 256;
-      canvas.height = 512;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return null;
-
-      // Dark steel backdrop
-      ctx.fillStyle = '#060d1a';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      const rows = 40;
-      const cols = 10;
-      const cellW = canvas.width / cols;
-      const cellH = canvas.height / rows;
-
-      // Draw horizontal floor divisions
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
-      ctx.lineWidth = 1;
-      for (let r = 0; r < rows; r++) {
-        ctx.beginPath();
-        ctx.moveTo(0, r * cellH);
-        ctx.lineTo(canvas.width, r * cellH);
-        ctx.stroke();
-
-        for (let c = 0; c < cols; c++) {
-          if (Math.random() < density) {
-            const isGold = Math.random() < 0.15;
-            const isBright = Math.random() < 0.4;
-            
-            if (isGold) {
-              ctx.fillStyle = isBright ? '#fef08a' : '#f59e0b';
-            } else {
-              ctx.fillStyle = isBright ? '#38bdf8' : '#0284c7';
-            }
-
-            ctx.fillRect(c * cellW + 3, r * cellH + 3, cellW - 6, cellH - 6);
-          }
-        }
-      }
-
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      return texture;
-    };
-
-    const towerTexture = createGlowingTexture(0.72);
-    const cityTexture = createGlowingTexture(0.5);
-
-    // 4. CENTRAL MAJESTIC SKYSCRAPER (HELYRO MONOLITH)
-    // Positioned at X: -35 so it's fully visible and framed in open space
-    const towerGroup = new THREE.Group();
-    towerGroup.position.set(-45, 0, 10);
-
-    const towerMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      map: towerTexture,
-      emissive: 0x0284c7,
-      emissiveMap: towerTexture,
-      emissiveIntensity: 0.9,
-      roughness: 0.15,
-      metalness: 0.85,
+    // 3. ARCHITECTURAL MATERIALS (Sleek Glass & Metallic Curtain Walls)
+    const glassTowerMat = new THREE.MeshStandardMaterial({
+      color: 0x0e2238,
+      metalness: 0.92,
+      roughness: 0.12,
+      emissive: 0x0369a1,
+      emissiveIntensity: 0.35,
     });
 
-    // Tier 1 (Base Monolith)
-    const tier1Geo = new THREE.BoxGeometry(38, 110, 38);
-    const tier1 = new THREE.Mesh(tier1Geo, towerMat);
-    tier1.position.y = 55;
-    towerGroup.add(tier1);
+    const faisaliahMat = new THREE.MeshStandardMaterial({
+      color: 0x0a1626,
+      metalness: 0.9,
+      roughness: 0.2,
+      emissive: 0x0284c7,
+      emissiveIntensity: 0.3,
+    });
 
-    const tier1Edges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(tier1Geo),
-      new THREE.LineBasicMaterial({ color: 0x00f5ff, transparent: true, opacity: 0.9 })
+    // 4. LANDMARK 1: KINGDOM CENTRE (برج المملكة - الرياض)
+    const kingdomGroup = new THREE.Group();
+    kingdomGroup.position.set(-42, 0, 5);
+
+    // Build the iconic parabolic curved silhouette of Kingdom Tower
+    const ktShape = new THREE.Shape();
+    const baseW = 25;
+    const totalH = 220;
+    const topW = 10;
+
+    ktShape.moveTo(-baseW, 0);
+    ktShape.lineTo(-baseW * 1.04, 45);
+    ktShape.quadraticCurveTo(-baseW * 0.88, 130, -topW, totalH);
+    ktShape.lineTo(topW, totalH);
+    ktShape.quadraticCurveTo(baseW * 0.88, 130, baseW * 1.04, 45);
+    ktShape.lineTo(baseW, 0);
+    ktShape.closePath();
+
+    // The iconic Parabolic Opening cutout
+    const arch = new THREE.Path();
+    const archBaseY = 135;
+    const archTopW = 7;
+    arch.moveTo(0, archBaseY);
+    arch.quadraticCurveTo(-archTopW * 0.55, 175, -archTopW, totalH - 6);
+    arch.lineTo(archTopW, totalH - 6);
+    arch.quadraticCurveTo(archTopW * 0.55, 175, 0, archBaseY);
+    ktShape.holes.push(arch);
+
+    const ktGeo = new THREE.ExtrudeGeometry(ktShape, {
+      depth: 18,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 2,
+      bevelSize: 1.2,
+      bevelThickness: 1.2
+    });
+    ktGeo.center();
+
+    const kingdomTower = new THREE.Mesh(ktGeo, glassTowerMat);
+    kingdomTower.position.y = totalH / 2;
+    kingdomGroup.add(kingdomTower);
+
+    // Glowing Neon Edges for Kingdom Tower
+    const ktEdges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(ktGeo, 24),
+      new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85 })
     );
-    tier1.add(tier1Edges);
+    kingdomTower.add(ktEdges);
 
-    // Tier 2 (Mid Architectural Crown)
-    const tier2Geo = new THREE.BoxGeometry(26, 75, 26);
-    const tier2 = new THREE.Mesh(tier2Geo, towerMat);
-    tier2.position.y = 145;
-    towerGroup.add(tier2);
+    // The Famous SkyBridge (جسر المشاهدة المعلق بأعلى برج المملكة)
+    const skybridgeGeo = new THREE.CylinderGeometry(1.4, 1.4, 15, 16);
+    const skybridgeMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+    const skybridge = new THREE.Mesh(skybridgeGeo, skybridgeMat);
+    skybridge.rotation.z = Math.PI / 2;
+    skybridge.position.set(0, totalH - 4, 0);
+    kingdomGroup.add(skybridge);
 
-    const tier2Edges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(tier2Geo),
-      new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.95 })
+    // Signature Arch Uplight (إضاءة قوس المملكة الداخلية اللامعة)
+    const archSpot = new THREE.PointLight(0x00f5ff, 5, 90);
+    archSpot.position.set(0, 145, 0);
+    kingdomGroup.add(archSpot);
+
+    const archGlow = new THREE.PointLight(0x38bdf8, 4, 110);
+    archGlow.position.set(0, 180, 0);
+    kingdomGroup.add(archGlow);
+
+    scene.add(kingdomGroup);
+
+    // 5. LANDMARK 2: AL FAISALIAH TOWER (برج الفيصلية - الرياض)
+    const faisaliahGroup = new THREE.Group();
+    faisaliahGroup.position.set(65, 0, -45);
+
+    const fHeight = 175;
+    const fBaseW = 28;
+
+    // 4-sided pyramid
+    const fGeo = new THREE.ConeGeometry(fBaseW, fHeight, 4);
+    fGeo.center();
+    const faisaliahTower = new THREE.Mesh(fGeo, faisaliahMat);
+    faisaliahTower.position.y = fHeight / 2;
+    faisaliahTower.rotation.y = Math.PI / 4;
+    faisaliahGroup.add(faisaliahTower);
+
+    const fEdges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(fGeo, 15),
+      new THREE.LineBasicMaterial({ color: 0x0ea5e9, transparent: true, opacity: 0.75 })
     );
-    tier2.add(tier2Edges);
+    faisaliahTower.add(fEdges);
 
-    // Tier 3 (High Spire Base)
-    const tier3Geo = new THREE.BoxGeometry(16, 45, 16);
-    const tier3Mat = new THREE.MeshStandardMaterial({
-      color: 0x0284c7,
-      emissive: 0x38bdf8,
-      emissiveIntensity: 0.8,
+    // The Iconic Golden Globe (الكرة الذهبية في أعلى برج الفيصلية)
+    const globeGeo = new THREE.SphereGeometry(6.2, 24, 24);
+    const globeMat = new THREE.MeshStandardMaterial({
+      color: 0xf59e0b,
       metalness: 0.95,
-      roughness: 0.1
+      roughness: 0.08,
+      emissive: 0xd97706,
+      emissiveIntensity: 0.75,
     });
-    const tier3 = new THREE.Mesh(tier3Geo, tier3Mat);
-    tier3.position.y = 205;
-    towerGroup.add(tier3);
+    const goldenGlobe = new THREE.Mesh(globeGeo, globeMat);
+    goldenGlobe.position.set(0, 145, 0);
+    faisaliahGroup.add(goldenGlobe);
 
-    const tier3Edges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(tier3Geo),
-      new THREE.LineBasicMaterial({ color: 0x67e8f9, transparent: true, opacity: 1.0 })
-    );
-    tier3.add(tier3Edges);
+    const globeLight = new THREE.PointLight(0xf59e0b, 4, 70);
+    globeLight.position.set(0, 145, 0);
+    faisaliahGroup.add(globeLight);
 
-    // Needle Antenna
-    const needleGeo = new THREE.CylinderGeometry(0.7, 1.6, 50, 8);
-    const needleMat = new THREE.MeshBasicMaterial({ color: 0xe0f2fe });
-    const needle = new THREE.Mesh(needleGeo, needleMat);
-    needle.position.y = 250;
-    towerGroup.add(needle);
+    // Faisaliah Spire Needle
+    const fNeedleGeo = new THREE.CylinderGeometry(0.5, 1.2, 35, 8);
+    const fNeedleMat = new THREE.MeshBasicMaterial({ color: 0xe0f2fe });
+    const fNeedle = new THREE.Mesh(fNeedleGeo, fNeedleMat);
+    fNeedle.position.set(0, 168, 0);
+    faisaliahGroup.add(fNeedle);
 
-    // Beacon Light & Orb
-    const beaconLight = new THREE.PointLight(0x00ffff, 8, 300);
-    beaconLight.position.set(0, 275, 0);
-    towerGroup.add(beaconLight);
+    // Aviation Beacon on Faisaliah Spire
+    const fBeacon = new THREE.PointLight(0xf43f5e, 3, 50);
+    fBeacon.position.set(0, 185, 0);
+    faisaliahGroup.add(fBeacon);
 
-    const beaconGeo = new THREE.SphereGeometry(3.5, 16, 16);
-    const beaconMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
-    const beaconOrb = new THREE.Mesh(beaconGeo, beaconMat);
-    beaconOrb.position.y = 275;
-    towerGroup.add(beaconOrb);
+    scene.add(faisaliahGroup);
 
-    // Dual Halo Rings around Spire
-    const ringGeo1 = new THREE.TorusGeometry(20, 0.5, 16, 64);
-    const ringMat1 = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.65 });
-    const ring1 = new THREE.Mesh(ringGeo1, ringMat1);
-    ring1.rotation.x = Math.PI / 2;
-    ring1.position.y = 182;
-    towerGroup.add(ring1);
+    // 6. SURROUNDING RIYADH TOWERS (KAFD & Olaya District Modern Architecture)
+    const cityCount = 65;
+    const cityGroup = new THREE.Group();
 
-    const ringGeo2 = new THREE.TorusGeometry(12, 0.4, 16, 64);
-    const ringMat2 = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.5 });
-    const ring2 = new THREE.Mesh(ringGeo2, ringMat2);
-    ring2.rotation.x = Math.PI / 2;
-    ring2.position.y = 215;
-    towerGroup.add(ring2);
+    for (let i = 0; i < cityCount; i++) {
+      const angle = (i / cityCount) * Math.PI * 2;
+      const radius = 65 + Math.random() * 320;
+      const x = Math.cos(angle) * radius - 15;
+      const z = Math.sin(angle) * radius - 20;
 
-    scene.add(towerGroup);
+      // Avoid placing right on top of Kingdom or Faisaliah
+      const distToKT = Math.hypot(x - (-42), z - 5);
+      const distToFT = Math.hypot(x - 65, z - (-45));
+      if (distToKT < 45 || distToFT < 40) continue;
 
-    // 5. SURROUNDING LUMINOUS METROPOLIS (INSTANCED MESH)
-    const buildingCount = 90;
-    const cityBaseGeo = new THREE.BoxGeometry(1, 1, 1);
-    const cityMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      map: cityTexture,
-      emissive: 0x0284c7,
-      emissiveMap: cityTexture,
-      emissiveIntensity: 0.7,
-      metalness: 0.8,
-      roughness: 0.25,
-    });
-    const cityInstanced = new THREE.InstancedMesh(cityBaseGeo, cityMat, buildingCount);
+      const w = 15 + Math.random() * 22;
+      const d = 15 + Math.random() * 22;
+      const h = 30 + Math.random() * 115;
 
-    const dummy = new THREE.Object3D();
-    const cityGridRadius = 450;
-    let idx = 0;
+      const bGeo = new THREE.BoxGeometry(w, h, d);
+      const bMat = new THREE.MeshStandardMaterial({
+        color: 0x07111e,
+        metalness: 0.88,
+        roughness: 0.22,
+        emissive: 0x0284c7,
+        emissiveIntensity: 0.25,
+      });
 
-    for (let i = 0; i < buildingCount; i++) {
-      const angle = (i / buildingCount) * Math.PI * 2 + (Math.random() * 0.4 - 0.2);
-      const dist = 55 + Math.random() * (cityGridRadius - 55);
-      const x = Math.cos(angle) * dist - 30; // Centered near tower
-      const z = Math.sin(angle) * dist;
+      const bMesh = new THREE.Mesh(bGeo, bMat);
+      bMesh.position.set(x, h / 2, z);
+      bMesh.rotation.y = (Math.floor(Math.random() * 4) * Math.PI) / 2;
+      cityGroup.add(bMesh);
 
-      const w = 18 + Math.random() * 26;
-      const d = 18 + Math.random() * 26;
-      const h = 35 + Math.random() * 130;
-
-      dummy.position.set(x, h / 2, z);
-      dummy.scale.set(w, h, d);
-      dummy.rotation.y = (Math.floor(Math.random() * 4) * Math.PI) / 2;
-      dummy.updateMatrix();
-
-      cityInstanced.setMatrixAt(idx++, dummy.matrix);
+      // Fine architectural roof edges
+      const bEdges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(bGeo, 20),
+        new THREE.LineBasicMaterial({ color: 0x0284c7, transparent: true, opacity: 0.4 })
+      );
+      bMesh.add(bEdges);
     }
-    cityInstanced.instanceMatrix.needsUpdate = true;
-    scene.add(cityInstanced);
+    scene.add(cityGroup);
 
-    // 6. CYBER GRID HIGHWAY & GROUND REFLECTION
-    const gridHelper = new THREE.GridHelper(900, 90, 0x00f5ff, 0x133e69);
-    gridHelper.position.y = 0.5;
-    scene.add(gridHelper);
-
-    const groundGeo = new THREE.PlaneGeometry(1000, 1000);
+    // 7. KING FAHD ROAD (طريق الملك فهد - شريان الرياض المتدفق)
+    // Dark desert base plane
+    const groundGeo = new THREE.PlaneGeometry(1200, 1200);
     const groundMat = new THREE.MeshStandardMaterial({
-      color: 0x040812,
-      roughness: 0.05,
-      metalness: 0.98,
+      color: 0x040810,
+      roughness: 0.1,
+      metalness: 0.9,
     });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = 0;
     scene.add(ground);
 
-    // Moving Highway Traffic Beams
-    const trafficCount = 40;
-    const trafficGeo = new THREE.BoxGeometry(1.6, 0.5, 30);
-    const trafficMatCyan = new THREE.MeshBasicMaterial({ color: 0x22d3ee });
-    const trafficMatRed = new THREE.MeshBasicMaterial({ color: 0xf43f5e });
+    // Subtle modern highway grid
+    const highwayGrid = new THREE.GridHelper(1000, 50, 0x0284c7, 0x08182b);
+    highwayGrid.position.y = 0.2;
+    scene.add(highwayGrid);
 
-    const trafficStreams: { mesh: THREE.Mesh; speed: number; axis: 'x' | 'z'; limit: number }[] = [];
+    // Dynamic Traffic Light Streams (حركة السيارات السريعة على الطريق)
+    const streamCount = 45;
+    const streamGeo = new THREE.BoxGeometry(1.6, 0.4, 28);
+    const matAmber = new THREE.MeshBasicMaterial({ color: 0xf59e0b }); // Front headlights
+    const matRed = new THREE.MeshBasicMaterial({ color: 0xf43f5e });   // Taillights
+    const matCyan = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });  // Luxury EV glow
 
-    for (let t = 0; t < trafficCount; t++) {
-      const isCyan = t % 2 === 0;
-      const mesh = new THREE.Mesh(trafficGeo, isCyan ? trafficMatCyan : trafficMatRed);
-      const axis = Math.random() > 0.5 ? 'x' : 'z';
-      const offset = (Math.floor(Math.random() * 18) - 9) * 45;
+    const streams: { mesh: THREE.Mesh; speed: number; axis: 'x' | 'z'; limit: number }[] = [];
 
-      if (axis === 'z') {
-        mesh.position.set(offset, 0.8, (Math.random() - 0.5) * 700);
+    for (let s = 0; s < streamCount; s++) {
+      let chosenMat = matCyan;
+      if (s % 3 === 0) chosenMat = matAmber;
+      if (s % 3 === 1) chosenMat = matRed;
+
+      const mesh = new THREE.Mesh(streamGeo, chosenMat);
+      const isZAxis = Math.random() > 0.4;
+      const offset = (Math.floor(Math.random() * 14) - 7) * 45;
+
+      if (isZAxis) {
+        mesh.position.set(offset, 0.6, (Math.random() - 0.5) * 800);
         mesh.rotation.y = 0;
+        streams.push({ mesh, speed: (s % 2 === 0 ? 1 : -1) * (1.8 + Math.random() * 2.4), axis: 'z', limit: 450 });
       } else {
-        mesh.position.set((Math.random() - 0.5) * 700, 0.8, offset);
+        mesh.position.set((Math.random() - 0.5) * 800, 0.6, offset);
         mesh.rotation.y = Math.PI / 2;
+        streams.push({ mesh, speed: (s % 2 === 0 ? 1 : -1) * (1.8 + Math.random() * 2.4), axis: 'x', limit: 450 });
       }
-
       scene.add(mesh);
-      trafficStreams.push({
-        mesh,
-        speed: (isCyan ? 1 : -1) * (1.6 + Math.random() * 2.5),
-        axis,
-        limit: 400
-      });
     }
 
-    // 7. LUMINOUS STARFIELD PARTICLES
-    const particleCount = 800;
+    // 8. RIYADH NIGHT STARS & GLOW PARTICLES
+    const particleCount = 700;
     const particleGeo = new THREE.BufferGeometry();
     const particlePos = new Float32Array(particleCount * 3);
 
     for (let p = 0; p < particleCount * 3; p += 3) {
-      particlePos[p] = (Math.random() - 0.5) * 800;
-      particlePos[p + 1] = Math.random() * 360;
-      particlePos[p + 2] = (Math.random() - 0.5) * 800;
+      particlePos[p] = (Math.random() - 0.5) * 900;
+      particlePos[p + 1] = Math.random() * 380;
+      particlePos[p + 2] = (Math.random() - 0.5) * 900;
     }
 
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: 0x38bdf8,
-      size: 2.4,
+      color: 0x7dd3fc,
+      size: 2.2,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // 8. INTERACTIVE REAL 3D PARALLAX (MOUSE & TOUCH)
+    // 9. INTERACTIVE REAL 3D PARALLAX (MOUSE & TOUCH)
     let mouseX = 0;
     let mouseY = 0;
-    let targetCameraX = -25;
-    let targetCameraY = 75;
+    let targetCameraX = -20;
+    let targetCameraY = 85;
 
     const onMouseMove = (e: MouseEvent) => {
       const normX = (e.clientX / window.innerWidth) * 2 - 1;
       const normY = -(e.clientY / window.innerHeight) * 2 + 1;
-      mouseX = normX * 75; // Expressive 3D camera pan
-      mouseY = normY * 45; // Camera height tilt
+      mouseX = normX * 60; // Parallax pan
+      mouseY = normY * 35; // Parallax tilt
     };
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
@@ -316,8 +314,8 @@ export default function CityCanvas() {
         const touch = e.touches[0];
         const normX = (touch.clientX / window.innerWidth) * 2 - 1;
         const normY = -(touch.clientY / window.innerHeight) * 2 + 1;
-        mouseX = normX * 55;
-        mouseY = normY * 35;
+        mouseX = normX * 45;
+        mouseY = normY * 25;
       }
     };
     window.addEventListener('touchmove', onTouchMove, { passive: true });
@@ -330,27 +328,31 @@ export default function CityCanvas() {
     };
     window.addEventListener('resize', onResize);
 
-    // 9. ANIMATION LOOP (60 FPS)
+    // 10. ANIMATION LOOP (60 FPS)
     let clock = new THREE.Clock();
     let animId: number;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const elapsed = clock.getElapsedTime();
 
-      // Pulsing Beacon Light & Ring rotations
-      beaconLight.intensity = 6 + Math.sin(elapsedTime * 4) * 3;
-      beaconOrb.scale.setScalar(1 + Math.sin(elapsedTime * 4) * 0.3);
+      // Breathing Arch Uplight Pulse (Kingdom Tower)
+      archSpot.intensity = 4.5 + Math.sin(elapsed * 2.5) * 2;
+      archGlow.intensity = 3.5 + Math.sin(elapsed * 2.5) * 1.5;
 
-      ring1.rotation.z = elapsedTime * 0.5;
-      ring2.rotation.z = -elapsedTime * 0.7;
+      // Faisaliah Golden Globe Glow
+      globeLight.intensity = 3 + Math.sin(elapsed * 3) * 1.5;
 
-      // Gentle Tower Rotation
-      towerGroup.rotation.y = Math.sin(elapsedTime * 0.25) * 0.08;
+      // Faisaliah Aviation Red Beacon Blink
+      fBeacon.intensity = Math.sin(elapsed * 4) > 0.4 ? 4 : 0.2;
 
-      // Traffic movement
-      for (let s = 0; s < trafficStreams.length; s++) {
-        const item = trafficStreams[s];
+      // Subtle Majestic Sway
+      kingdomGroup.rotation.y = Math.sin(elapsed * 0.18) * 0.04;
+      faisaliahGroup.rotation.y = Math.PI / 4 + Math.sin(elapsed * 0.15) * 0.03;
+
+      // Traffic movement along highway
+      for (let s = 0; s < streams.length; s++) {
+        const item = streams[s];
         if (item.axis === 'z') {
           item.mesh.position.z += item.speed;
           if (Math.abs(item.mesh.position.z) > item.limit) {
@@ -364,23 +366,23 @@ export default function CityCanvas() {
         }
       }
 
-      // Star Particles drift
+      // Star Particles slow drift
       const positions = particleGeo.attributes.position.array as Float32Array;
       for (let i = 1; i < positions.length; i += 3) {
-        positions[i] += 0.25;
-        if (positions[i] > 360) {
+        positions[i] += 0.2;
+        if (positions[i] > 380) {
           positions[i] = 0;
         }
       }
       particleGeo.attributes.position.needsUpdate = true;
 
-      // Camera smooth 3D interpolation
-      targetCameraX = -15 + mouseX;
-      targetCameraY = 105 - mouseY * 0.45;
+      // Smooth Camera LERP with Mouse Physics
+      targetCameraX = -20 + mouseX;
+      targetCameraY = 85 - mouseY * 0.4;
 
-      camera.position.x += (targetCameraX - camera.position.x) * 0.05;
-      camera.position.y += (targetCameraY - camera.position.y) * 0.05;
-      camera.lookAt(-25, 135, 0);
+      camera.position.x += (targetCameraX - camera.position.x) * 0.045;
+      camera.position.y += (targetCameraY - camera.position.y) * 0.045;
+      camera.lookAt(-10, 110, 0);
 
       renderer.render(scene, camera);
     };
@@ -398,8 +400,9 @@ export default function CityCanvas() {
       renderer.dispose();
       particleGeo.dispose();
       particleMat.dispose();
-      towerTexture?.dispose();
-      cityTexture?.dispose();
+      ktGeo.dispose();
+      fGeo.dispose();
+      globeGeo.dispose();
     };
   }, []);
 
